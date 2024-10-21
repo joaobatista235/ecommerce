@@ -1,0 +1,10 @@
+.register-link p {
+    color: #007bff; /* Link color */
+    text-decoration: none;
+  }
+
+  .register-link p:hover {
+    text-decoration: underline; /* Underline on hover */
+    color: #0056b3; /* Darker color on hover */
+    cursor: pointer; /* Pointer cursor on hover */
+  }
