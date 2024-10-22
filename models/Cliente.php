@@ -18,9 +18,11 @@ class Cliente implements GenericInterface
     private $celular;
     private $data_nasc;
     private $salario;
+    private $conn;
 
     public function __construct()
     {
+        $this->conn = (new Database())->getConnection();
     }
 
     public function getId()
@@ -140,10 +142,10 @@ class Cliente implements GenericInterface
     public function save()
     {
         if ($this->id) {
-            $stmt = mysqli_prepare((new Database())->getConnection(), "UPDATE clientes SET nome=?, endereco=?, numero=?, bairro=?, cidade=?, estado=?, email=?, cpf_cnpj=?, rg=?, telefone=?, celular=?, data_nasc=?, salario=? WHERE id=?");
+            $stmt = mysqli_prepare($this->conn, "UPDATE clientes SET nome=?, endereco=?, numero=?, bairro=?, cidade=?, estado=?, email=?, cpf_cnpj=?, rg=?, telefone=?, celular=?, data_nasc=?, salario=? WHERE id=?");
             mysqli_stmt_bind_param($stmt, "ssssssssssssi", $this->nome, $this->endereco, $this->numero, $this->bairro, $this->cidade, $this->estado, $this->email, $this->cpf_cnpj, $this->rg, $this->telefone, $this->celular, $this->data_nasc, $this->salario, $this->id);
         } else {
-            $stmt = mysqli_prepare((new Database())->getConnection(), "INSERT INTO clientes (nome, endereco, numero, bairro, cidade, estado, email, cpf_cnpj, rg, telefone, celular, data_nasc, salario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt = mysqli_prepare($this->conn, "INSERT INTO clientes (nome, endereco, numero, bairro, cidade, estado, email, cpf_cnpj, rg, telefone, celular, data_nasc, salario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             mysqli_stmt_bind_param($stmt, "ssssssssssssi", $this->nome, $this->endereco, $this->numero, $this->bairro, $this->cidade, $this->estado, $this->email, $this->cpf_cnpj, $this->rg, $this->telefone, $this->celular, $this->data_nasc, $this->salario);
         }
         return mysqli_stmt_execute($stmt);
@@ -151,7 +153,7 @@ class Cliente implements GenericInterface
 
     public static function getById($id)
     {
-        $stmt = mysqli_prepare((new Database())->getConnection(), "SELECT * FROM clientes WHERE id = ?");
+        $stmt = mysqli_prepare($this->conn, "SELECT * FROM clientes WHERE id = ?");
         mysqli_stmt_bind_param($stmt, "i", $id);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
@@ -179,7 +181,7 @@ class Cliente implements GenericInterface
 
     public static function getAll()
     {
-        $stmt = mysqli_prepare((new Database())->getConnection(), "SELECT * FROM clientes");
+        $stmt = mysqli_prepare($this->conn, "SELECT * FROM clientes");
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         $clientes = [];
@@ -208,7 +210,7 @@ class Cliente implements GenericInterface
     public function delete()
     {
         if ($this->id) {
-            $stmt = mysqli_prepare((new Database())->getConnection(), "DELETE FROM clientes WHERE id = ?");
+            $stmt = mysqli_prepare($this->conn, "DELETE FROM clientes WHERE id = ?");
             mysqli_stmt_bind_param($stmt, "i", $this->id);
             return mysqli_stmt_execute($stmt);
         }

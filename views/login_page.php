@@ -19,7 +19,6 @@
 </main>
 
 <script>
-  // Toggle password visibility
   const togglePassword = document.getElementById('togglePassword');
   const passwordInput = document.getElementById('floatingPassword');
 

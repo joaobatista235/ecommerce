@@ -9,9 +9,11 @@ class Pedido implements GenericInterface
     private $id_vendedor;
     private $data;
     private $total;
+    private $conn;
 
     public function __construct()
     {
+        $this->conn = (new Database())->getConnection();
     }
 
     public function getId()
@@ -59,10 +61,10 @@ class Pedido implements GenericInterface
     public function save()
     {
         if ($this->id) {
-            $stmt = mysqli_prepare((new Database())->getConnection(), "UPDATE pedidos SET id_cliente=?, id_vendedor=?, data=?, total=? WHERE id=?");
+            $stmt = mysqli_prepare($this->conn, "UPDATE pedidos SET id_cliente=?, id_vendedor=?, data=?, total=? WHERE id=?");
             mysqli_stmt_bind_param($stmt, "iisdi", $this->id_cliente, $this->id_vendedor, $this->data, $this->total, $this->id);
         } else {
-            $stmt = mysqli_prepare((new Database())->getConnection(), "INSERT INTO pedidos (id_cliente, id_vendedor, data, total) VALUES (?, ?, ?, ?)");
+            $stmt = mysqli_prepare($this->conn, "INSERT INTO pedidos (id_cliente, id_vendedor, data, total) VALUES (?, ?, ?, ?)");
             mysqli_stmt_bind_param($stmt, "iisd", $this->id_cliente, $this->id_vendedor, $this->data, $this->total);
         }
         return mysqli_stmt_execute($stmt);
@@ -70,7 +72,7 @@ class Pedido implements GenericInterface
 
     public static function getById($id)
     {
-        $stmt = mysqli_prepare((new Database())->getConnection(), "SELECT * FROM pedidos WHERE id = ?");
+        $stmt = mysqli_prepare($this->conn, "SELECT * FROM pedidos WHERE id = ?");
         mysqli_stmt_bind_param($stmt, "i", $id);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
@@ -89,7 +91,7 @@ class Pedido implements GenericInterface
 
     public static function getAll()
     {
-        $stmt = mysqli_prepare((new Database())->getConnection(), "SELECT * FROM pedidos");
+        $stmt = mysqli_prepare($this->conn, "SELECT * FROM pedidos");
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         $pedidos = [];
@@ -109,7 +111,7 @@ class Pedido implements GenericInterface
     public function delete()
     {
         if ($this->id) {
-            $stmt = mysqli_prepare((new Database())->getConnection(), "DELETE FROM pedidos WHERE id = ?");
+            $stmt = mysqli_prepare($this->conn, "DELETE FROM pedidos WHERE id = ?");
             mysqli_stmt_bind_param($stmt, "i", $this->id);
             return mysqli_stmt_execute($stmt);
         }
