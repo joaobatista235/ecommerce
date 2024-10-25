@@ -1,10 +1,49 @@
 .register-link p {
-    color: #007bff; /* Link color */
-    text-decoration: none;
-  }
+  color: #007bff;
+  /* Link color */
+  text-decoration: none;
+}
 
-  .register-link p:hover {
-    text-decoration: underline; /* Underline on hover */
-    color: #0056b3; /* Darker color on hover */
-    cursor: pointer; /* Pointer cursor on hover */
-  }
+.register-link p:hover {
+  text-decoration: underline;
+  /* Underline on hover */
+  color: #0056b3;
+  /* Darker color on hover */
+  cursor: pointer;
+  /* Pointer cursor on hover */
+}
+
+body {
+  background-color: #FAF9F6;
+  margin-bottom: 0;
+  height: 100vh;
+}
+
+.chose {
+  height: 100vh;
+  display: flex;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.login {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+.vendedor {
+  height: 100vh;
+}
+
+.porduto-vendedor {
+  display: flex;
+  flex-direction: column;
+  align-items: self-start;
+  margin-right: 470px;
+}
+.cliente{
+  height: 100vh;
+}
