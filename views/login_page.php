@@ -1,5 +1,5 @@
 <?php include "../views/base/header.php"; ?>
-<main class="form-signin w-50 m-auto">
+<main class="login form-signin w-50 m-auto">
   <form class="">
     <h1 class="h3 mb-3 fw-normal">FAÇA LOGIN</h1>
 
@@ -15,7 +15,7 @@
 
     <button class="btn btn-primary w-100 py-2" type="submit">LOGAR</button>
   </form>
-  <a href="#" class="register-link"><p>Não possuo uma conta</p></a>
+  <a href="chose_profile.php" class="register-link"><p>Não possuo uma conta</p></a>
 </main>
 
 <script>
