@@ -1,12 +1,7 @@
-<?php
-/* require_once "Cliente.php";
-
-$clientes = Cliente::getAll(); */
-?>
 <?php include "base/header.php"; ?>
 
 <div class="container my-5">
-        <form action="process_add_cliente.php" method="POST">
+        <form action="../controllers/receber_cadastro_cliente.php" method="POST">
             <input type="hidden" name="action" value="create">
             <div class="mb-3">
                 <label for="nome" class="form-label">Nome:</label>

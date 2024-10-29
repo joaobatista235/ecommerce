@@ -1,14 +1,14 @@
 <?php include "../views/base/header.php"; ?>
 <main class="login form-signin w-50 m-auto">
-  <form class="">
+  <form class="" method="POST" action=" ../controllers/receber_login.php">
     <h1 class="h3 mb-3 fw-normal">FAÇA LOGIN</h1>
 
     <div class="form-floating">
-      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email">
       <label for="floatingInput">Email</label>
     </div>
     <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Password" minlength="6" required>
+      <input type="password" class="form-control" id="floatingPassword" placeholder="Password" minlength="6" required name="passwd">
       <label for="floatingPassword">Senha</label>
       <button type="button" id="togglePassword" class="btn btn-link">Ver</button>
     </div>

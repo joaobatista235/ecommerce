@@ -22,7 +22,7 @@
       </ul>
 
       <div class="col-md-3 text-end">
-        <a href="login_page.php"><button type="button" class="btn btn-outline-primary me-2">Login</button></a>
-        <button type="button" class="btn btn-primary">Sign-up</button>
+        <a href="views/login_page.php"><button type="button" class="btn btn-outline-primary me-2">Login</button></a>
+        <a href="views/sign_up_client.php"><button type="button" class="btn btn-primary" >Sign-up</button></a>
       </div>
 </header>

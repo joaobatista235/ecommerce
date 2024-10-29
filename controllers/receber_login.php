@@ -1,50 +1,40 @@
 <?php
-/* 
-require "connection.php"; */
+require_once "../models/Database.php";
+require_once "../models/Cliente.php";
 
+$connexao = new Database();
 
-
-
-if(empty($_POST["emailVerify"])|| empty($_POST["passwdVerify"])){
-    header("location : pagLogin.php?ERRO" );
-    
+if (empty($_POST["email"]) || empty($_POST["passwd"])) {
+    header("location: login_page.php?ERRO");
+    exit();
 }
-$email = mysqli_real_escape_string($conexao, $_POST["emailVerify"]);
-$senha = mysqli_real_escape_string($conexao, md5($_POST["passwdVerify"]));
 
-$comando = "SELECT emailUsuario, nomeUsuario, idUsuario FROM usuarios WHERE emailUsuario = '$email' AND senhaUsuario = '$senha'";
-$resultado = mysqli_query($conexao, $comando);
+// Get the email and password from the POST request
+$email = trim($_POST["email"]);
+$senha = trim($_POST["passwd"]);
 
-$data = mysqli_fetch_assoc($resultado);
+// Fetch the client data by email
+$data = Cliente::getByEmail($email, $connexao);
 
-
-
-
-if($data != null){ 
+if ($data != null) { 
     session_start();   
     $_SESSION["usuario"] = $data;
-    
-    if(isset($_SESSION["usuario"])){
-        
-        if($data["nomeUsuario"]!="ADIMIN"){
-                    
-            header("location:../index.php");
-            
+    $hashedSenha = password_hash($senha, PASSWORD_DEFAULT);
+
+    if ($hashedSenha == $data->getSenha()) {
+        if ($data->getNome() != "ADMIN") { // Change to appropriate property
+            header("location: ../index.php");
+            echo $_SESSION["usuario"];
         } else {
-            header('location:../pagCadProd.php');
-            //print_r($_SESSION["usuario"]);                     
+            header('location: ../pagCadProd.php');
         }
-    }else{
-        
-        header('Location:../pagLogin.php');
+    } else {
+        header('Location: ../views/login_page.php?invalid_password');
+        echo '';
         exit();
     }
-}else{
-    header("location: ../pagLogin.php?p");
-    
-   
+} else {
+    header("location: ../views/login_page.php?not_found");
+    exit();
 }
-
-
-//a@gmail.com
-
+?>
