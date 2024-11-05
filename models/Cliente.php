@@ -104,7 +104,7 @@ class Cliente implements GenericInterface
     {
         $conn = $connexao->getConnection();
         $stmt = mysqli_prepare($conn, "SELECT * FROM clientes WHERE email = ?");
-        mysqli_stmt_bind_param($stmt, "i", $email);
+        mysqli_stmt_bind_param($stmt, "s", $email);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
 
@@ -124,6 +124,7 @@ class Cliente implements GenericInterface
             $cliente->setCelular($data['celular']);
             $cliente->setDataNasc($data['data_nasc']);
             $cliente->setSalario($data['salario']);
+            $cliente->setSenha($data['senha']);
             return $cliente;
         }
         return null;

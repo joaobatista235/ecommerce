@@ -1,25 +1,20 @@
 <?php include "base/header.php"; ?>
 <div class="chose container mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card mb-4" onclick="location.href='sign_up_saler.php'">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Perfil de Vendedor</h5>
-                        <p class="card-text">Gerencie suas vendas e interaja com seus clientes.</p>
-                    </div>
-                </div>
+    <div class="row flex m-auto justify-content-between">
+        <!-- CLIENTE Card -->
+        <div class="card" style="width: 18rem; margin-right: 12rem;" onclick="redirectToCliente()">
+            <img src="../assets/icons/user-svgrepo-com.svg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text text-center fs-2">CLIENTE</p>
             </div>
-            <div class="col-md-6">
-                <div class="card mb-4" onclick="location.href='sign_up_client.php'">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Perfil de Cliente</h5>
-                        <p class="card-text">Encontre produtos e faça suas compras de forma fácil.</p>
-                    </div>
-                </div>
+        </div>
+        <!-- VENDEDOR Card -->
+        <div class="card" style="width: 18rem;" onclick="redirectToVendedor()">
+            <img src="../assets/icons/laptop-user-svgrepo-com.svg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text text-center fs-2">VENDEDOR</p>
             </div>
         </div>
     </div>
-
-
-
-<?php include "base/footer.php";?>
+</div>
+<?php include "base/footer.php"; ?>

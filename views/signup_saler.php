@@ -2,7 +2,7 @@
 
 <div class="container my-5">
     <h2>Cadastro de Vendedor</h2>
-    <form action="vendedor_controller.php" method="post">
+    <form action="../controllers/vendedor_controller.php" method="post">
         <input type="hidden" name="action" value="create">
         
         <div class="mb-3">

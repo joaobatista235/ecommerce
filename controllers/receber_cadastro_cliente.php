@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: ../views/login_page.php?Cadastrado_com_sucesso_faça_login_agora");
             exit();
         } else {
-            header("Location: ../views/sign_up_client.php?Houve_um_erro_verifique_os_dados_inseridos");
+            header("Location: ../views/signup_user.php?Houve_um_erro_verifique_os_dados_inseridos");
             exit();
         }
     } else {
