@@ -1,3 +1,7 @@
+CREATE DATABASE  ecommerce;
+
+USE ecommerce;
+
 -- Criar tabela 'clientes'
 CREATE TABLE clientes (
     id INT PRIMARY KEY AUTO_INCREMENT,

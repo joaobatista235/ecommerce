@@ -1,4 +1,7 @@
--- Active: 1730241761623@@127.0.0.1@3306@ecommerce
+CREATE DATABASE  ecommerce;
+
+USE ecommerce;
+
 -- Criar tabela 'clientes'
 CREATE TABLE clientes (
     id INT PRIMARY KEY AUTO_INCREMENT,

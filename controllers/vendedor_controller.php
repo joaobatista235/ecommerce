@@ -48,6 +48,8 @@ class VendedorController {
                 $vendedor->setPercComissao($_POST['perc_comissao']);
                 $vendedor->setDataAdmissao($_POST['data_admissao']);
                 $vendedor->setSetor($_POST['setor']);
+
+
                 if (!empty($_POST['senha'])) {
                     $vendedor->setSenha(password_hash($_POST['senha'], PASSWORD_DEFAULT));
                 }
