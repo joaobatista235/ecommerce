@@ -9,6 +9,7 @@ class FormaPagto implements GenericInterface
 
     public function __construct()
     {
+        $this->conn = (new Database())->getConnection();
     }
 
     public function getId()
@@ -32,10 +33,10 @@ class FormaPagto implements GenericInterface
     public function save()
     {
         if ($this->id) {
-            $stmt = mysqli_prepare((new Database())->getConnection(), "UPDATE forma_pagto SET nome=? WHERE id=?");
+            $stmt = mysqli_prepare($this->conn, "UPDATE forma_pagto SET nome=? WHERE id=?");
             mysqli_stmt_bind_param($stmt, "si", $this->nome, $this->id);
         } else {
-            $stmt = mysqli_prepare((new Database())->getConnection(), "INSERT INTO forma_pagto (nome) VALUES (?)");
+            $stmt = mysqli_prepare($this->conn, "INSERT INTO forma_pagto (nome) VALUES (?)");
             mysqli_stmt_bind_param($stmt, "s", $this->nome);
         }
         return mysqli_stmt_execute($stmt);
@@ -43,7 +44,7 @@ class FormaPagto implements GenericInterface
 
     public static function getById($id)
     {
-        $stmt = mysqli_prepare((new Database())->getConnection(), "SELECT * FROM forma_pagto WHERE id = ?");
+        $stmt = mysqli_prepare($this->conn, "SELECT * FROM forma_pagto WHERE id = ?");
         mysqli_stmt_bind_param($stmt, "i", $id);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
@@ -59,7 +60,7 @@ class FormaPagto implements GenericInterface
 
     public static function getAll()
     {
-        $stmt = mysqli_prepare((new Database())->getConnection(), "SELECT * FROM forma_pagto");
+        $stmt = mysqli_prepare($this->conn, "SELECT * FROM forma_pagto");
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         $formas = [];
@@ -76,7 +77,7 @@ class FormaPagto implements GenericInterface
     public function delete()
     {
         if ($this->id) {
-            $stmt = mysqli_prepare((new Database())->getConnection(), "DELETE FROM forma_pagto WHERE id = ?");
+            $stmt = mysqli_prepare($this->conn, "DELETE FROM forma_pagto WHERE id = ?");
             mysqli_stmt_bind_param($stmt, "i", $this->id);
             return mysqli_stmt_execute($stmt);
         }

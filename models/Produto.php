@@ -10,9 +10,11 @@ class Produto implements GenericInterface
     private $preco;
     private $unidade_medida;
     private $promocao;
+    private $conn;
 
     public function __construct()
     {
+        $this->conn = (new Database())->getConnection();
     }
 
     public function getId()
@@ -68,10 +70,10 @@ class Produto implements GenericInterface
     public function save()
     {
         if ($this->id) {
-            $stmt = mysqli_prepare((new Database())->getConnection(), "UPDATE produto SET nome=?, qtde_estoque=?, preco=?, unidade_medida=?, promocao=? WHERE id=?");
+            $stmt = mysqli_prepare($this->conn, "UPDATE produto SET nome=?, qtde_estoque=?, preco=?, unidade_medida=?, promocao=? WHERE id=?");
             mysqli_stmt_bind_param($stmt, "sisisi", $this->nome, $this->qtde_estoque, $this->preco, $this->unidade_medida, $this->promocao, $this->id);
         } else {
-            $stmt = mysqli_prepare((new Database())->getConnection(), "INSERT INTO produto (nome, qtde_estoque, preco, unidade_medida, promocao) VALUES (?, ?, ?, ?, ?)");
+            $stmt = mysqli_prepare($this->conn, "INSERT INTO produto (nome, qtde_estoque, preco, unidade_medida, promocao) VALUES (?, ?, ?, ?, ?)");
             mysqli_stmt_bind_param($stmt, "sisii", $this->nome, $this->qtde_estoque, $this->preco, $this->unidade_medida, $this->promocao);
         }
         return mysqli_stmt_execute($stmt);
@@ -79,7 +81,7 @@ class Produto implements GenericInterface
 
     public static function getById($id)
     {
-        $stmt = mysqli_prepare((new Database())->getConnection(), "SELECT * FROM produto WHERE id = ?");
+        $stmt = mysqli_prepare($this->conn, "SELECT * FROM produto WHERE id = ?");
         mysqli_stmt_bind_param($stmt, "i", $id);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
@@ -99,7 +101,7 @@ class Produto implements GenericInterface
 
     public static function getAll()
     {
-        $stmt = mysqli_prepare((new Database())->getConnection(), "SELECT * FROM produto");
+        $stmt = mysqli_prepare($this->conn, "SELECT * FROM produto");
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         $produtos = [];
@@ -120,7 +122,7 @@ class Produto implements GenericInterface
     public function delete()
     {
         if ($this->id) {
-            $stmt = mysqli_prepare((new Database())->getConnection(), "DELETE FROM produto WHERE id = ?");
+            $stmt = mysqli_prepare($this->conn, "DELETE FROM produto WHERE id = ?");
             mysqli_stmt_bind_param($stmt, "i", $this->id);
             return mysqli_stmt_execute($stmt);
         }
