@@ -1,6 +1,6 @@
-<?php   ?>
+<?php include "base\\header.php"; ?>
 
-<div class="home">
+<div  class="home">
     <div class="grid_produtos">
         <?php foreach ($products as $product): ?>
             <div class="produto">
@@ -19,3 +19,6 @@
         <?php endfor; ?>
     </div>
 </div>
+
+
+<?php include "base\\footer.php"; ?>

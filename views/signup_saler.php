@@ -1,8 +1,8 @@
-<?php include "base/header.php"; ?>
+<?php include "base\\header.php"; ?>
 
-<div class="container my-5">
+<div class="loginContainer container my-5" id="load" >
     <h2>Cadastro de Vendedor</h2>
-    <form action="../controllers/vendedor_controller.php" method="post">
+    <form action="../controllers/receber_login_vendedor.php" method="post">
         <input type="hidden" name="action" value="create">
         
         <div class="mb-3">
@@ -90,4 +90,4 @@
     </form>
 </div>
 
-<?php include "base/footer.php"; ?>
+<?php include "base\\footer.php"; ?>

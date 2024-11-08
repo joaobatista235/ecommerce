@@ -15,17 +15,30 @@
 
     <button class="btn btn-primary w-100 py-2" type="submit">LOGAR</button>
   </form>
-  <a href="chose_profile.php" class="register-link"><p>Não possuo uma conta</p></a>
+  <a id="choseProfile" href="#" class="register-link"><p>Não possuo uma conta</p></a>
 </main>
 
 <script>
-  const togglePassword = document.getElementById('togglePassword');
-  const passwordInput = document.getElementById('floatingPassword');
+  // Wrap the togglePassword functionality in a function to avoid declaring multiple times
+  (function() {
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('floatingPassword');
 
-  togglePassword.addEventListener('click', () => {
-    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-    passwordInput.setAttribute('type', type);
-    togglePassword.textContent = type === 'password' ? 'Ver' : 'Ocultar';
+    // Check if the togglePassword element exists before adding the event listener
+    if (togglePassword) {
+      togglePassword.addEventListener('click', () => {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        togglePassword.textContent = type === 'password' ? 'Ver' : 'Ocultar';
+      });
+    }
+  })();
+
+  $(document).ready(function() {
+    $('#choseProfile').click(function() {
+      loadContent('views\\chose_profile.php', '#loginContainer');
+    });
   });
 </script>
+
 <?php include "../views/base/footer.php"; ?>

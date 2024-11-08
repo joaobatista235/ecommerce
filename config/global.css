@@ -12,13 +12,11 @@
   cursor: pointer;
   /* Pointer cursor on hover */
 }
-
 body {
   background-color: #FAF9F6;
   margin-bottom: 0;
   height: 100vh;
 }
-
 .chose {
   height: 100vh;
   display: flex;
