@@ -16,6 +16,8 @@ body {
   background-color: #FAF9F6;
   margin-bottom: 0;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 .chose {
   height: 100vh;
@@ -48,3 +50,29 @@ body {
 .home{
   height: 100vh;
 }
+/* Pagina de cadastro e atualização de produto */
+.container-add_product{
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+#titulo_produto{
+  padding-top: 10%;
+  padding-right: 20% ;
+  padding-left: 20%;
+}
+.form_produto{
+  padding-top: 10%;
+  padding-right: 20% ;
+  padding-left: 20%;
+}
+.checkbox_product {
+  padding-top: 2%;
+}
+.btn_produto{
+  padding-top: 2% ;
+}
+.checkbox_product{
+  padding-left: 4%;
+}
+
