@@ -1,5 +1,23 @@
-<?php include "base/header.php"; ?>
-<div class=" vendedor container mt-5">
+<?php 
+include "base/header.php";
+require_once "../models/Produto.php"; // Se o arquivo Produto.php estiver em models
+
+// Verificar se existe a ação de exclusão
+if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
+    $productId = $_GET['id'];
+    $product = Produto::getById($productId); // Verificar se o produto existe
+
+    if ($product && $product->delete()) {
+        // Produto excluído com sucesso
+        echo "<div class='alert alert-success'>Produto excluído com sucesso!</div>";
+    } else {
+        // Erro ao excluir
+        echo "<div class='alert alert-danger'>Erro ao excluir produto.</div>";
+    }
+}
+?>
+
+<div class="container mt-5">
     <section class="mb-4">
         <h2>Perfil do Vendedor</h2>
         <div class="d-flex align-items-center">
@@ -20,39 +38,67 @@
         <p>Endereço: Rua Exemplo, 123 - Cidade, Estado</p>
     </section>
 
-    <section class="my-4 porduto-vendedor">
-        <h3 class="text-left" >Adicionar Produtos</h3>
-        <button class="btn btn-primary my-4" onclick="location.href='add_product.php'">Adicionar Produto</button>
+    <!-- Barra de pesquisa -->
+    <section class="mb-4">
+        <h3>Pesquisar Produto</h3>
+        <form method="GET" action="perfil_user_vendedor.php">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Buscar por ID do produto" name="product_id">
+                <button class="btn btn-primary" type="submit">Pesquisar</button>
+            </div>
+        </form>
     </section>
 
-    <!-- <section>
-        <h3>Produtos</h3>
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <img src="path/to/product1.jpg" class="card-img-top" alt="Produto 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Produto 1</h5>
-                        <p class="card-text">Descrição do Produto 1.</p>
-                        <button class="btn btn-link" title="Editar Produto">
-                            <i class="bi bi-pencil-fill"></i> Editar
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <img src="path/to/product2.jpg" class="card-img-top" alt="Produto 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Produto 2</h5>
-                        <p class="card-text">Descrição do Produto 2.</p>
-                        <button class="btn btn-link" title="Editar Produto">
-                            <i class="bi bi-pencil-fill"></i> Editar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
+    <!-- Tabela de Produtos -->
+    <section class="mb-4">
+        <h3>Lista de Produtos</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Quantidade</th>
+                    <th>Preço</th>
+                    <th>Promoção</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                // Verificar se existe uma pesquisa por ID
+                $product_id = isset($_GET['product_id']) ? $_GET['product_id'] : null;
+                $products = Produto::getAll(); // Caso não tenha filtro, exibe todos os produtos
+                
+                if ($product_id) {
+                    // Buscar produto específico por ID
+                    $products = array_filter($products, function($product) use ($product_id) {
+                        return $product->getId() == $product_id;
+                    });
+                }
+
+                // Exibir produtos na tabela
+                foreach ($products as $product) {
+                    echo "<tr>";
+                    echo "<td>" . $product->getId() . "</td>";
+                    echo "<td>" . $product->getNome() . "</td>";
+                    echo "<td>" . $product->getQtdeEstoque() . "</td>";
+                    echo "<td>" . $product->getPreco() . "</td>";
+                    echo "<td>" . ($product->getPromocao() == 'Y' ? 'Sim' : 'Não') . "</td>";
+                    echo "<td>
+                            <a href='add_product.php?id=" . $product->getId() . "' class='btn btn-warning'>Editar</a>
+                            <a href='perfil_user_vendedor.php?action=delete&id=" . $product->getId() . "' class='btn btn-danger' onclick='return confirm(\"Tem certeza que deseja excluir?\")'>Excluir</a>
+                          </td>";
+                    echo "</tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Botão para adicionar novos produtos -->
+    <section class="my-4">
+        <button class="btn btn-primary" onclick="location.href='add_product.php'">Adicionar Novo Produto</button>
+    </section>
 </div>
-<?php include "base/footer.php";?>
+
+<?php include "base/footer.php"; ?>
