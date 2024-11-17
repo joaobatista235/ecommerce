@@ -1,78 +1,74 @@
-.register-link p {
-  color: #007bff;
-  /* Link color */
-  text-decoration: none;
+*{
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.register-link p:hover {
-  text-decoration: underline;
-  /* Underline on hover */
-  color: #0056b3;
-  /* Darker color on hover */
-  cursor: pointer;
-  /* Pointer cursor on hover */
-}
 body {
-  background-color: #FAF9F6;
-  margin-bottom: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-.chose {
-  height: 100vh;
-  display: flex;
-  margin: 0 auto;
-  align-items: center;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;    /* Center vertically */
 }
 
-.login {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-  justify-content: center;
+/* Landing page BEGINNING */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+   /*  background-color: red; */
 }
 
-.vendedor {
-  height: 100vh;
+.outter {
+    
+    border: 1px lightgray solid;
+    border-radius: 1rem;
+    background-color: white;
+    padding: 20px; 
+    
+}
+#responseMessage{
+    text-align: center;
+    background-color: lightgray;
+    border: 1px solid lightgray;
+    border-radius: 1rem;
+    width: 34rem;
+    font-size: 1rem;
+    margin-bottom:2rem  ;
 }
 
-.porduto-vendedor {
-  display: flex;
-  flex-direction: column;
-  align-items: self-start;
-  margin-right: 470px;
-}
-.cliente{
-  height: 100vh;
-}
-.home{
-  height: 100vh;
-}
-/* Pagina de cadastro e atualização de produto */
-.container-add_product{
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-}
-#titulo_produto{
-  padding-top: 10%;
-  padding-right: 20% ;
-  padding-left: 20%;
-}
-.form_produto{
-  padding-top: 10%;
-  padding-right: 20% ;
-  padding-left: 20%;
-}
-.checkbox_product {
-  padding-top: 2%;
-}
-.btn_produto{
-  padding-top: 2% ;
-}
-.checkbox_product{
-  padding-left: 4%;
+.form-item{
+    margin:30px 0 50px 0px ;
+    display: flex;
+    flex-direction: column;
 }
 
+.form-item-input{
+    width: 32rem;
+    line-height: 2rem;
+    font-size: 1.25rem;
+    border: 1px lightgray solid;
+    border-radius: 1rem;
+    padding: 8px 4px 8px 4px;
+
+}
+.form-item-label{
+    padding: 0 0 20px 0;
+    font-size: 1.25rem;
+}
+.form-item-button{
+    width: 100%;
+    height: 3rem;
+    border: 1px solid #793D8C;
+    border-radius: 2rem;
+    background-color: #793D8C;
+    color:white;
+    font-size: 1.25rem;
+}
+.fg-pass{
+    margin-top: 24px;
+    font-size: 1.15rem;
+}

@@ -12,8 +12,6 @@ class Vendedor implements GenericInterface
     private $celular;
     private $email;
     private $perc_comissao;
-    private $data_admissao;
-    private $setor;
     private $senha;
     private $conn;
 
@@ -102,29 +100,9 @@ class Vendedor implements GenericInterface
         $this->perc_comissao = $perc_comissao;
     }
 
-    public function getDataAdmissao()
-    {
-        return $this->data_admissao;
-    }
-
-    public function setDataAdmissao($data_admissao)
-    {
-        $this->data_admissao = $data_admissao;
-    }
-
-    public function getSetor()
-    {
-        return $this->setor;
-    }
-
-    public function setSetor($setor)
-    {
-        $this->setor = $setor;
-    }
-
     public function getSenha()
     {
-        return $this->setor;
+        return $this->senha;
     }
 
     public function setSenha($senha)
@@ -154,7 +132,7 @@ class Vendedor implements GenericInterface
         }
     }
 
-    public static function getById($id): Vendedor|null
+    public function getById($id): Vendedor|null
     {
         $stmt = mysqli_prepare($this->conn, "SELECT * FROM vendedor WHERE id = ?");
         mysqli_stmt_bind_param($stmt, "i", $id);
@@ -179,7 +157,7 @@ class Vendedor implements GenericInterface
         return null;
     }
 
-    public static function getAll(): array
+    public function getAll(): array
     {
         $stmt = mysqli_prepare($this->conn, "SELECT * FROM vendedor");
         mysqli_stmt_execute($stmt);
@@ -212,5 +190,28 @@ class Vendedor implements GenericInterface
             return mysqli_stmt_execute($stmt);
         }
         return false;
+    }
+
+    public function getByCredentials($email,$senha){
+        $stmt = mysqli_prepare($this->conn, "SELECT * FROM vendedor WHERE email = ? AND senha = ?");
+        mysqli_stmt_bind_param($stmt, "ss", $email,$senha);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        if ($data = mysqli_fetch_assoc($result)) {
+            // Create Vendedor object and populate it directly
+            $vendedor = new Vendedor();
+            $vendedor->setId($data['id']);
+            $vendedor->setNome($data['nome']);
+            $vendedor->setEndereco($data['endereco']);
+            $vendedor->setCidade($data['cidade']);
+            $vendedor->setEstado($data['estado']);
+            $vendedor->setCelular($data['celular']);
+            $vendedor->setEmail($data['email']);
+            $vendedor->setPercComissao($data['perc_comissao']);
+            $vendedor->setSenha($data['senha']);
+            return $vendedor;
+        }
+
+        return null;
     }
 }

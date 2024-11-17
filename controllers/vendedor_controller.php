@@ -34,6 +34,14 @@ class VendedorController {
         }
         return null;
     }
+    
+    /**
+     * @return  Vendedor
+     * Essa função verfica vededor por email/senha
+     */
+    public function getByEmailAndPasswdord($email, $password){
+        
+    }
 
     public function update() {
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {

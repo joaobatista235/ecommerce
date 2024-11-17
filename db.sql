@@ -1,4 +1,4 @@
--- Active: 1731364991309@@127.0.0.1@3306@ecommerce
+-- Active: 1729355366311@@127.0.0.1@3306@ecommerce
 CREATE DATABASE  ecommerce;
 
 USE ecommerce;
@@ -84,3 +84,17 @@ CREATE TABLE imagens_produto (
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_produto) REFERENCES produto(id) ON DELETE CASCADE
 );
+
+CREATE TABLE admins (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+-- admin login username admin, senha admin123
+INSERT INTO admins (username, password) 
+VALUES ('admin@admin.com', '$2y$10$vEo.uEmsBp5a.z/F1vH.5OhV0zXxPYBwnCRGzHZFJDUb4IN0j0Z9O');
+
+-- vededor login
+INSERT INTO vendedor(email,senha)
+VALUES ('vendedor_teste@email.com', '$2y$10$vEo.uEmsBp5a.z/F1vH.5OhV0zXxPYBwnCRGzHZFJDUb4IN0j0Z9O');
