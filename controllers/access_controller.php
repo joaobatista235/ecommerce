@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'success' => true,
             'message' => 'Admin login successful.',
             'role' => 'admin',
-            'redirectUrl' => 'admin_dashboard.php',
+            'redirectUrl' => 'views/admin_dashboard.php',
         ]);
         exit;
     }
