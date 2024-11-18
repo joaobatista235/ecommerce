@@ -119,10 +119,10 @@ class Vendedor implements GenericInterface
         try {
             if ($this->id) {
                 $stmt = mysqli_prepare($this->conn, "UPDATE vendedor SET nome=?, endereco=?, cidade=?, estado=?, celular=?, email=?, perc_comissao=?, data_admissao=?, setor=?, senha=? WHERE id=?");
-                mysqli_stmt_bind_param($stmt, "ssssssssss", $this->nome, $this->endereco, $this->cidade, $this->estado, $this->celular, $this->email, $this->perc_comissao, $this->data_admissao, $this->setor, $this->senha, $this->id);
+                mysqli_stmt_bind_param($stmt, "ssssssss", $this->nome, $this->endereco, $this->cidade, $this->estado, $this->celular, $this->email, $this->perc_comissao,  $this->senha, $this->id);
             } else {
                 $stmt = mysqli_prepare($this->conn, "INSERT INTO vendedor (nome, endereco, cidade, estado, celular, email, perc_comissao, data_admissao, setor, senha) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                mysqli_stmt_bind_param($stmt, "ssssssssss", $this->nome, $this->endereco, $this->cidade, $this->estado, $this->celular, $this->email, $this->perc_comissao, $this->data_admissao, $this->setor, $this->senha);
+                mysqli_stmt_bind_param($stmt, "ssssssss", $this->nome, $this->endereco, $this->cidade, $this->estado, $this->celular, $this->email, $this->perc_comissao,  $this->senha);
             }
 
             return mysqli_stmt_execute($stmt);
@@ -149,8 +149,6 @@ class Vendedor implements GenericInterface
             $vendedor->setCelular($data['celular']);
             $vendedor->setEmail($data['email']);
             $vendedor->setPercComissao($data['perc_comissao']);
-            $vendedor->setDataAdmissao($data['data_admissao']);
-            $vendedor->setSetor($data['setor']);
             $vendedor->setSenha($data['senha']);
             return $vendedor;
         }
@@ -174,8 +172,6 @@ class Vendedor implements GenericInterface
             $vendedor->setCelular($data['celular']);
             $vendedor->setEmail($data['email']);
             $vendedor->setPercComissao($data['perc_comissao']);
-            $vendedor->setDataAdmissao($data['data_admissao']);
-            $vendedor->setSetor($data['setor']);
             $vendedor->setSenha($data['senha']);
             $vendedores[] = $vendedor;
         }

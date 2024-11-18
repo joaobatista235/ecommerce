@@ -93,8 +93,8 @@ CREATE TABLE admins (
 
 -- admin login username admin, senha admin123
 INSERT INTO admins (username, password) 
-VALUES ('admin@admin.com', '$2y$10$vEo.uEmsBp5a.z/F1vH.5OhV0zXxPYBwnCRGzHZFJDUb4IN0j0Z9O');
+VALUES ('admin1@admin.com', '0192023a7bbd73250516f069df18b500');
 
 -- vededor login
 INSERT INTO vendedor(email,senha)
-VALUES ('vendedor_teste@email.com', '$2y$10$vEo.uEmsBp5a.z/F1vH.5OhV0zXxPYBwnCRGzHZFJDUb4IN0j0Z9O');
+VALUES ('vendedor1@email.com', '0192023a7bbd73250516f069df18b500');

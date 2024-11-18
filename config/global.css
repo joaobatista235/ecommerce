@@ -37,7 +37,8 @@ body {
     border-radius: 1rem;
     width: 34rem;
     font-size: 1rem;
-    margin-bottom:2rem  ;
+    margin-bottom:2rem;
+    display: none;
 }
 
 .form-item{
@@ -71,4 +72,46 @@ body {
 .fg-pass{
     margin-top: 24px;
     font-size: 1.15rem;
+}
+/* End of LandingPage */
+
+/* Begining of Vendor dashboard */
+.dashboard-body{
+    justify-content: left;
+    align-items: normal;
+}
+.nav-container{
+    background-color: #340942;
+    width: 5%;
+    height: 100vh;
+  
+}
+.vendor-dashboard-conatiner{
+    background-color: red;
+    width: 100vw;
+    height: 100vh;
+}
+
+.nav-menu{
+    display: flex;
+    justify-content: center;
+}
+
+.nav-menu-icon{
+    width: 50%;
+    height: 50%;
+    margin-top: 20%;
+    
+}
+
+.report-icon{
+    width: 3.6%;
+    height: 3.6%;
+}
+.report-text{
+    font-size: 1.5rem;
+}
+.table-icon{
+    width: 25%;
+    height: 25%;
 }

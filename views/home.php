@@ -30,47 +30,54 @@
 
    <script>
     $(document).ready(function () {
-        $('#loginForm').submit(function (event) {
-            event.preventDefault(); // Prevent default form submission
+    $('#loginForm').submit(function (event) {
+        event.preventDefault(); // Prevent default form submission
 
-            // Collect form data
-            const formData = {
-                email: $('#email').val(),
-                password: $('#password').val(),
-            };
+        // Collect form data
+        const formData = {
+            email: $('#email').val(),
+            password: $('#password').val(),
+        };
 
-            // Send AJAX POST request
-            $.ajax({
-                url: 'controllers/access_controller.php',
-                type: 'POST',
-                data: formData,
-                dataType: 'json',
-                success: function (response) {
-                    // Hide the message initially
-                    $('#responseMessage').hide().removeClass('success error');
+        // Send AJAX POST request
+        $.ajax({
+            url: 'controllers/access_controller.php',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function (response) {
+                // Hide the message initially and reset classes
+                $('#responseMessage').css('display', 'none').removeClass('success error');
 
-                    // Handle response
-                    if (response.success) {
-                        // Check if the user is an admin or vendor and handle accordingly
-                        let redirectUrl = response.redirectUrl; // This now comes from the response
+                // Handle response
+                if (response.success) {
+                    // Check if the user is an admin or vendor and handle accordingly
+                    let redirectUrl = response.redirectUrl; // This now comes from the response
 
-                        // Display success message
-                        $('#responseMessage').addClass('success').html('<p>Login successful! Redirecting...</p>').fadeIn();
-                        setTimeout(() => {
-                            window.location.href = redirectUrl; // Redirect to the appropriate URL
-                        }, 2000);
-                    } else {
-                        // Display error message
-                        $('#responseMessage').addClass('error').html(`<p>${response.message}</p>`).fadeIn();
-                    }
-                },
-                error: function () {
-                    // Handle errors
-                    $('#responseMessage').hide().removeClass('success error').addClass('error').html('<p>An error occurred. Please try again later.</p>').fadeIn();
-                },
-            });
+                    // Display success message
+                    $('#responseMessage').addClass('success')
+                        .html('<p>Login successful! Redirecting...</p>')
+                        .css('display', 'block'); // Explicitly set display to block
+                    setTimeout(() => {
+                        window.location.href = redirectUrl; // Redirect to the appropriate URL
+                    }, 2000);
+                } else {
+                    // Display error message
+                    $('#responseMessage').addClass('error')
+                        .html(`<p>${response.message}</p>`)
+                        .css('display', 'block');
+                }
+            },
+            error: function () {
+                // Handle errors
+                $('#responseMessage').css('display', 'none').removeClass('success error').addClass('error')
+                    .html('<p>An error occurred. Please try again later.</p>')
+                    .css('display', 'block'); // Explicitly set display to block
+            },
         });
     });
+});
+
 </script>
 
 

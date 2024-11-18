@@ -8,7 +8,8 @@ header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get email and password from the POST data 
     $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
+    $password = md5($_POST['password'] ?? '');
+
 
     // Validate input
     if (empty($email) || empty($password)) {
@@ -20,26 +21,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $admin = new Admin();
     $adminCredentials = $admin->getByCredentials($email, $password);
     if ($adminCredentials) {
-        // If the user is an admin, send a success response with the role
+        // Start session if not already started
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+
+        // Regenerate session ID for security
+        session_regenerate_id(true);
+
+        // Store essential user data in session
+        $_SESSION['usuario'] = [
+            'id' => $adminCredentials->getId(),
+            'nome' => $adminCredentials->getUsername(),
+            'role' => 'admin',
+        ];
+
+        // Send JSON response
         echo json_encode([
             'success' => true,
             'message' => 'Admin login successful.',
-            'role' => 'admin',  // Include the role as 'admin'
-            'redirectUrl' => 'admin_dashboard.php', // Redirect URL for admin
+            'role' => 'admin',
+            'redirectUrl' => 'admin_dashboard.php',
         ]);
         exit;
     }
 
     // Check if the user is a Vendedor (Vendor)
     $vendedor = new Vendedor();
-    $vendedorGetByCredentials = $vendedor->getByCredentials($email, $password);
-    if ($vendedorGetByCredentials) {
-        // If the user is a vendedor, send a success response with the role
+    $vendedorCredentials = $vendedor->getByCredentials($email, $password); // Fetch vendedor by email and password
+
+    if ($vendedorCredentials) {
+        // Start session if not already started
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+
+        // Store essential vendedor data in session
+        $_SESSION['usuario'] = [
+            'id' => $vendedorCredentials->getId(),
+            'nome' => $vendedorCredentials->getNome(),
+            'role' => 'vendedor',
+        ];
+
+        // Send JSON response
         echo json_encode([
             'success' => true,
             'message' => 'Vendedor login successful.',
-            'role' => 'vendedor',  // Include the role as 'vendedor'
-            'redirectUrl' => 'vendor_dashboard.php', // Redirect URL for vendedor
+            'role' => 'vendedor',
+            'redirectUrl' => '../views/vendor_dashboard.php',
         ]);
         exit;
     }
