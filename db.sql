@@ -98,3 +98,12 @@ VALUES ('admin1@admin.com', '0192023a7bbd73250516f069df18b500');
 -- vededor login
 INSERT INTO vendedor(email,senha)
 VALUES ('vendedor1@email.com', '0192023a7bbd73250516f069df18b500');
+
+-- alimentar a tabela produto
+INSERT INTO produto (nome, qtde_estoque, preco, unidade_medida, promocao)
+VALUES
+  ('Camiseta', 100, 49.90, 'un', 'N'),
+  ('Tênis Esportivo', 50, 299.90, 'par', 'Y'),
+  ('Calça Jeans', 200, 139.90, 'un', 'N'),
+  ('Relógio Digital', 30, 129.90, 'un', 'Y'),
+  ('Mochila Escolar', 150, 79.90, 'un', 'N');
