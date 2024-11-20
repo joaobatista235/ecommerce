@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'success' => true,
             'message' => 'Admin login successful.',
             'role' => 'admin',
-            'redirectUrl' => 'views/admin_dashboard.php',
+            'redirectUrl' => '../views/admin_dashboard.php',
         ]);
         exit;
     }
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'success' => true,
             'message' => 'Vendedor login successful.',
             'role' => 'vendedor',
-            'redirectUrl' => '../views/vendor_dashboard.php',
+            'redirectUrl' => '../ecommerce/views/vendor_dashboard.php',
         ]);
         exit;
     }
