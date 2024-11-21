@@ -10,7 +10,7 @@ $produtos = $productModel->getAll();
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="../config/global.css">
 
-<div class="product-list"></div>
+<!-- <div class="product-list"></div> -->
 <div class="product-container">
     <h1>Listagem de Produtos</h1>
     <table>

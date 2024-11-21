@@ -224,13 +224,21 @@ input {
   background: var(--body-color);
 }
 .close{
+  position: relative;
+  top: 0;
+  left: 85%;
+  width: fit-content;
   margin-top: 20px;
   margin-bottom: 20px;
   display: flex;
-  align-items: center;
-  justify-content: end;
   color: var(--text-color );
   font-size: 32px;
+  border-radius: 20px;
+
+}
+
+.close:hover{
+  background: var(--text-color);
 }
 .sidebar{
   position: fixed;
@@ -241,6 +249,47 @@ input {
   padding: 10px 14px;
   background-color: var(--sidebar-color);
 }
+
+/* Default sidebar styles */
+.sidebar {
+  width: 250px;
+  transition: all 0.3s ease;
+}
+
+
+
+.sidebar.collapsed {
+  width: 70px; /* Adjust based on your design */
+  overflow: hidden;
+}
+
+/* Adjustments for text when collapsed */
+.sidebar.collapsed .text {
+  display: none;
+}
+.sidebar.collapsed header .text {
+  display: none;
+}
+.sidebar.collapsed header .image {
+  display: flex;
+  justify-content: center;
+}
+
+.sidebar.collapsed .close {
+  left: 25%; /* Adjust as needed */
+  color: var(--text-color);
+  font-size: 32px;
+}
+
+.sidebar.collapsed .close:hover{
+  color: var(--sidebar-color);
+}
+
+/* Adjustments for menu icons */
+.sidebar.collapsed .nav-icon {
+  font-size: 24px; /* Larger icons for better UX */
+}
+
 .menu-links{
   padding: 0;
 }
@@ -253,6 +302,9 @@ input {
   min-width: 60px;
   display: flex;
   align-items: center;
+}
+.menu-links{
+  min-width: 100%;
 }
 
 .sidebar .menu-bar{
@@ -270,6 +322,7 @@ input {
 
 .sidebar a{
   padding: 10px;
+  min-width: 90%;
   border-radius: 6px;
 }
 
@@ -328,6 +381,13 @@ input {
 .sidebar li a:hover .nav-icon{
   color: var(--sidebar-color);
 }
+
+.dashboard-body main{
+  display: flex;
+  margin: 0 auto;
+}
+
+
 /* End of Vendor dasboard */
 
 

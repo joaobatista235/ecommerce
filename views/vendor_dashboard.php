@@ -15,24 +15,28 @@ session_start();
 </head>
 
 <body class="dashboard-body">
-    <nav class="sidebar">
+    <nav class="sidebar toggle">
         <div class="close">
-            <i class='bx bx-x-circle'></i>
+            <i class='bx bx-x-circle' id="menu-icon"></i>
+            <i class='bx bx-menu' id="close-icon" style="display: none;"></i>
         </div>
+
         <header>
             <div class="image-text">
-            <!-- assets\icons\logo-svgrepo-com.svg -->
-            <span class="image">
-                <img src="../assets/icons/logo-svgrepo-com.svg" alt="Logo placeholder">
-            </span>
-            <div class="text header-text">
-                <span class="name ubuntu-bold">
-                    Bem Vindo! 
+                <!-- assets\icons\logo-svgrepo-com.svg -->
+                <span class="image">
+                    <img src="../assets/icons/logo-svgrepo-com.svg" alt="Logo placeholder">
                 </span>
-                <span class="subheader ubuntu-medium">
-                    Vendedor.name
-                </span>
-            </div>
+                <div class="text header-text">
+                    <span class="name ubuntu-bold">
+                        Bem Vindo!
+                    </span>
+                    <span class="subheader ubuntu-medium">
+                        <?php $name = $_SESSION['usuario']['nome'];
+                            echo $name;
+                        ?>
+                    </span>
+                </div>
             </div>
         </header>
 
@@ -48,14 +52,20 @@ session_start();
                         </li>
                         <li class="nav-link">
                             <a href="#">
-                            <i class='bx bxs-purchase-tag nav-icon' ></i>
+                                <i class='bx bxs-purchase-tag nav-icon'></i>
                                 <span class="text nav-text  ubuntu-medium">Menu de Produtos</span>
                             </a>
                         </li>
                         <li class="nav-link">
                             <a href="#">
-                                <i class='bx bx-package nav-icon' ></i>
+                                <i class='bx bx-package nav-icon'></i>
                                 <span class="text nav-text  ubuntu-medium">Menu de Pedidos</span>
+                            </a>
+                        </li>
+                        <li class="nav-link">
+                            <a href="#">
+                                <i class='bx bx-log-out nav-icon'></i>
+                                <span class="text nav-text  ubuntu-medium">Logout</span>
                             </a>
                         </li>
                     </ul>
@@ -63,13 +73,16 @@ session_start();
             </div>
         </div>
     </nav>
+    <main>
+
+    </main>
 </body>
 
 <script>
-    /* $(document).ready(function () {
+    $(document).ready(function () {
         // Call the function to load content into <main>
-        loadContentIntoMain('../views/assinc_content_vendor_lp.php', 'main');
-    }); */
+        loadContentIntoMain('../views/product_form.php', 'main');
+    });
 </script>
 
 </html>

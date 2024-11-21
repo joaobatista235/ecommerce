@@ -1,4 +1,4 @@
--- Active: 1732056193143@@127.0.0.1@3306@ecommerce
+-- Active: 1729355366311@@127.0.0.1@3306@ecommerce
 CREATE DATABASE  ecommerce;
 
 USE ecommerce;
@@ -96,8 +96,8 @@ INSERT INTO admins (username, password)
 VALUES ('admin1@admin.com', '0192023a7bbd73250516f069df18b500');
 
 -- vededor login
-INSERT INTO vendedor(email,senha)
-VALUES ('vendedor1@email.com', '0192023a7bbd73250516f069df18b500');
+INSERT INTO vendedor(nome,email,senha)
+VALUES ('teste','vendedor1@email.com', '0192023a7bbd73250516f069df18b500');
 
 -- alimentar a tabela produto
 INSERT INTO produto (nome, qtde_estoque, preco, unidade_medida, promocao)
