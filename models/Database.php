@@ -3,7 +3,7 @@ class Database
 {
     private $host = "localhost";
     private $username = "root";
-    private $password = "";
+    private $password = "123456";
     private $database = "ecommerce";
     protected $connection;
 

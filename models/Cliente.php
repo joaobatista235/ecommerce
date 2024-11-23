@@ -29,46 +29,149 @@ class Cliente implements GenericInterface
     }
 
     // Getters
-    public function getId() { return $this->id; }
-    public function getNome() { return $this->nome; }
-    public function getEndereco() { return $this->endereco; }
-    public function getNumero() { return $this->numero; }
-    public function getBairro() { return $this->bairro; }
-    public function getCidade() { return $this->cidade; }
-    public function getEstado() { return $this->estado; }
-    public function getEmail() { return $this->email; }
-    public function getCpfCnpj() { return $this->cpf_cnpj; }
-    public function getRg() { return $this->rg; }
-    public function getTelefone() { return $this->telefone; }
-    public function getCelular() { return $this->celular; }
-    public function getDataNasc() { return $this->data_nasc; }
-    public function getSalario() { return $this->salario; }
-   
+    public function getId()
+    {
+        return $this->id;
+    }
+    public function getNome()
+    {
+        return $this->nome;
+    }
+    public function getEndereco()
+    {
+        return $this->endereco;
+    }
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+    public function getBairro()
+    {
+        return $this->bairro;
+    }
+    public function getCidade()
+    {
+        return $this->cidade;
+    }
+    public function getEstado()
+    {
+        return $this->estado;
+    }
+    public function getEmail()
+    {
+        return $this->email;
+    }
+    public function getCpfCnpj()
+    {
+        return $this->cpf_cnpj;
+    }
+    public function getRg()
+    {
+        return $this->rg;
+    }
+    public function getTelefone()
+    {
+        return $this->telefone;
+    }
+    public function getCelular()
+    {
+        return $this->celular;
+    }
+    public function getDataNasc()
+    {
+        return $this->data_nasc;
+    }
+    public function getSalario()
+    {
+        return $this->salario;
+    }
+
 
     // Setters
-    public function setId($id) { $this->id = $id; }
-    public function setNome($nome) { $this->nome = $nome; }
-    public function setEndereco($endereco) { $this->endereco = $endereco; }
-    public function setNumero($numero) { $this->numero = $numero; }
-    public function setBairro($bairro) { $this->bairro = $bairro; }
-    public function setCidade($cidade) { $this->cidade = $cidade; }
-    public function setEstado($estado) { $this->estado = $estado; }
-    public function setEmail($email) { $this->email = $email; }
-    public function setCpfCnpj($cpf_cnpj) { $this->cpf_cnpj = $cpf_cnpj; }
-    public function setRg($rg) { $this->rg = $rg; }
-    public function setTelefone($telefone) { $this->telefone = $telefone; }
-    public function setCelular($celular) { $this->celular = $celular; }
-    public function setDataNasc($data_nasc) { $this->data_nasc = $data_nasc; }
-    public function setSalario($salario) { $this->salario = $salario; }
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+    public function setNome($nome)
+    {
+        $this->nome = $nome;
+    }
+    public function setEndereco($endereco)
+    {
+        $this->endereco = $endereco;
+    }
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+    }
+    public function setBairro($bairro)
+    {
+        $this->bairro = $bairro;
+    }
+    public function setCidade($cidade)
+    {
+        $this->cidade = $cidade;
+    }
+    public function setEstado($estado)
+    {
+        $this->estado = $estado;
+    }
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+    public function setCpfCnpj($cpf_cnpj)
+    {
+        $this->cpf_cnpj = $cpf_cnpj;
+    }
+    public function setRg($rg)
+    {
+        $this->rg = $rg;
+    }
+    public function setTelefone($telefone)
+    {
+        $this->telefone = $telefone;
+    }
+    public function setCelular($celular)
+    {
+        $this->celular = $celular;
+    }
+    public function setDataNasc($data_nasc)
+    {
+        $this->data_nasc = $data_nasc;
+    }
+    public function setSalario($salario)
+    {
+        $this->salario = $salario;
+    }
 
     public function save()
     {
+        $new_conn = (new Database())->getConnection();
         if ($this->id) {
-            $stmt = mysqli_prepare($this->conn, "UPDATE clientes SET nome=?, endereco=?, numero=?, bairro=?, cidade=?, estado=?, email=?, cpf_cnpj=?, rg=?, telefone=?, celular=?, data_nasc=?, salario=? WHERE id=?");
-            mysqli_stmt_bind_param($stmt, "ssssssssssssi", $this->nome, $this->endereco, $this->numero, $this->bairro, $this->cidade, $this->estado, $this->email, $this->cpf_cnpj, $this->rg, $this->telefone, $this->celular, $this->data_nasc, $this->salario, $this->id);
+            $stmt = mysqli_prepare($new_conn, "UPDATE clientes SET nome=?, endereco=?, numero=?, bairro=?, cidade=?, estado=?, email=?, cpf_cnpj=?, rg=?, telefone=?, celular=?, data_nasc=?, salario=? WHERE id=?");
+            mysqli_stmt_bind_param($stmt, "ssssssssssssdi", $this->nome, $this->endereco, $this->numero, $this->bairro, $this->cidade, $this->estado, $this->email, $this->cpf_cnpj, $this->rg, $this->telefone, $this->celular, $this->data_nasc, $this->salario, $this->id);
         } else {
-            $stmt = mysqli_prepare($this->conn, "INSERT INTO clientes (nome, endereco, numero, bairro, cidade, estado, email, cpf_cnpj, rg, telefone, celular, data_nasc, salario,senha) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
-            mysqli_stmt_bind_param($stmt, "ssssssssssssi", $this->nome, $this->endereco, $this->numero, $this->bairro, $this->cidade, $this->estado, $this->email, $this->cpf_cnpj, $this->rg, $this->telefone, $this->celular, $this->data_nasc, $this->salario);
+            $stmt = mysqli_prepare($new_conn, "INSERT INTO clientes (nome, endereco, numero, bairro, cidade, estado, email, cpf_cnpj, rg, telefone, celular, data_nasc, salario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            mysqli_stmt_bind_param(
+                $stmt,
+                "ssssssssssssd",
+                $this->nome,
+                $this->endereco,
+                $this->numero,
+                $this->bairro,
+                $this->cidade,
+                $this->estado,
+                $this->email,
+                $this->cpf_cnpj,
+                $this->rg,
+                $this->telefone,
+                $this->celular,
+                $this->data_nasc,
+                $this->salario
+            );
+
+
         }
         return mysqli_stmt_execute($stmt);
     }
@@ -81,7 +184,7 @@ class Cliente implements GenericInterface
         mysqli_stmt_bind_param($stmt, "i", $id);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
-    
+
         if ($data = mysqli_fetch_assoc($result)) {
             $cliente = new Cliente();
             $cliente->setId($data['id']);
@@ -102,20 +205,20 @@ class Cliente implements GenericInterface
         }
         return null;
     }
-    
+
     public static function getByEmail($email, Database $connexao = null)
     {
         // Ensure $connexao is set
         if (!$connexao) {
             $connexao = new Database();
         }
-    
+
         $conn = $connexao->getConnection();
         $stmt = mysqli_prepare($conn, "SELECT * FROM clientes WHERE email = ?");
         mysqli_stmt_bind_param($stmt, "s", $email);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
-    
+
         if ($data = mysqli_fetch_assoc($result)) {
             $cliente = new Cliente();
             $cliente->setId($data['id']);
@@ -136,8 +239,8 @@ class Cliente implements GenericInterface
         }
         return null;
     }
-    
-    public  function getAll()
+
+    public function getAll()
     {
         // Ensure $connexao is set
         $conn = (new Database())->getConnection();
@@ -145,7 +248,7 @@ class Cliente implements GenericInterface
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         $clientes = [];
-    
+
         while ($data = mysqli_fetch_assoc($result)) {
             $cliente = new Cliente();
             $cliente->setId($data['id']);
@@ -166,12 +269,13 @@ class Cliente implements GenericInterface
         }
         return $clientes;
     }
-    
+
 
     public function delete()
     {
+        $conn = (new Database())->getConnection();
         if ($this->id) {
-            $stmt = mysqli_prepare($this->conn, "DELETE FROM clientes WHERE id = ?");
+            $stmt = mysqli_prepare($conn, "DELETE FROM clientes WHERE id = ?");
             mysqli_stmt_bind_param($stmt, "i", $this->id);
             return mysqli_stmt_execute($stmt);
         }

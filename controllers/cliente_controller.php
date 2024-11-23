@@ -1,6 +1,7 @@
 <?php
 
 require_once "../models/Cliente.php";
+require_once "../models/Database.php";  // Make sure to include the Database class
 
 class ClienteController
 {
@@ -8,7 +9,7 @@ class ClienteController
 
     public function __construct()
     {
-        $this->database = new Database(); // Assumes Database class handles the connection
+        $this->database = new Database(); // Initialize the database connection
     }
 
     public function handleRequest()
@@ -45,7 +46,7 @@ class ClienteController
     private function cadastrarCliente()
     {
         if (isset($_POST['nome'], $_POST['email'], $_POST['cpf_cnpj'])) {
-            $cliente = new Cliente($this->database);
+            $cliente = new Cliente();  // No need to pass the connection here
 
             $cliente->setNome($_POST['nome']);
             $cliente->setEndereco($_POST['endereco'] ?? '');
@@ -60,7 +61,6 @@ class ClienteController
             $cliente->setCelular($_POST['celular'] ?? '');
             $cliente->setDataNasc($_POST['data_nasc'] ?? null);
             $cliente->setSalario($_POST['salario'] ?? 0.0);
-            $cliente->setSenha(password_hash($_POST['senha'], PASSWORD_DEFAULT));
 
             return $cliente->save()
                 ? ['success' => true, 'message' => 'Cliente cadastrado com sucesso']
@@ -73,11 +73,12 @@ class ClienteController
     private function editarCliente()
     {
         if (isset($_POST['id'], $_POST['nome'], $_POST['email'], $_POST['cpf_cnpj'])) {
-            $cliente = new Cliente($this->database);
-            $clientes = $cliente->getAll();
+            $cliente = new Cliente();  // No need to pass the connection here
 
+            $cliente->setId($_POST['id']);
+            $existingCliente = $cliente->getById($_POST['id']);
 
-            if ($cliente) {
+            if ($existingCliente) {
                 $cliente->setNome($_POST['nome']);
                 $cliente->setEndereco($_POST['endereco'] ?? '');
                 $cliente->setNumero($_POST['numero'] ?? '');
@@ -105,12 +106,13 @@ class ClienteController
 
     private function excluirCliente()
     {
-        if (isset($_POST['id'])) {
-            $cliente = new Cliente($this->database);
-            $clientes = $cliente->getAll();
+        if (isset($_POST['clienteId'])) {
+            $cliente = new Cliente();  // No need to pass the connection here
 
+            $cliente->setId($_POST['clienteId']);
+            $existingCliente = $cliente->getById($_POST['clienteId']);
 
-            if ($cliente) {
+            if ($existingCliente) {
                 return $cliente->delete()
                     ? ['success' => true, 'message' => 'Cliente excluído com sucesso']
                     : ['success' => false, 'message' => 'Erro ao excluir cliente'];
@@ -124,9 +126,8 @@ class ClienteController
 
     private function listarClientes()
     {
-        $cliente = new Cliente($this->database);
+        $cliente = new Cliente();  // No need to pass the connection here
         $clientes = $cliente->getAll();
-
 
         return $clientes
             ? ['success' => true, 'clientes' => $clientes]

@@ -5,6 +5,9 @@ $cli_model = new Cliente();
 $clientes = $cli_model->getAll();
 ?>
 
+<script src="../config/global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <div class="container-client">
     <div class="tabel-container">
         <table>
@@ -61,7 +64,7 @@ $clientes = $cli_model->getAll();
             <button class="btn">Ver mais produtos</button>
             <button id="btnCadastrarProduto" class="btn">Cadastrar produto</button>
         </div>
-
+    
 
         <div id="modalCadastro" class="modal" style="display:none;">
             <div class="modal-content">
@@ -163,203 +166,5 @@ $clientes = $cli_model->getAll();
 
 
 
-
-    <script>
-        $(document).ready(function () {
-            $('#btnCadastrarProduto').click(function () {
-                $('#modalCadastro').show();
-            });
-
-            $('#btnFecharModal').click(function () {
-                $('#modalCadastro').hide();
-            });
-
-            $(window).click(function (event) {
-                if (event.target == document.getElementById('modalCadastro')) {
-                    $('#modalCadastro').hide();
-                }
-            });
-
-            $('#formCadastrarProduto').submit(function (e) {
-                e.preventDefault();
-                const form = document.getElementById('formCadastrarProduto');
-                const produtoId = $('#formCadastrarProduto').data('id');
-
-                let nome = $('#nome').val();
-                let qtde_estoque = $('#qtde_estoque').val();
-                let preco = $('#preco').val();
-                let unidade_medida = $('#unidade_medida').val();
-                let promocao = $('#promocao').val();
-
-                const formData = {
-                    action: produtoId ? 'editar' : 'cadastrar',
-                    produtoId: produtoId,
-                    nome: nome,
-                    preco: preco,
-                    qtde_estoque: qtde_estoque,
-                    unidade_medida: unidade_medida,
-                    promocao: promocao
-                };
-
-                $.ajax({
-                    url: '../controllers/product_controller.php',
-                    type: 'POST',
-                    data: formData,
-                    dataType: 'json',
-                    success: function (response) {
-                        if (response.success) {
-                            form.reset();
-                            $('#modalCadastro').hide();
-
-                            Swal.fire({
-                                title: 'Sucesso!',
-                                text: response.message,
-                                icon: 'success',
-                                confirmButtonText: 'OK'
-                            });
-
-                            document.getElementById('modalCadastro').style.display = 'none';
-                            atualizarTabela();
-                        } else {
-                            Swal.fire({
-                                title: 'Erro!',
-                                text: 'Não foi possível cadastrar o produto.',
-                                icon: 'error',
-                                confirmButtonText: 'OK'
-                            });
-                        }
-                    },
-                    error: function () {
-                        Swal.fire({
-                            title: 'Erro!',
-                            text: 'Ocorreu um erro ao tentar cadastrar o produto.',
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                        });
-                    }
-                });
-            });
-        });
-
-        function excluirProduto(produtoId) {
-            Swal.fire({
-                title: 'Tem certeza?',
-                text: 'Essa ação não pode ser desfeita!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sim, excluir!',
-                cancelButtonText: 'Cancelar',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire(
-                        'Excluído!',
-                        'O produto foi excluído com sucesso.',
-                        'success'
-                    );
-                    $.ajax({
-                        url: '../controllers/product_controller.php',
-                        type: 'POST',
-                        data: { action: 'excluir', productId: produtoId },
-                        dataType: 'json',
-                        success: function (response) {
-                            if (response.success) {
-                                Swal.fire({
-                                    title: 'Excluído!',
-                                    text: response.message,
-                                    icon: 'success'
-                                });
-                                console.log(response);
-                                document.querySelector(`tr[data-id="${produtoId}"]`).remove();
-                            }
-                        },
-                        error: function () {
-                            alert("OCORREU UM ERRO");
-                        },
-                    });
-                } else if (result.isDismissed) {
-                    Swal.fire(
-                        'Cancelado!',
-                        'Ação cancelada.',
-                        'info'
-                    );
-                }
-            });
-        }
-
-        document.querySelectorAll('.btnExcluir').forEach(function (btnExcluir) {
-            btnExcluir.addEventListener('click', function (event) {
-                event.stopPropagation();
-                const produtoId = this.getAttribute('data-id');
-                excluirProduto(produtoId);
-            });
-        });
-
-        function atualizarTabela() {
-            $.ajax({
-                url: '../controllers/cliente_controller.php',
-                type: 'POST',
-                data: { action: 'listar' },
-                dataType: 'json',
-                success: function (response) {
-                    if (response.success) {
-                        const produtos = response.produtos;
-                        const tbody = document.querySelector('table tbody');
-                        tbody.innerHTML = '';
-                        produtos.forEach(produto => {
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                            <td>${produto.id}</td>
-                            <td>${produto.nome}</td>
-                            <td>${produto.qtde_estoque}</td>
-                            <td class="price">R$ ${produto.preco}</td>
-                            <td>${produto.unidade_medida}</td>
-                            <td class="${produto.promocao === 'Y' ? 'promo' : 'no-promo'}">${produto.promocao === 'Y' ? 'Sim' : 'Não'}</td>
-                            <td><img class="btnExcluir" src="../assets/icons/trash-solid.svg" width="15px" data-id="${produto.id}"></td>
-                        `;
-                            tbody.appendChild(tr);
-                        });
-
-                        document.querySelectorAll('.btnExcluir').forEach(btnExcluir => {
-                            btnExcluir.addEventListener('click', function () {
-                                const produtoId = this.getAttribute('data-id');
-                                excluirProduto(produtoId);
-                            });
-                        });
-                    } else {
-                        alert('Erro ao listar os produtos');
-                    }
-                },
-                error: function () {
-                    alert("Erro ao carregar os produtos.");
-                }
-            });
-        }
-
-        function abrirModalEdicao(produto) {
-            $('#formCadastrarProduto').data('id', produto.id);
-
-            $('#formCadastrarProduto #nome').val(produto.nome);
-            $('#formCadastrarProduto #preco').val(produto.preco);
-            $('#formCadastrarProduto #qtde_estoque').val(produto.qtde_estoque);
-            $('#formCadastrarProduto #unidade_medida').val(produto.unidade_medida);
-            $('#formCadastrarProduto #promocao').val(produto.promocao);
-
-            $('#modalCadastro').show();
-        }
-
-        $('.product-row').on('click', function () {
-            const produto = {
-                id: $(this).data('id'),
-                nome: $(this).find('td').eq(1).text(),
-                preco: $(this).find('td').eq(3).text().replace('R$ ', '').replace(',', '.'),
-                qtde_estoque: $(this).find('td').eq(2).text(),
-                unidade_medida: $(this).find('td').eq(4).text(),
-                promocao: $(this).find('td').eq(5).text() === 'Sim' ? 'Y' : 'N'
-            };
-
-            abrirModalEdicao(produto);
-        });
-    </script>
 
 </div>

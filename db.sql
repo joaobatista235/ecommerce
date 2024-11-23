@@ -18,7 +18,7 @@ CREATE TABLE clientes (
     telefone VARCHAR(20),
     celular VARCHAR(20),
     data_nasc DATE,
-    salario DECIMAL(15, 2),
+    salario DECIMAL(15, 2)
 );
  
 -- Criar tabela 'vendedor'
