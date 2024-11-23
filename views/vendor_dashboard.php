@@ -1,6 +1,3 @@
-<?php
-session_start();
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,18 +20,13 @@ session_start();
 
         <header>
             <div class="image-text">
-                <!-- assets\icons\logo-svgrepo-com.svg -->
                 <span class="image">
                     <img src="../assets/icons/logo-svgrepo-com.svg" alt="Logo placeholder">
                 </span>
                 <div class="text header-text">
-                    <span class="name ubuntu-bold">
-                        Bem Vindo!
-                    </span>
+                    <span class="name ubuntu-bold">Bem Vindo!</span>
                     <span class="subheader ubuntu-medium">
-                        <?php $name = $_SESSION['usuario']['nome'];
-                            echo $name;
-                        ?>
+                        <?php echo $_SESSION['usuario']['nome'] ?? 'Usuário'; ?>
                     </span>
                 </div>
             </div>
@@ -44,28 +36,28 @@ session_start();
             <div class="menu">
                 <div class="menu-links">
                     <ul class="menu-links">
-                        <li class="nav-link">
+                        <li class="nav-link" id="menuClientes">
                             <a href="#">
                                 <i class='bx bxs-contact nav-icon'></i>
-                                <span class="text nav-text  ubuntu-medium">Menu de Clientes</span>
+                                <span class="text nav-text ubuntu-medium">Menu de Clientes</span>
                             </a>
                         </li>
-                        <li class="nav-link">
+                        <li class="nav-link" id="menuProdutos" >
                             <a href="#">
                                 <i class='bx bxs-purchase-tag nav-icon'></i>
-                                <span class="text nav-text  ubuntu-medium">Menu de Produtos</span>
+                                <span class="text nav-text ubuntu-medium">Menu de Produtos</span>
                             </a>
                         </li>
                         <li class="nav-link">
                             <a href="#">
                                 <i class='bx bx-package nav-icon'></i>
-                                <span class="text nav-text  ubuntu-medium">Menu de Pedidos</span>
+                                <span class="text nav-text ubuntu-medium">Menu de Pedidos</span>
                             </a>
                         </li>
                         <li class="nav-link">
                             <a href="#">
                                 <i class='bx bx-log-out nav-icon'></i>
-                                <span class="text nav-text  ubuntu-medium">Logout</span>
+                                <span class="text nav-text ubuntu-medium">Logout</span>
                             </a>
                         </li>
                     </ul>
@@ -73,15 +65,38 @@ session_start();
             </div>
         </div>
     </nav>
-    <main>
 
+    <main>
+        <!-- Dynamic content will load here -->
     </main>
 </body>
 
 <script>
     $(document).ready(function () {
-        // Call the function to load content into <main>
-        loadContentIntoMain('../views/product_form.php', 'main');
+        // Function to load content dynamically into <main>
+        function loadContentIntoMain(url, target) {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $(target).html(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading content:', error);
+                    $(target).html('<p>Erro ao carregar o conteúdo.</p>');
+                }
+            });
+        }
+
+        // Click event for "Menu de Clientes"
+        $('#menuClientes').click(function (e) {
+            e.preventDefault();
+            loadContentIntoMain('../views/client_form.php', 'main');
+        });
+        $('#menuProdutos').click(function (e) {
+            e.preventDefault();
+            loadContentIntoMain('../views/product_form.php', 'main');
+        });
     });
 </script>
 

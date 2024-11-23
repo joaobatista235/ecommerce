@@ -683,3 +683,29 @@ th, td {
   font-size: 1rem;
   color: #333;
 }
+
+
+/* Menu de clientes */
+
+.container-client{
+  
+  width: 90%;
+  margin-top: 20px;
+  margin-left: 7%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 20px;
+  height: 100vh;
+  
+}
+
+.btnCli{
+  width: 80px;
+  padding: 5px;
+  background-color: var(--body-color);
+  color: var(--secondary-color);
+  border-radius: 8px;
+  margin-bottom: 2px;
+}

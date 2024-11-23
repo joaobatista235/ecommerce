@@ -44,14 +44,14 @@ session_start();
                     <ul class="menu-links">
                         <li class="nav-link">
                             <a href="#">
-                                <i class='bx bxs-contact nav-icon'></i>
-                                <span class="text nav-text  ubuntu-medium">Menu de Clientes</span>
+                            <i class='bx bxs-briefcase nav-icon' ></i>
+                                <span class="text nav-text  ubuntu-medium">Menu de Vendedores</span>
                             </a>
                         </li>
                         <li class="nav-link">
                             <a href="#">
-                                <i class='bx bxs-purchase-tag nav-icon'></i>
-                                <span class="text nav-text  ubuntu-medium">Menu de Produtos</span>
+                            <i class='bx bxs-credit-card nav-icon'></i>
+                                <span class="text nav-text  ubuntu-medium">Formas de pagamento</span>
                             </a>
                         </li>
                         <li class="nav-link">

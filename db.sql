@@ -19,7 +19,6 @@ CREATE TABLE clientes (
     celular VARCHAR(20),
     data_nasc DATE,
     salario DECIMAL(15, 2),
-    senha VARCHAR(255)
 );
  
 -- Criar tabela 'vendedor'
@@ -107,3 +106,26 @@ VALUES
   ('Calça Jeans', 200, 139.90, 'un', 'N'),
   ('Relógio Digital', 30, 129.90, 'un', 'Y'),
   ('Mochila Escolar', 150, 79.90, 'un', 'N');
+
+
+
+
+INSERT INTO clientes (nome, endereco, numero, bairro, cidade, estado, email, cpf_cnpj, rg, telefone, celular, data_nasc, salario) 
+VALUES 
+('João da Silva', 'Rua das Flores', '123', 'Jardim Paulista', 'São Paulo', 'SP', 'joao.silva@example.com', '123.456.789-00', 'MG-12.345.678', '(11) 9876-5432', '(11) 91234-5678', '1985-03-25', 3500.00);
+
+INSERT INTO clientes (nome, endereco, numero, bairro, cidade, estado, email, cpf_cnpj, rg, telefone, celular, data_nasc, salario) 
+VALUES 
+('Maria Oliveira', 'Avenida Brasil', '456', 'Centro', 'Rio de Janeiro', 'RJ', 'maria.oliveira@example.com', '987.654.321-00', 'RJ-98.765.432', '(21) 2233-4455', '(21) 99876-5432', '1990-07-12', 4500.50);
+
+INSERT INTO clientes (nome, endereco, numero, bairro, cidade, estado, email, cpf_cnpj, rg, telefone, celular, data_nasc, salario) 
+VALUES 
+('Carlos Andrade', 'Rua das Acácias', '789', 'Bela Vista', 'Belo Horizonte', 'MG', 'carlos.andrade@example.com', '456.789.123-99', 'MG-45.678.123', '(31) 3344-5566', '(31) 98765-4321', '1978-11-05', 5200.75);
+
+INSERT INTO clientes (nome, endereco, numero, bairro, cidade, estado, email, cpf_cnpj, rg, telefone, celular, data_nasc, salario) 
+VALUES 
+('Ana Beatriz', 'Travessa das Palmeiras', '101', 'Vila Nova', 'Curitiba', 'PR', 'ana.beatriz@example.com', '112.233.445-55', 'PR-11.223.344', '(41) 5566-7788', '(41) 91234-5678', '1988-05-15', 3100.00);
+
+INSERT INTO clientes (nome, endereco, numero, bairro, cidade, estado, email, cpf_cnpj, rg, telefone, celular, data_nasc, salario) 
+VALUES 
+('Pedro Alves', 'Rua do Comércio', '205', 'Santa Maria', 'Porto Alegre', 'RS', 'pedro.alves@example.com', '223.344.556-77', 'RS-22.334.455', '(51) 6677-8899', '(51) 98765-4321', '1995-09-22', 2800.25);

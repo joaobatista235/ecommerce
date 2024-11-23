@@ -18,12 +18,14 @@ class Cliente implements GenericInterface
     private $celular;
     private $data_nasc;
     private $salario;
-    private $senha;
-    private $conn;
+    private static $conn;
 
-    public function __construct(Database $connexao)
+    public function __construct()
     {
-        $this->conn = $connexao->getConnection();
+        // Use a singleton pattern for the database connection
+        if (!self::$conn) {
+            self::$conn = (new Database())->getConnection();
+        }
     }
 
     // Getters
@@ -41,7 +43,7 @@ class Cliente implements GenericInterface
     public function getCelular() { return $this->celular; }
     public function getDataNasc() { return $this->data_nasc; }
     public function getSalario() { return $this->salario; }
-    public function getSenha() { return $this->senha; }
+   
 
     // Setters
     public function setId($id) { $this->id = $id; }
@@ -58,7 +60,6 @@ class Cliente implements GenericInterface
     public function setCelular($celular) { $this->celular = $celular; }
     public function setDataNasc($data_nasc) { $this->data_nasc = $data_nasc; }
     public function setSalario($salario) { $this->salario = $salario; }
-    public function setSenha($senha) { $this->senha = $senha; }
 
     public function save()
     {
@@ -67,21 +68,22 @@ class Cliente implements GenericInterface
             mysqli_stmt_bind_param($stmt, "ssssssssssssi", $this->nome, $this->endereco, $this->numero, $this->bairro, $this->cidade, $this->estado, $this->email, $this->cpf_cnpj, $this->rg, $this->telefone, $this->celular, $this->data_nasc, $this->salario, $this->id);
         } else {
             $stmt = mysqli_prepare($this->conn, "INSERT INTO clientes (nome, endereco, numero, bairro, cidade, estado, email, cpf_cnpj, rg, telefone, celular, data_nasc, salario,senha) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
-            mysqli_stmt_bind_param($stmt, "ssssssssssssis", $this->nome, $this->endereco, $this->numero, $this->bairro, $this->cidade, $this->estado, $this->email, $this->cpf_cnpj, $this->rg, $this->telefone, $this->celular, $this->data_nasc, $this->salario,$this->senha);
+            mysqli_stmt_bind_param($stmt, "ssssssssssssi", $this->nome, $this->endereco, $this->numero, $this->bairro, $this->cidade, $this->estado, $this->email, $this->cpf_cnpj, $this->rg, $this->telefone, $this->celular, $this->data_nasc, $this->salario);
         }
         return mysqli_stmt_execute($stmt);
     }
 
-    public static function getById($id, Database $connexao = null)
+    public function getById($id)
     {
-        $conn = $connexao->getConnection();
+
+        $conn = (new Database())->getConnection();
         $stmt = mysqli_prepare($conn, "SELECT * FROM clientes WHERE id = ?");
         mysqli_stmt_bind_param($stmt, "i", $id);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
-
+    
         if ($data = mysqli_fetch_assoc($result)) {
-            $cliente = new Cliente($connexao);
+            $cliente = new Cliente();
             $cliente->setId($data['id']);
             $cliente->setNome($data['nome']);
             $cliente->setEndereco($data['endereco']);
@@ -100,16 +102,22 @@ class Cliente implements GenericInterface
         }
         return null;
     }
+    
     public static function getByEmail($email, Database $connexao = null)
     {
+        // Ensure $connexao is set
+        if (!$connexao) {
+            $connexao = new Database();
+        }
+    
         $conn = $connexao->getConnection();
         $stmt = mysqli_prepare($conn, "SELECT * FROM clientes WHERE email = ?");
         mysqli_stmt_bind_param($stmt, "s", $email);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
-
+    
         if ($data = mysqli_fetch_assoc($result)) {
-            $cliente = new Cliente($connexao);
+            $cliente = new Cliente();
             $cliente->setId($data['id']);
             $cliente->setNome($data['nome']);
             $cliente->setEndereco($data['endereco']);
@@ -124,22 +132,22 @@ class Cliente implements GenericInterface
             $cliente->setCelular($data['celular']);
             $cliente->setDataNasc($data['data_nasc']);
             $cliente->setSalario($data['salario']);
-            $cliente->setSenha($data['senha']);
             return $cliente;
         }
         return null;
     }
-
-    public static function getAll(Database $connexao =null)
+    
+    public  function getAll()
     {
-        $conn = $connexao->getConnection();
+        // Ensure $connexao is set
+        $conn = (new Database())->getConnection();
         $stmt = mysqli_prepare($conn, "SELECT * FROM clientes");
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         $clientes = [];
-
+    
         while ($data = mysqli_fetch_assoc($result)) {
-            $cliente = new Cliente($connexao);
+            $cliente = new Cliente();
             $cliente->setId($data['id']);
             $cliente->setNome($data['nome']);
             $cliente->setEndereco($data['endereco']);
@@ -158,6 +166,7 @@ class Cliente implements GenericInterface
         }
         return $clientes;
     }
+    
 
     public function delete()
     {
