@@ -39,8 +39,8 @@ $produtos = $productModel->getAll();
                     echo "<td class='price'>R$ " . number_format($produto['preco'], 2, ',', '.') . "</td>";
                     echo "<td>" . $produto['unidade_medida'] . "</td>";
                     echo "<td class='" . ($produto['promocao'] == 'Y' ? 'promo' : 'no-promo') . "'>" . ($produto['promocao'] == 'Y' ? 'Sim' : 'Não') . "</td>";
-                    echo "<td><img width='15px' class='btnEditar btnCli' src='../assets/icons/pen-to-square-solid.svg' data-id='" . $produto['id'] . "' alt='Editar'></td>";
-                    echo "<td><img width='15px' class='btnExcluir btnCli' src='../assets/icons/trash-solid.svg' data-id='" . $produto['id'] . "' alt='Excluir'></td>";
+                    echo "<td onclick='abrirModalEdicao(this)'><img width='15px' class='btnEditar btnCli' src='../assets/icons/pen-to-square-solid.svg' data-id='" . $produto['id'] . "' alt='Editar'></td>";
+                    echo "<td onclick='excluirProduto(this)'><img width='15px' class='btnExcluir btnCli' src='../assets/icons/trash-solid.svg' data-id='" . $produto['id'] . "' alt='Excluir'></td>";
                     echo "</tr>";
                 }
             } else {
@@ -98,7 +98,6 @@ $produtos = $productModel->getAll();
         </div>
 
         <script>
-
             $(document).ready(function () {
                 $('#btnCadastrarProduto').click(function () {
                     $('#modalCadastro').show();
@@ -127,7 +126,7 @@ $produtos = $productModel->getAll();
 
                     const formData = {
                         action: produtoId ? 'editar' : 'cadastrar',
-                        produtoId: produtoId,
+                        id: produtoId,
                         nome: nome,
                         preco: preco,
                         qtde_estoque: qtde_estoque,
@@ -175,7 +174,8 @@ $produtos = $productModel->getAll();
                 });
             });
 
-            function excluirProduto(produtoId) {
+            function excluirProduto(el) {
+                const produtoId = $(el).closest('tr').attr('data-id');
                 Swal.fire({
                     title: 'Tem certeza?',
                     text: 'Essa ação não pode ser desfeita!',
@@ -186,11 +186,6 @@ $produtos = $productModel->getAll();
                     reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Swal.fire(
-                            'Excluído!',
-                            'O produto foi excluído com sucesso.',
-                            'success'
-                        );
                         $.ajax({
                             url: '../controllers/product_controller.php',
                             type: 'POST',
@@ -198,18 +193,14 @@ $produtos = $productModel->getAll();
                             dataType: 'json',
                             success: function (response) {
                                 if (response.success) {
-                                    Swal.fire({
-                                        title: 'Excluído!',
-                                        text: response.message,
-                                        icon: 'success'
-                                    });
-                                    console.log(response)
-                                    document.querySelector(`tr[data-id="${produtoId}"]`).remove();
+                                    Swal.fire(
+                                        'Excluído!',
+                                        'O produto foi excluído com sucesso.',
+                                        'success'
+                                    );
+                                    atualizarTabela();
                                 }
-                            },
-                            error: function () {
-                                alert("OCORREU UM ERRO");
-                            },
+                            }
                         });
                     } else if (result.isDismissed) {
                         Swal.fire(
@@ -241,17 +232,10 @@ $produtos = $productModel->getAll();
                                     <td class="price">R$ ${produto.preco}</td>
                                     <td>${produto.unidade_medida}</td>
                                     <td class="${produto.promocao === 'Y' ? 'promo' : 'no-promo'}">${produto.promocao === 'Y' ? 'Sim' : 'Não'}</td>
-                                    <td><img width='15px' class="btnEditar" src="../assets/icons/pen-to-square-solid.svg" data-id="${produto.id}" alt="Excluir"></td>
-                                    <td><img width='15px' class='btnExcluir' src='../assets/icons/trash-solid.svg' data-id="${produto.id}" alt='Excluir'></td>
+                                    <td onclick="abrirModalEdicao(this)"><img width='15px' class="btnEditar" src="../assets/icons/pen-to-square-solid.svg" data-id="${produto.id}" alt="Excluir"></td>
+                                    <td onclick="excluirProduto(this)"><img width='15px' class='btnExcluir' src='../assets/icons/trash-solid.svg' data-id="${produto.id}" alt='Excluir'></td>
                                 `;
                                 tbody.appendChild(tr);
-                            });
-
-                            document.querySelectorAll('.btnExcluir').forEach(btnExcluir => {
-                                btnExcluir.addEventListener('click', function () {
-                                    const produtoId = this.getAttribute('data-id');
-                                    excluirProduto(produtoId);
-                                });
                             });
                         } else {
                             alert('Erro ao listar os produtos');
@@ -263,7 +247,17 @@ $produtos = $productModel->getAll();
                 });
             }
 
-            function abrirModalEdicao(produto) {
+            function abrirModalEdicao(el) {
+                const row = $(el).closest('tr');
+                const produto = {
+                    id: row.find('td').eq(0).text(),
+                    nome: row.find('td').eq(1).text(),
+                    qtde_estoque: row.find('td').eq(2).text(),
+                    preco: row.find('td').eq(3).text().replace('R$ ', '').replace(',', '.'),
+                    unidade_medida: row.find('td').eq(4).text(),
+                    promocao: row.find('td').eq(5).text() === 'Sim' ? 'Y' : 'N'
+                };
+
                 $('#formCadastrarProduto').data('id', produto.id);
 
                 $('#formCadastrarProduto #nome').val(produto.nome);
@@ -275,31 +269,6 @@ $produtos = $productModel->getAll();
                 $('#modalCadastro').show();
             }
 
-            document.querySelectorAll('.btnExcluir').forEach(function (btnExcluir) {
-                btnExcluir.addEventListener('click', function (event) {
-                    event.stopPropagation();
-                    const produtoId = this.getAttribute('data-id');
-                    excluirProduto(produtoId);
-                });
-            });
-
-            document.querySelectorAll('.btnEditar').forEach(function (btnEditar) {
-                btnEditar.addEventListener('click', function (event) {
-                    event.stopPropagation();
-
-                    const row = $(this).closest('tr');
-                    const produto = {
-                        id: row.find('td').eq(0).text(),
-                        nome: row.find('td').eq(1).text(),
-                        qtde_estoque: row.find('td').eq(2).text(),
-                        preco: row.find('td').eq(3).text().replace('R$ ', '').replace(',', '.'),
-                        unidade_medida: row.find('td').eq(4).text(),
-                        promocao: row.find('td').eq(5).text() === 'Sim' ? 'Y' : 'N'
-                    };
-
-                    abrirModalEdicao(produto);
-                });
-            });
         </script>
     </div>
 </div>

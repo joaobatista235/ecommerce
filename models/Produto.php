@@ -97,13 +97,12 @@ class Produto implements GenericInterface
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return Produto|null
      */
-    public function getById($id): ?Produto
+    public function getById(int $id): ?Produto
     {
-        $conn = (new Database())->getConnection();
-        $stmt = mysqli_prepare($conn, "SELECT * FROM produto WHERE id = ?");
+        $stmt = mysqli_prepare(self::$conn, "SELECT * FROM produto WHERE id = ?");
         mysqli_stmt_bind_param($stmt, "i", $id);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
@@ -165,17 +164,23 @@ class Produto implements GenericInterface
     public function deleteById(?int $id): bool
     {
         if (!empty($id)) {
-            $stmt = mysqli_prepare(self::$conn, "DELETE FROM produto WHERE id = ?");
-            mysqli_stmt_bind_param($stmt, "i", $id);
+            $stmtDeleteItens = mysqli_prepare(self::$conn, "DELETE FROM itens_pedido WHERE id_produto = ?");
+            mysqli_stmt_bind_param($stmtDeleteItens, "i", $id);
+            mysqli_stmt_execute($stmtDeleteItens);
+            mysqli_stmt_close($stmtDeleteItens);
 
-            if (mysqli_stmt_execute($stmt)) {
-                mysqli_stmt_close($stmt);
+            $stmtDeleteProduto = mysqli_prepare(self::$conn, "DELETE FROM produto WHERE id = ?");
+            mysqli_stmt_bind_param($stmtDeleteProduto, "i", $id);
+
+            if (mysqli_stmt_execute($stmtDeleteProduto)) {
+                mysqli_stmt_close($stmtDeleteProduto);
                 return true;
             } else {
-                error_log('Erro ao executar DELETE: ' . mysqli_error(self::$conn));
+                error_log('Erro ao excluir produto: ' . mysqli_error(self::$conn));
                 return false;
             }
         }
         return false;
     }
+
 }

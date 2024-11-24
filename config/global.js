@@ -31,25 +31,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-
 $(document).ready(function () {
-
-    // Show Modal for Registering a Product
     $('#btnCadastrarProduto').click(function () {
         $('#modalCadastro').show();
     });
 
-    // Close Modal
     $('#btnFecharModal').click(function () {
         $('#modalCadastro').hide();
     });
 
-    // Handle Form Submission for Creating or Editing Client
     $('#formCadastrarCliente').submit(function (e) {
         e.preventDefault();
 
-        const clienteId = $(this).data('id'); // For edit
-        const action = clienteId ? 'editar' : 'cadastrar'; // Determine action
+        const clienteId = $(this).data('id');
+        const action = clienteId ? 'editar' : 'cadastrar';
 
         const formData = {
             action,
@@ -69,7 +64,6 @@ $(document).ready(function () {
             salario: $('#salario').val()
         };
 
-        // AJAX request
         $.ajax({
             url: '../controllers/cliente_controller.php',
             type: 'POST',
@@ -91,7 +85,11 @@ $(document).ready(function () {
         });
     });
 
-    // Update Table with Client Data
+    function formatarData(data) {
+        const partes = data.split('-');
+        return `${partes[2]}/${partes[1]}/${partes[0]}`;
+    }
+
     function atualizarTabela() {
         $.ajax({
             url: '../controllers/cliente_controller.php',
@@ -103,9 +101,11 @@ $(document).ready(function () {
                     const tbody = $('table tbody');
                     tbody.empty();
 
-                    response.clientes.forEach(client => {
+                    const clientes = response.clientes;
+                    clientes.forEach(client => {
                         const tr = $('<tr>')
                             .data('id', client.id)
+                            .attr('data-id', client.id)
                             .addClass('client-row')
                             .html(`
                                 <td>${client.nome}</td>
@@ -119,17 +119,14 @@ $(document).ready(function () {
                                 <td>${client.rg}</td>
                                 <td>${client.telefone}</td>
                                 <td>${client.celular}</td>
-                                <td>${client.data_nasc}</td>
+                                <td>${formatarData(client.data_nasc)}</td>
                                 <td>R$ ${parseFloat(client.salario).toFixed(2).replace('.', ',')}</td>
-                                <td>
-                                    <button class='btnEditar btnCli' data-id='${client.id}'>Editar</button>
-                                    <button class='btnExcluir btnCli' data-id='${client.id}'>Excluir</button>
-                                </td>
+                                <td><img width='15px' class='btnEditar' src='../assets/icons/pen-to-square-solid.svg' data-id=${client.id} alt='Editar'></td>
+                                <td><img width='15px' class='btnExcluir' src='../assets/icons/trash-solid.svg' data-id=${client.id} alt='Editar'></td>
                             `);
                         tbody.append(tr);
                     });
 
-                    // Rebind Handlers
                     bindTableHandlers();
                 } else {
                     alert('Error fetching clients');
@@ -141,7 +138,6 @@ $(document).ready(function () {
         });
     }
 
-    // Bind Edit and Delete Handlers
     function bindTableHandlers() {
         $('.btnEditar').click(function () {
             const clientId = $(this).data('id');
@@ -186,20 +182,26 @@ $(document).ready(function () {
         $('#rg').val(client.rg);
         $('#telefone').val(client.telefone);
         $('#celular').val(client.celular);
-        $('#data_nasc').val(client.data_nasc);
-        $('#salario').val(client.salario);
 
+        if (client.data_nasc) {
+            const dataNasc = client.data_nasc.split('/');
+            const dataFormatada = `${dataNasc[2]}-${dataNasc[1]}-${dataNasc[0]}`;
+            $('#data_nasc').val(dataFormatada);
+        }
+
+        $('#salario').val(client.salario);
         $('#modalCadastro').show();
     }
 
     function excluirCliente(clienteId) {
         Swal.fire({
-            title: 'Are you sure?',
-            text: 'This action cannot be undone!',
+            title: 'Tem certeza?',
+            text: 'Essa ação não pode ser desfeita!',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, delete!',
-            cancelButtonText: 'Cancel',
+            confirmButtonText: 'Sim, excluir!',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
@@ -209,10 +211,12 @@ $(document).ready(function () {
                     success: function (response) {
                         const res = JSON.parse(response);
                         if (res.success) {
-                            Swal.fire('Deleted!', res.message, 'success');
-                            $(`tr[data-id="${clienteId}"]`).remove();
-                        } else {
-                            Swal.fire('Error!', res.message, 'error');
+                            Swal.fire({
+                                title: 'Excluído!',
+                                text: res.message,
+                                icon: 'success'
+                            });
+                            document.querySelector(`tr[data-id="${clienteId}"]`).remove();
                         }
                     },
                     error: function () {
@@ -223,6 +227,5 @@ $(document).ready(function () {
         });
     }
 
-    // Initial Binding
     bindTableHandlers();
 });
