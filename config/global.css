@@ -432,8 +432,9 @@ input:disabled {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    overflow-y: auto;
     padding: 20px;
+    max-height: 90%;
 }
 
 .listing-container > .table {

@@ -11,11 +11,11 @@ $produtos = $productModel->getAll();
 <link rel="stylesheet" href="../config/global.css">
 
 <div class="listing-container">
+    <div class="listing-header">
+        <h1 class="ubuntu-bold">Listagem de Produtos</h1>
+        <button id="btnCadastrarProduto" class="btn ubuntu-medium">Cadastrar produto</button>
+    </div>
     <div class="table">
-        <div class="listing-header">
-            <h1 class="ubuntu-bold">Listagem de Produtos</h1>
-            <button id="btnCadastrarProduto" class="btn ubuntu-medium">Cadastrar produto</button>
-        </div>
         <table>
             <thead>
             <tr>

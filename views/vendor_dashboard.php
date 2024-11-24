@@ -26,8 +26,8 @@
             <div class="text header-text">
                 <span class="name ubuntu-bold">Bem Vindo!</span>
                 <span class="subheader ubuntu-medium">
-                        <?php echo $_SESSION['usuario']['nome'] ?? 'Usuário'; ?>
-                    </span>
+                    <?php echo $_SESSION['usuario']['nome'] ?? 'Usuário'; ?>
+                </span>
             </div>
         </div>
     </header>
