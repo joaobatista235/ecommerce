@@ -1,52 +1,36 @@
 <?php
 
 require_once "../models/Cliente.php";
-require_once "../models/Database.php";  // Make sure to include the Database class
 
 class ClienteController
 {
-    private $database;
-
-    public function __construct()
-    {
-        $this->database = new Database(); // Initialize the database connection
-    }
-
-    public function handleRequest()
+    /**
+     * @return void
+     */
+    public function handleRequest(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             $action = $_POST['action'];
-            $response = [];
 
-            switch ($action) {
-                case 'cadastrar':
-                    $response = $this->cadastrarCliente();
-                    break;
-
-                case 'editar':
-                    $response = $this->editarCliente();
-                    break;
-
-                case 'excluir':
-                    $response = $this->excluirCliente();
-                    break;
-
-                case 'listar':
-                    $response = $this->listarClientes();
-                    break;
-
-                default:
-                    $response = ['success' => false, 'message' => 'Ação inválida'];
-            }
+            $response = match ($action) {
+                'cadastrar' => $this->cadastrarCliente(),
+                'editar' => $this->editarCliente(),
+                'excluir' => $this->excluirCliente(),
+                'listar' => $this->listarClientes(),
+                default => ['success' => false, 'message' => 'Ação inválida'],
+            };
 
             echo json_encode($response);
         }
     }
 
-    private function cadastrarCliente()
+    /**
+     * @return array
+     */
+    private function cadastrarCliente(): array
     {
         if (isset($_POST['nome'], $_POST['email'], $_POST['cpf_cnpj'])) {
-            $cliente = new Cliente();  // No need to pass the connection here
+            $cliente = new Cliente();
 
             $cliente->setNome($_POST['nome']);
             $cliente->setEndereco($_POST['endereco'] ?? '');
@@ -70,10 +54,13 @@ class ClienteController
         return ['success' => false, 'message' => 'Dados obrigatórios estão faltando'];
     }
 
-    private function editarCliente()
+    /**
+     * @return array
+     */
+    private function editarCliente(): array
     {
         if (isset($_POST['id'], $_POST['nome'], $_POST['email'], $_POST['cpf_cnpj'])) {
-            $cliente = new Cliente();  // No need to pass the connection here
+            $cliente = new Cliente();
 
             $cliente->setId($_POST['id']);
             $existingCliente = $cliente->getById($_POST['id']);
@@ -104,16 +91,19 @@ class ClienteController
         return ['success' => false, 'message' => 'Dados obrigatórios estão faltando'];
     }
 
-    private function excluirCliente()
+    /**
+     * @return array
+     */
+    private function excluirCliente(): array
     {
         if (isset($_POST['clienteId'])) {
-            $cliente = new Cliente();  // No need to pass the connection here
+            $cliente = new Cliente();
 
             $cliente->setId($_POST['clienteId']);
             $existingCliente = $cliente->getById($_POST['clienteId']);
 
             if ($existingCliente) {
-                return $cliente->delete()
+                return $cliente->deleteById($cliente->getId())
                     ? ['success' => true, 'message' => 'Cliente excluído com sucesso']
                     : ['success' => false, 'message' => 'Erro ao excluir cliente'];
             }
@@ -124,9 +114,12 @@ class ClienteController
         return ['success' => false, 'message' => 'ID do cliente não fornecido'];
     }
 
-    private function listarClientes()
+    /**
+     * @return array
+     */
+    private function listarClientes(): array
     {
-        $cliente = new Cliente();  // No need to pass the connection here
+        $cliente = new Cliente();
         $clientes = $cliente->getAll();
 
         return $clientes

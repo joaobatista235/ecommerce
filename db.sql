@@ -133,3 +133,47 @@ VALUES
 INSERT INTO clientes (nome, endereco, numero, bairro, cidade, estado, email, cpf_cnpj, rg, telefone, celular, data_nasc, salario) 
 VALUES 
 ('Pedro Alves', 'Rua do Comércio', '205', 'Santa Maria', 'Porto Alegre', 'RS', 'pedro.alves@example.com', '223.344.556-77', 'RS-22.334.455', '(51) 6677-8899', '(51) 98765-4321', '1995-09-22', 2800.25);
+
+
+INSERT INTO vendedor (nome, endereco, cidade, estado, celular, email, perc_comissao, senha)
+VALUES
+    ('Carlos Silva', 'Rua das Flores, 123', 'São Paulo', 'SP', '(11) 98765-4321', 'carlos.silva@email.com', 10.50, 'senha123'),
+    ('Mariana Costa', 'Av. Central, 456', 'Rio de Janeiro', 'RJ', '(21) 99887-6543', 'mariana.costa@email.com', 12.00, 'senha456'),
+    ('Paulo Souza', 'Rua dos Pinheiros, 789', 'Belo Horizonte', 'MG', '(31) 91234-5678', 'paulo.souza@email.com', 15.00, 'senha789'),
+    ('Fernanda Oliveira', 'Rua da Liberdade, 321', 'Curitiba', 'PR', '(41) 91234-0000', 'fernanda.oliveira@email.com', 8.00, 'senha321'),
+    ('Lucas Almeida', 'Av. Paulista, 987', 'São Paulo', 'SP', '(11) 91111-2222', 'lucas.almeida@email.com', 10.00, 'senha987');
+
+INSERT INTO produto (nome, qtde_estoque, preco, unidade_medida, promocao)
+VALUES
+    ('Notebook Dell', 50, 3500.00, 'unidade', 'N'),
+    ('Mouse Logitech', 200, 150.00, 'unidade', 'Y'),
+    ('Monitor LG', 30, 1200.00, 'unidade', 'N'),
+    ('Teclado Mecânico', 100, 300.00, 'unidade', 'Y'),
+    ('Headset HyperX', 75, 500.00, 'unidade', 'N');
+
+
+INSERT INTO forma_pagto (nome)
+VALUES
+    ('Cartão de Crédito'),
+    ('Boleto Bancário'),
+    ('PIX'),
+    ('Transferência Bancária'),
+    ('Dinheiro');
+
+
+INSERT INTO pedidos (data, id_cliente, observacao, forma_pagto, prazo_entrega, id_vendedor)
+VALUES
+    ('2024-11-20', 1, 'Entrega urgente', 1, '2 dias úteis', 1),
+    ('2024-11-21', 2, 'Embalagem reforçada', 2, '5 dias úteis', 2),
+    ('2024-11-22', 3, 'Agendar entrega', 3, '3 dias úteis', 3),
+    ('2024-11-23', 4, 'Cliente buscará', 4, 'Retirada no local', 4),
+    ('2024-11-24', 5, 'Entrega em horário comercial', 5, '7 dias úteis', 5);
+
+
+INSERT INTO itens_pedido (id_pedido, id_produto, qtde)
+VALUES
+    (1, 1, 2),
+    (2, 2, 5),
+    (3, 3, 1),
+    (4, 4, 10),
+    (5, 5, 3);

@@ -2,80 +2,94 @@
 
 require_once "../models/Produto.php";
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+class ProductController
+{
+    /**
+     * @return void
+     */
+    public function handleRequest(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+            $action = $_POST['action'];
 
-    if ($_POST['action'] === 'excluir' && isset($_POST['productId'])) {
-        $produtoId = $_POST['productId'];
-        $productModel = new Produto();
+            $response = match ($action) {
+                'cadastrar' => $this->cadastrarProduto(),
+                'editar' => $this->editarProduto(),
+                'excluir' => $this->excluirProduto(),
+                'listar' => $this->listarProduto(),
+                default => ['success' => false, 'message' => 'Ação inválida'],
+            };
 
-        $result = $productModel->deleteById($produtoId);
-
-        if ($result) {
-            echo json_encode([
-                'success' => true,
-                'message' => 'Produto excluído com sucesso'
-            ]);
-        } else {
-            echo json_encode([
-                'success' => false,
-                'message' => 'Erro ao excluir o produto'
-            ]);
+            echo json_encode($response);
         }
-    } elseif ($_POST['action'] === 'cadastrar' || $_POST['action'] === 'editar') {
-        if (isset($_POST['nome'], $_POST['qtde_estoque'], $_POST['preco'], $_POST['unidade_medida'], $_POST['promocao'])) {
+    }
 
-            $productModel = new Produto();
+    /**
+     * @return array
+     */
+    private function cadastrarProduto(): array
+    {
+        $produto = new Produto();
 
-            $produtoId = $_POST['produtoId'] ?? null;
+        $produto->setNome($_POST['nome']);
+        $produto->setQtdeEstoque($_POST['qtde_estoque']);
+        $produto->setPreco($_POST['preco']);
+        $produto->setUnidadeMedida($_POST['unidade_medida']);
+        $produto->setPromocao($_POST['promocao']);
 
-            if ($produtoId) {
-                $productModel->setId($produtoId);
-            }
+        return $produto->save()
+            ? ['success' => true, 'message' => 'Produto cadastrado com sucesso']
+            : ['success' => false, 'message' => 'Erro ao cadastrar produto'];
+    }
 
-            $productModel->setNome($_POST['nome']);
-            $productModel->setQtdeEstoque($_POST['qtde_estoque']);
-            $productModel->setPreco($_POST['preco']);
-            $productModel->setUnidadeMedida($_POST['unidade_medida']);
-            $productModel->setPromocao($_POST['promocao']);
+    /**
+     * @return array
+     */
+    private function editarProduto(): array
+    {
+        $produto = new Produto();
+        $produto->setId($_POST['id']);
 
-            $success = $productModel->save();
+        $existingProduto = $produto->getById($_POST['id']);
+        if ($existingProduto) {
+            $produto->setNome($_POST['nome']);
+            $produto->setQtdeEstoque($_POST['qtde_estoque']);
+            $produto->setPreco($_POST['preco']);
+            $produto->setUnidadeMedida($_POST['unidade_medida']);
+            $produto->setPromocao($_POST['promocao']);
 
-            if ($success) {
-                echo json_encode([
-                    'success' => true,
-                    'message' => $produtoId ? 'Produto atualizado com sucesso!' : 'Produto cadastrado com sucesso!'
-                ]);
-            } else {
-                echo json_encode([
-                    'success' => false,
-                    'message' => 'Erro ao cadastrar o produto'
-                ]);
-            }
-
-        } else {
-            echo json_encode([
-                'success' => false,
-                'message' => 'Todos os campos são obrigatórios'
-            ]);
+            return $produto->save()
+                ? ['success' => true, 'message' => 'Produto atualizado com sucesso']
+                : ['success' => false, 'message' => 'Erro ao atualizar produto'];
         }
-    } elseif ($_POST['action'] === 'listar') {
-        $productModel = new Produto();
-        $produtos = $productModel->getAll();
-        if (!empty($produtos)) {
-            echo json_encode([
-                'success' => true,
-                'produtos' => $produtos
-            ]);
-        } else {
-            echo json_encode([
-                'success' => false,
-                'message' => 'Nenhum produto encontrado.'
-            ]);
-        }
-    } else {
-        echo json_encode([
-            'success' => false,
-            'message' => 'Método inválido ou ação não fornecida'
-        ]);
+        return ['success' => false, 'message' => 'Produto não encontrado'];
+    }
+
+    /**
+     * @return array
+     */
+    private function excluirProduto(): array
+    {
+        $result = (new Produto())->deleteById($_POST['productId']);
+
+        return $result ?
+            ['success' => true, 'message' => 'Produto excluído com sucesso'] :
+            ['success' => false, 'message' => 'Erro ao excluir o produto'];
+    }
+
+    /**
+     * @return array
+     */
+    private function listarProduto(): array
+    {
+        $produtos = (new Produto())->getAll();
+
+        return $produtos ?
+            ['success' => true, 'produtos' => $produtos] :
+            ['success' => false, 'message' => 'Nenhum produto encontrado.'];
+
     }
 }
+
+$controller = new ProductController();
+$controller->handleRequest();

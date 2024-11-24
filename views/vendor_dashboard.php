@@ -2,35 +2,35 @@
 <html lang="en">
 
 <head>
+    <title>Dashboard de Vendas</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../config/global.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <title>Dashboard de Vendas</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../config/global.js"></script>
 </head>
 
 <body class="dashboard-body">
-    <nav class="sidebar toggle">
-        <div class="close">
-            <i class='bx bx-x-circle' id="menu-icon"></i>
-            <i class='bx bx-menu' id="close-icon" style="display: none;"></i>
-        </div>
+<nav class="sidebar toggle">
+    <div class="close">
+        <i class='bx bx-x-circle' id="menu-icon"></i>
+        <i class='bx bx-menu' id="close-icon" style="display: none;"></i>
+    </div>
 
-        <header>
-            <div class="image-text">
+    <header>
+        <div class="image-text">
                 <span class="image">
                     <img src="../assets/icons/logo-svgrepo-com.svg" alt="Logo placeholder">
                 </span>
-                <div class="text header-text">
-                    <span class="name ubuntu-bold">Bem Vindo!</span>
-                    <span class="subheader ubuntu-medium">
-                        <?php echo $_SESSION['usuario']['nome'] ?? 'Usuário'; ?>
-                    </span>
-                </div>
+            <div class="text header-text">
+                <span class="name ubuntu-bold">Bem Vindo!</span>
+                <span class="subheader ubuntu-medium">
+                    <?php echo $_SESSION['usuario']['nome'] ?? 'Usuário'; ?>
+                </span>
             </div>
-        </header>
+        </div>
+    </header>
 
         <div class="menu-bar">
             <div class="menu">
@@ -67,14 +67,13 @@
         </div>
     </nav>
 
-    <main>
-        <!-- Dynamic content will load here -->
-    </main>
+<main>
+    <!-- Dynamic content will load here -->
+</main>
 </body>
 
 <script>
     $(document).ready(function () {
-        // Function to load content dynamically into <main>
         function loadContentIntoMain(url, target) {
             $.ajax({
                 url: url,
@@ -89,7 +88,7 @@
             });
         }
 
-        // Click event for "Menu de Clientes"
+        loadContentIntoMain('../views/client_form.php', 'main');
         $('#menuClientes').click(function (e) {
             e.preventDefault();
             loadContentIntoMain('../views/client_form.php', 'main');
