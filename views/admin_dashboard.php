@@ -61,9 +61,9 @@ session_start();
                             </a>
                         </li>
                         <li class="nav-link">
-                            <a href="#">
+                            <a href="../controllers/logout.php">
                                 <i class='bx bx-log-out nav-icon'></i>
-                                <span class="text nav-text  ubuntu-medium">Logout</span>
+                                <span class="text nav-text ubuntu-medium">Logout</span>
                             </a>
                         </li>
                     </ul>

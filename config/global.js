@@ -96,7 +96,7 @@ $(document).ready(function () {
         $.ajax({
             url: '../controllers/cliente_controller.php',
             type: 'POST',
-            data: { action: 'listar' },
+            data: {action: 'listar'},
             dataType: 'json',
             success: function (response) {
                 if (response.success) {
@@ -173,7 +173,6 @@ $(document).ready(function () {
         });
     }
 
-    // Open Modal for Editing Client
     function abrirModalEdicao(client) {
         $('#formCadastrarCliente').data('id', client.id);
         $('#nome').val(client.nome);
@@ -193,7 +192,6 @@ $(document).ready(function () {
         $('#modalCadastro').show();
     }
 
-    // Delete Client
     function excluirCliente(clienteId) {
         Swal.fire({
             title: 'Are you sure?',
@@ -207,7 +205,7 @@ $(document).ready(function () {
                 $.ajax({
                     url: '../controllers/cliente_controller.php',
                     type: 'POST',
-                    data: { action: 'excluir', clienteId },
+                    data: {action: 'excluir', clienteId},
                     success: function (response) {
                         const res = JSON.parse(response);
                         if (res.success) {

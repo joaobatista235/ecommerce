@@ -8,7 +8,9 @@ class Pedido implements GenericInterface
     private $id_cliente;
     private $id_vendedor;
     private $data;
-    private $total;
+    private $observacao;
+    private $forma_pagto;
+    private $prazo_entrega;
     private $conn;
 
     public function __construct()
@@ -16,6 +18,7 @@ class Pedido implements GenericInterface
         $this->conn = (new Database())->getConnection();
     }
 
+    // Getters
     public function getId()
     {
         return $this->id;
@@ -32,11 +35,20 @@ class Pedido implements GenericInterface
     {
         return $this->data;
     }
-    public function getTotal()
+    public function getObservacao()
     {
-        return $this->total;
+        return $this->observacao;
+    }
+    public function getFormaPagto()
+    {
+        return $this->forma_pagto;
+    }
+    public function getPrazoEntrega()
+    {
+        return $this->prazo_entrega;
     }
 
+    // Setters
     public function setId($id)
     {
         $this->id = $id;
@@ -53,26 +65,50 @@ class Pedido implements GenericInterface
     {
         $this->data = $data;
     }
-    public function setTotal($total)
+    public function setObservacao($observacao)
     {
-        $this->total = $total;
+        $this->observacao = $observacao;
+    }
+    public function setFormaPagto($forma_pagto)
+    {
+        $this->forma_pagto = $forma_pagto;
+    }
+    public function setPrazoEntrega($prazo_entrega)
+    {
+        $this->prazo_entrega = $prazo_entrega;
     }
 
+    // Save Method (INSERT or UPDATE)
     public function save()
     {
         if ($this->id) {
-            $stmt = mysqli_prepare($this->conn, "UPDATE pedidos SET id_cliente=?, id_vendedor=?, data=?, total=? WHERE id=?");
-            mysqli_stmt_bind_param($stmt, "iisdi", $this->id_cliente, $this->id_vendedor, $this->data, $this->total, $this->id);
+            // Update existing Pedido
+            $stmt = mysqli_prepare($this->conn, "UPDATE pedidos SET id_cliente=?, id_vendedor=?, data=?, observacao=?, forma_pagto=?, prazo_entrega=? WHERE id=?");
+            mysqli_stmt_bind_param($stmt, "iissisi", $this->id_cliente, $this->id_vendedor, $this->data, $this->observacao, $this->forma_pagto, $this->prazo_entrega, $this->id);
         } else {
-            $stmt = mysqli_prepare($this->conn, "INSERT INTO pedidos (id_cliente, id_vendedor, data, total) VALUES (?, ?, ?, ?)");
-            mysqli_stmt_bind_param($stmt, "iisd", $this->id_cliente, $this->id_vendedor, $this->data, $this->total);
+            // Insert new Pedido
+            $stmt = mysqli_prepare($this->conn, "INSERT INTO pedidos (id_cliente, id_vendedor, data, observacao, forma_pagto, prazo_entrega) VALUES (?, ?, ?, ?, ?, ?)");
+            mysqli_stmt_bind_param($stmt, "iissis", $this->id_cliente, $this->id_vendedor, $this->data, $this->observacao, $this->forma_pagto, $this->prazo_entrega);
+
+            // Execute the statement
+            $result = mysqli_stmt_execute($stmt);
+
+            // If successful, get the inserted ID
+            if ($result) {
+                $this->id = mysqli_insert_id($this->conn);
+                return $this->id;
+            }
+            return false;
         }
-        return mysqli_stmt_execute($stmt);
+        return mysqli_stmt_execute($stmt); // For update operation
     }
 
-    public static function getById($id)
+
+    // Get Pedido by ID
+    public function getById($id)
     {
-        $stmt = mysqli_prepare($this->conn, "SELECT * FROM pedidos WHERE id = ?");
+        $conn = (new Database())->getConnection();
+        $stmt = mysqli_prepare($conn, "SELECT * FROM pedidos WHERE id = ?");
         mysqli_stmt_bind_param($stmt, "i", $id);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
@@ -83,15 +119,19 @@ class Pedido implements GenericInterface
             $pedido->setIdCliente($data['id_cliente']);
             $pedido->setIdVendedor($data['id_vendedor']);
             $pedido->setData($data['data']);
-            $pedido->setTotal($data['total']);
+            $pedido->setObservacao($data['observacao']);
+            $pedido->setFormaPagto($data['forma_pagto']);
+            $pedido->setPrazoEntrega($data['prazo_entrega']);
             return $pedido;
         }
         return null;
     }
 
-    public static function getAll()
+    // Get All Pedidos
+    public function getAll()
     {
-        $stmt = mysqli_prepare($this->conn, "SELECT * FROM pedidos");
+        $conn = (new Database())->getConnection();
+        $stmt = mysqli_prepare($conn, "SELECT * FROM pedidos");
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         $pedidos = [];
@@ -102,12 +142,15 @@ class Pedido implements GenericInterface
             $pedido->setIdCliente($data['id_cliente']);
             $pedido->setIdVendedor($data['id_vendedor']);
             $pedido->setData($data['data']);
-            $pedido->setTotal($data['total']);
+            $pedido->setObservacao($data['observacao']);
+            $pedido->setFormaPagto($data['forma_pagto']);
+            $pedido->setPrazoEntrega($data['prazo_entrega']);
             $pedidos[] = $pedido;
         }
         return $pedidos;
     }
 
+    // Delete Pedido
     public function delete()
     {
         if ($this->id) {

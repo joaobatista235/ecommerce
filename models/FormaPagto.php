@@ -32,19 +32,21 @@ class FormaPagto implements GenericInterface
 
     public function save()
     {
+        $conn = (new Database())->getConnection();
         if ($this->id) {
-            $stmt = mysqli_prepare($this->conn, "UPDATE forma_pagto SET nome=? WHERE id=?");
+            $stmt = mysqli_prepare($conn , "UPDATE forma_pagto SET nome=? WHERE id=?");
             mysqli_stmt_bind_param($stmt, "si", $this->nome, $this->id);
         } else {
-            $stmt = mysqli_prepare($this->conn, "INSERT INTO forma_pagto (nome) VALUES (?)");
+            $stmt = mysqli_prepare($conn, "INSERT INTO forma_pagto (nome) VALUES (?)");
             mysqli_stmt_bind_param($stmt, "s", $this->nome);
         }
         return mysqli_stmt_execute($stmt);
     }
 
-    public static function getById($id)
+    public function getById($id)
     {
-        $stmt = mysqli_prepare($this->conn, "SELECT * FROM forma_pagto WHERE id = ?");
+        $conn = (new Database())->getConnection();
+        $stmt = mysqli_prepare($conn, "SELECT * FROM forma_pagto WHERE id = ?");
         mysqli_stmt_bind_param($stmt, "i", $id);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
@@ -58,9 +60,10 @@ class FormaPagto implements GenericInterface
         return null;
     }
 
-    public static function getAll()
+    public function getAll()
     {
-        $stmt = mysqli_prepare($this->conn, "SELECT * FROM forma_pagto");
+        $conn = (new Database())->getConnection();
+        $stmt = mysqli_prepare($conn, "SELECT * FROM forma_pagto");
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         $formas = [];
@@ -76,8 +79,9 @@ class FormaPagto implements GenericInterface
 
     public function delete()
     {
+        $conn = (new Database())->getConnection();
         if ($this->id) {
-            $stmt = mysqli_prepare($this->conn, "DELETE FROM forma_pagto WHERE id = ?");
+            $stmt = mysqli_prepare($conn, "DELETE FROM forma_pagto WHERE id = ?");
             mysqli_stmt_bind_param($stmt, "i", $this->id);
             return mysqli_stmt_execute($stmt);
         }
