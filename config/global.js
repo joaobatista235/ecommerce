@@ -226,3 +226,4 @@ $(document).ready(function () {
     // Initial Binding
     bindTableHandlers();
 });
+

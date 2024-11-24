@@ -1,4 +1,4 @@
--- Active: 1729355366311@@127.0.0.1@3306@ecommerce
+-- Active: 1732468426404@@127.0.0.1@3306
 CREATE DATABASE  ecommerce;
 
 USE ecommerce;
@@ -34,6 +34,13 @@ CREATE TABLE vendedor (
     senha VARCHAR(255)
 );
  
+-- Criar tabela fornecedores
+CREATE TABLE fornecedores (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(255) NOT NULL,
+    contato VARCHAR(255)
+);
+
 -- Criar tabela 'produto'
 CREATE TABLE produto (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -41,7 +48,9 @@ CREATE TABLE produto (
     qtde_estoque INT DEFAULT 0,
     preco DECIMAL(15, 2) CHECK (preco >= 0),
     unidade_medida VARCHAR(10),
-    promocao CHAR(1) DEFAULT 'N' CHECK (promocao IN ('Y', 'N'))
+    promocao CHAR(1) DEFAULT 'N' CHECK (promocao IN ('Y', 'N')),
+    id_fornecedor INT,
+    FOREIGN KEY (id_fornecedor) REFERENCES fornecedores(id)
 );
  
 -- Criar tabela 'forma_pagto'
@@ -50,6 +59,8 @@ CREATE TABLE forma_pagto (
     nome VARCHAR(255) NOT NULL
 );
  
+
+
 -- Criar tabela 'pedidos'
 CREATE TABLE pedidos (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -72,16 +83,6 @@ CREATE TABLE itens_pedido (
     id_item INT PRIMARY KEY AUTO_INCREMENT,
     FOREIGN KEY (id_pedido) REFERENCES pedidos(id),
     FOREIGN KEY (id_produto) REFERENCES produto(id)
-);
-
--- Criar tabela 'imagens_produto'
-CREATE TABLE imagens_produto (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    id_produto INT NOT NULL,
-    url VARCHAR(255) NOT NULL,
-    descricao VARCHAR(255),
-    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_produto) REFERENCES produto(id) ON DELETE CASCADE
 );
 
 CREATE TABLE admins (
@@ -108,6 +109,9 @@ VALUES
   ('Mochila Escolar', 150, 79.90, 'un', 'N');
 
 
+INSERT INTO forma_pagto (nome) VALUES ('Cartão de Crédito');
+INSERT INTO forma_pagto (nome) VALUES ('Boleto Bancário');
+INSERT INTO forma_pagto (nome) VALUES ('PIX');
 
 
 INSERT INTO clientes (nome, endereco, numero, bairro, cidade, estado, email, cpf_cnpj, rg, telefone, celular, data_nasc, salario) 
