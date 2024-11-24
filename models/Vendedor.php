@@ -12,6 +12,7 @@ class Vendedor implements GenericInterface
     private $celular;
     private $email;
     private $perc_comissao;
+    private $data_admissao;
     private $senha;
     private $conn;
 
@@ -100,6 +101,16 @@ class Vendedor implements GenericInterface
         $this->perc_comissao = $perc_comissao;
     }
 
+    public function getDataAdmissao()
+    {
+        return $this->data_admissao;
+    }
+
+    public function setDataAdmissao($data_admissao)
+    {
+        $this->data_admissao = $data_admissao;
+    }
+
     public function getSenha()
     {
         return $this->senha;
@@ -110,6 +121,9 @@ class Vendedor implements GenericInterface
         $this->senha = $senha;
     }
 
+    /**
+     * @throws Exception
+     */
     public function save(): bool
     {
         if (!$this->conn) {
@@ -118,11 +132,11 @@ class Vendedor implements GenericInterface
 
         try {
             if ($this->id) {
-                $stmt = mysqli_prepare($this->conn, "UPDATE vendedor SET nome=?, endereco=?, cidade=?, estado=?, celular=?, email=?, perc_comissao=?, data_admissao=?, setor=?, senha=? WHERE id=?");
-                mysqli_stmt_bind_param($stmt, "ssssssss", $this->nome, $this->endereco, $this->cidade, $this->estado, $this->celular, $this->email, $this->perc_comissao,  $this->senha, $this->id);
+                $stmt = mysqli_prepare($this->conn, "UPDATE vendedor SET nome=?, endereco=?, cidade=?, estado=?, celular=?, email=?, perc_comissao=?, data_admissao=?, senha=? WHERE id=?");
+                mysqli_stmt_bind_param($stmt, "ssssssssss", $this->nome, $this->endereco, $this->cidade, $this->estado, $this->celular, $this->email, $this->perc_comissao, $this->data_admissao, $this->senha, $this->id);
             } else {
-                $stmt = mysqli_prepare($this->conn, "INSERT INTO vendedor (nome, endereco, cidade, estado, celular, email, perc_comissao, data_admissao, setor, senha) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                mysqli_stmt_bind_param($stmt, "ssssssss", $this->nome, $this->endereco, $this->cidade, $this->estado, $this->celular, $this->email, $this->perc_comissao,  $this->senha);
+                $stmt = mysqli_prepare($this->conn, "INSERT INTO vendedor (nome, endereco, cidade, estado, celular, email, perc_comissao, data_admissao, senha) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                mysqli_stmt_bind_param($stmt, "sssssssss", $this->nome, $this->endereco, $this->cidade, $this->estado, $this->celular, $this->email, $this->perc_comissao, $this->data_admissao, $this->senha);
             }
 
             return mysqli_stmt_execute($stmt);
@@ -132,6 +146,10 @@ class Vendedor implements GenericInterface
         }
     }
 
+    /**
+     * @param $id
+     * @return Vendedor|null
+     */
     public function getById($id): Vendedor|null
     {
         $stmt = mysqli_prepare($this->conn, "SELECT * FROM vendedor WHERE id = ?");
@@ -149,12 +167,16 @@ class Vendedor implements GenericInterface
             $vendedor->setCelular($data['celular']);
             $vendedor->setEmail($data['email']);
             $vendedor->setPercComissao($data['perc_comissao']);
+            $vendedor->setDataAdmissao($data['data_admissao']);
             $vendedor->setSenha($data['senha']);
             return $vendedor;
         }
         return null;
     }
 
+    /**
+     * @return array
+     */
     public function getAll(): array
     {
         $stmt = mysqli_prepare($this->conn, "SELECT * FROM vendedor");
@@ -163,21 +185,25 @@ class Vendedor implements GenericInterface
         $vendedores = [];
 
         while ($data = mysqli_fetch_assoc($result)) {
-            $vendedor = new Vendedor();
-            $vendedor->setId($data['id']);
-            $vendedor->setNome($data['nome']);
-            $vendedor->setEndereco($data['endereco']);
-            $vendedor->setCidade($data['cidade']);
-            $vendedor->setEstado($data['estado']);
-            $vendedor->setCelular($data['celular']);
-            $vendedor->setEmail($data['email']);
-            $vendedor->setPercComissao($data['perc_comissao']);
-            $vendedor->setSenha($data['senha']);
-            $vendedores[] = $vendedor;
+            $vendedores[] = [
+                'id' => $data['id'],
+                'nome' => $data['nome'],
+                'endereco' => $data['endereco'],
+                'cidade' => $data['cidade'],
+                'estado' => $data['estado'],
+                'celular' => $data['celular'],
+                'email' => $data['email'],
+                'perc_comissao' => $data['perc_comissao'],
+                'data_admissao' => $data['data_admissao'],
+                'senha' => $data['senha']
+            ];
         }
         return $vendedores;
     }
 
+    /**
+     * @return bool
+     */
     public function delete(): bool
     {
         if ($this->id) {
@@ -188,13 +214,18 @@ class Vendedor implements GenericInterface
         return false;
     }
 
-    public function getByCredentials($email,$senha){
+    /**
+     * @param string $email
+     * @param string $senha
+     * @return Vendedor|null
+     */
+    public function getByCredentials(string $email, string $senha): ?Vendedor
+    {
         $stmt = mysqli_prepare($this->conn, "SELECT * FROM vendedor WHERE email = ? AND senha = ?");
-        mysqli_stmt_bind_param($stmt, "ss", $email,$senha);
+        mysqli_stmt_bind_param($stmt, "ss", $email, $senha);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         if ($data = mysqli_fetch_assoc($result)) {
-            // Create Vendedor object and populate it directly
             $vendedor = new Vendedor();
             $vendedor->setId($data['id']);
             $vendedor->setNome($data['nome']);
@@ -204,10 +235,21 @@ class Vendedor implements GenericInterface
             $vendedor->setCelular($data['celular']);
             $vendedor->setEmail($data['email']);
             $vendedor->setPercComissao($data['perc_comissao']);
+            $vendedor->setDataAdmissao($data['data_admissao']);
             $vendedor->setSenha($data['senha']);
             return $vendedor;
         }
 
         return null;
+    }
+
+    public function deleteById(?int $vendedorId): bool
+    {
+        if(!empty($vendedorId)){
+            $stmt = mysqli_prepare($this->conn, "DELETE FROM vendedor WHERE id = ?");
+            mysqli_stmt_bind_param($stmt, "i", $vendedorId);
+            return mysqli_stmt_execute($stmt);
+        }
+        return false;
     }
 }

@@ -32,40 +32,40 @@
         </div>
     </header>
 
-        <div class="menu-bar">
-            <div class="menu">
-                <div class="menu-links">
-                    <ul class="menu-links">
-                        <li class="nav-link" id="menuClientes">
-                            <a href="#">
-                                <i class='bx bxs-contact nav-icon'></i>
-                                <span class="text nav-text ubuntu-medium">Menu de Clientes</span>
-                            </a>
-                        </li>
-                        <li class="nav-link" id="menuProdutos">
-                            <a href="#">
-                                <i class='bx bxs-purchase-tag nav-icon'></i>
-                                <span class="text nav-text ubuntu-medium">Menu de Produtos</span>
-                            </a>
-                        </li>
-                        <li class="nav-link">
-                            <a href="pedidos.php">
-                                <i class='bx bx-package nav-icon'></i>
-                                <span class="text nav-text ubuntu-medium">Menu de Pedidos</span>
-                            </a>
-                        </li>
-                        <li class="nav-link">
-                            <a href="../controllers/logout.php">
-                                <i class='bx bx-log-out nav-icon'></i>
-                                <span class="text nav-text ubuntu-medium">Logout</span>
-                            </a>
-                        </li>
+    <div class="menu-bar">
+        <div class="menu">
+            <div class="menu-links">
+                <ul class="menu-links">
+                    <li class="nav-link" id="menuClientes">
+                        <a href="#">
+                            <i class='bx bxs-contact nav-icon'></i>
+                            <span class="text nav-text ubuntu-medium">Menu de Clientes</span>
+                        </a>
+                    </li>
+                    <li class="nav-link" id="menuProdutos">
+                        <a href="#">
+                            <i class='bx bxs-purchase-tag nav-icon'></i>
+                            <span class="text nav-text ubuntu-medium">Menu de Produtos</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="pedidos.php">
+                            <i class='bx bx-package nav-icon'></i>
+                            <span class="text nav-text ubuntu-medium">Menu de Pedidos</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="../controllers/logout.php">
+                            <i class='bx bx-log-out nav-icon'></i>
+                            <span class="text nav-text ubuntu-medium">Logout</span>
+                        </a>
+                    </li>
 
-                    </ul>
-                </div>
+                </ul>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
 
 <main>
     <!-- Dynamic content will load here -->

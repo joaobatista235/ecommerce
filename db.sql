@@ -31,6 +31,7 @@ CREATE TABLE vendedor (
     celular VARCHAR(20),
     email VARCHAR(255),
     perc_comissao DECIMAL(5, 2),
+    data_admissao DATE,
     senha VARCHAR(255)
 );
  

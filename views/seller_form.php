@@ -1,0 +1,124 @@
+<?php
+require_once "../models/Vendedor.php";
+$vendedor = new Vendedor();
+
+$vendedores = $vendedor->getAll();
+?>
+
+<script src="../js/seller.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="../config/global.css">
+
+<div class="listing-container">
+    <div class="listing-header">
+        <h1 class="ubuntu-bold">Listagem de Vendedores</h1>
+        <button onclick="abrirModalCadastro()" class="btn ubuntu-medium">Cadastrar vendedor</button>
+    </div>
+    <div class="table">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Endereço</th>
+                <th>Cidade</th>
+                <th>Estado</th>
+                <th>Celular</th>
+                <th>Email</th>
+                <th>% Comissão</th>
+                <th>Data de admissão</th>
+                <th>Senha</th>
+                <th colspan="2">Operações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            if (!empty($vendedores)) {
+                foreach ($vendedores as $vendedor) {
+                    echo "<tr data-id='" . $vendedor['id'] . "' class='vendedor-row'>";
+                    echo "<td>" . $vendedor['id'] . "</td>";
+                    echo "<td>" . $vendedor['nome'] . "</td>";
+                    echo "<td>" . $vendedor['endereco'] . "</td>";
+                    echo "<td>" . $vendedor['cidade'] . "</td>";
+                    echo "<td>" . $vendedor['estado'] . "</td>";
+                    echo "<td>" . $vendedor['celular'] . "</td>";
+                    echo "<td>" . $vendedor['email'] . "</td>";
+                    echo "<td>" . $vendedor['perc_comissao'] . "</td>";
+                    echo "<td>" . $vendedor['data_admissao'] . "</td>";
+                    echo "<td>" . $vendedor['senha'] . "</td>";
+                    echo "<td onclick='abrirModalEdicao(this)'><img width='15px' src='../assets/icons/pen-to-square-solid.svg' data-id='" . $vendedor['id'] . "' alt='Editar'></td>";
+                    echo "<td onclick='excluirVendedor(this)'><img width='15px' src='../assets/icons/trash-solid.svg' data-id='" . $vendedor['id'] . "' alt='Excluir'></td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='7'>Nenhum vendedor encontrado</td></tr>";
+            }
+            ?>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="modalCadastro" class="modal" style="display:none;!important">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Cadastrar Novo Vendedor</h2>
+                <span class="close" id="btnFecharModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="formCadastrarVendedor">
+                    <div class="form-container">
+                        <div class="form-item-modal">
+                            <label for="nome" class="form-item-label">Nome do Vendedor:</label>
+                            <input type="text" id="nome" name="nome" class="input-field" required>
+                        </div>
+
+                        <div class="form-item-modal">
+                            <label for="endereco" class="form-item-label">Endereço:</label>
+                            <input type="text" id="endereco" name="endereco" class="input-field" required>
+                        </div>
+
+                        <div class="form-item-modal">
+                            <label for="cidade" class="form-item-label">Cidade:</label>
+                            <input type="text" id="cidade" name="cidade" class="input-field" required>
+                        </div>
+
+                        <div class="form-item-modal">
+                            <label for="estado" class="form-item-label">Estado:</label>
+                            <input type="text" id="estado" name="estado" class="input-field" required>
+                        </div>
+
+                        <div class="form-item-modal">
+                            <label for="celular" class="form-item-label">Celular:</label>
+                            <input type="text" id="celular" name="celular" class="input-field" required>
+                        </div>
+
+                        <div class="form-item-modal">
+                            <label for="email" class="form-item-label">Email:</label>
+                            <input type="text" id="email" name="email" class="input-field" required>
+                        </div>
+
+                        <div class="form-item-modal">
+                            <label for="comissao" class="form-item-label">Comissão:</label>
+                            <input type="text" id="comissao" name="comissao" class="input-field" required>
+                        </div>
+
+                        <div class="form-item-modal">
+                            <label for="data_admissao" class="form-item-label">Data de admissão:</label>
+                            <input type="date" id="data_admissao" name="data_admissao" class="input-field" required>
+                        </div>
+
+                        <div class="form-item-modal">
+                            <label for="senha" class="form-item-label">Senha:</label>
+                            <input type="text" id="senha" name="senha" class="input-field" required>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn">Cadastrar vendedor</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
