@@ -87,6 +87,7 @@
             });
         }
 
+        loadContentIntoMain('../views/client_form.php', 'main');
         $('#menuClientes').click(function (e) {
             e.preventDefault();
             loadContentIntoMain('../views/client_form.php', 'main');
