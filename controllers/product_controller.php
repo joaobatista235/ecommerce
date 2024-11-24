@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
             $productModel = new Produto();
 
-            $produtoId = isset($_POST['produtoId']) ? $_POST['produtoId'] : null;
+            $produtoId = $_POST['produtoId'] ?? null;
 
             if ($produtoId) {
                 $productModel->setId($produtoId);

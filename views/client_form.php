@@ -8,63 +8,59 @@ $clientes = $cli_model->getAll();
 <script src="../config/global.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<div class="container-client">
-    <div class="tabel-container">
+<div class="listing-container">
+    <div class="listing-header">
+        <h1 class="ubuntu-bold">Listagem de Clientes</h1>
+        <button id="btnCadastrarProduto" class="btn ubuntu-medium">Cadastrar cliente</button>
+    </div>
+    <div class="table">
         <table>
             <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Endereço</th>
-                    <th>Numero</th>
-                    <th>Bairro</th>
-                    <th>Cidade</th>
-                    <th>Estado</th>
-                    <th>Email</th>
-                    <th>CPF/CNPJ</th>
-                    <th>RG</th>
-                    <th>Telefone</th>
-                    <th>Celular</th>
-                    <th>Data de nascimento</th>
-                    <th>Salário</th>
-                    <th>Operações</th>
-                </tr>
+            <tr>
+                <th>Nome</th>
+                <th>Endereço</th>
+                <th>Numero</th>
+                <th>Bairro</th>
+                <th>Cidade</th>
+                <th>Estado</th>
+                <th>Email</th>
+                <th>CPF/CNPJ</th>
+                <th>RG</th>
+                <th>Telefone</th>
+                <th>Celular</th>
+                <th>Data de nascimento</th>
+                <th>Salário</th>
+                <th colspan="2">Operações</th>
+            </tr>
             </thead>
             <tbody>
-                <?php
-                if (!empty($clientes)) {
-                    foreach ($clientes as $cliente) {
-                        echo "<tr data-id='" . $cliente->getId() . "' class='client-row'>";
-                        echo "<td>" . $cliente->getNome() . "</td>";
-                        echo "<td>" . $cliente->getEndereco() . "</td>";
-                        echo "<td>" . $cliente->getNumero() . "</td>";
-                        echo "<td>" . $cliente->getBairro() . "</td>";
-                        echo "<td>" . $cliente->getCidade() . "</td>";
-                        echo "<td>" . $cliente->getEstado() . "</td>";
-                        echo "<td>" . $cliente->getEmail() . "</td>";
-                        echo "<td>" . $cliente->getCpfCnpj() . "</td>";
-                        echo "<td>" . $cliente->getRg() . "</td>";
-                        echo "<td>" . $cliente->getTelefone() . "</td>";
-                        echo "<td>" . $cliente->getCelular() . "</td>";
-                        echo "<td>" . date('d/m/Y', strtotime($cliente->getDataNasc())) . "</td>";
-                        echo "<td>R$ " . number_format($cliente->getSalario(), 2, ',', '.') . "</td>";
-                        echo "<td>";
-                        echo "<button class='btnEditar btnCli' data-id='" . $cliente->getId() . "'>Editar</button>";
-                        echo " ";
-                        echo "<button class='btnExcluir btnCli' data-id='" . $cliente->getId() . "'>Excluir</button>";
-                        echo "</td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='14'>Nenhum cliente encontrado</td></tr>";
+            <?php
+            if (!empty($clientes)) {
+                foreach ($clientes as $cliente) {
+                    echo "<tr data-id='" . $cliente->getId() . "' class='client-row'>";
+                    echo "<td>" . $cliente->getNome() . "</td>";
+                    echo "<td>" . $cliente->getEndereco() . "</td>";
+                    echo "<td>" . $cliente->getNumero() . "</td>";
+                    echo "<td>" . $cliente->getBairro() . "</td>";
+                    echo "<td>" . $cliente->getCidade() . "</td>";
+                    echo "<td>" . $cliente->getEstado() . "</td>";
+                    echo "<td>" . $cliente->getEmail() . "</td>";
+                    echo "<td>" . $cliente->getCpfCnpj() . "</td>";
+                    echo "<td>" . $cliente->getRg() . "</td>";
+                    echo "<td>" . $cliente->getTelefone() . "</td>";
+                    echo "<td>" . $cliente->getCelular() . "</td>";
+                    echo "<td>" . date('d/m/Y', strtotime($cliente->getDataNasc())) . "</td>";
+                    echo "<td>R$ " . number_format($cliente->getSalario(), 2, ',', '.') . "</td>";
+                    echo "<td><img width='15px' class='btnEditar' src='../assets/icons/pen-to-square-solid.svg' data-id='" . $cliente->getId() . "' alt='Editar'></td>";
+                    echo "<td><img width='15px' class='btnExcluir' src='../assets/icons/trash-solid.svg' data-id='" . $cliente->getId() . "' alt='Excluir'></td>";
+                    echo "</tr>";
                 }
-                ?>
+            } else {
+                echo "<tr><td colspan='14'>Nenhum cliente encontrado</td></tr>";
+            }
+            ?>
             </tbody>
         </table>
-        <div class="buttons" style="display:flex">
-            <button class="btn">Ver mais produtos</button>
-            <button id="btnCadastrarProduto" class="btn">Cadastrar produto</button>
-        </div>
-    
 
         <div id="modalCadastro" class="modal" style="display:none;">
             <div class="modal-content">
@@ -161,10 +157,5 @@ $clientes = $cli_model->getAll();
                 </div>
             </div>
         </div>
-
     </div>
-
-
-
-
 </div>

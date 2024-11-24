@@ -65,7 +65,7 @@
                 $('#responseMessage').css('display', 'none').removeClass('success error');
 
                 if (response.success) {
-                    let redirectUrl = response.redirectUrl;
+                    let redirectUrl = '/ecommerce' + response.redirectUrl;
 
                     $('#responseMessage').addClass('success')
                         .html('<p>Login successful! Redirecting...</p>')
