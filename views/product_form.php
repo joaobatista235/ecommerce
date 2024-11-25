@@ -232,8 +232,8 @@ $produtos = $productModel->getAll();
                                     <td class="price">R$ ${produto.preco}</td>
                                     <td>${produto.unidade_medida}</td>
                                     <td class="${produto.promocao === 'Y' ? 'promo' : 'no-promo'}">${produto.promocao === 'Y' ? 'Sim' : 'Não'}</td>
-                                    <td onclick="abrirModalEdicao(this)"><img width='15px' class="btnEditar" src="../assets/icons/pen-to-square-solid.svg" data-id="${produto.id}" alt="Excluir"></td>
-                                    <td onclick="excluirProduto(this)"><img width='15px' class='btnExcluir' src='../assets/icons/trash-solid.svg' data-id="${produto.id}" alt='Excluir'></td>
+                                    <td onclick="abrirModalEdicao(this)"><img width='15px' class="btnEditar" src="../assets/icons/pen-to-square-solid.svg" alt="Excluir"></td>
+                                    <td onclick="excluirProduto(this)"><img width='15px' class='btnExcluir' src='../assets/icons/trash-solid.svg' alt='Excluir'></td>
                                 `;
                                 tbody.appendChild(tr);
                             });

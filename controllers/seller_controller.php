@@ -64,6 +64,7 @@ class SellerController
             $vendedor->setCelular($_POST['celular']);
             $vendedor->setEmail($_POST['email']);
             $vendedor->setPercComissao($_POST['comissao']);
+            $vendedor->setDataAdmissao($_POST['data_admissao']);
             $vendedor->setSenha($_POST['senha']);
 
             return $vendedor->save()
@@ -80,7 +81,6 @@ class SellerController
     {
         $result = (new Vendedor())->deleteById($_POST['id']);
 
-        //return ['msg' => $result];
         return $result ?
             ['success' => true, 'message' => 'Vendedor excluído com sucesso'] :
             ['success' => false, 'message' => 'Erro ao excluir o vendedor'];

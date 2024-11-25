@@ -36,6 +36,13 @@ $vendedores = $vendedor->getAll();
             <?php
             if (!empty($vendedores)) {
                 foreach ($vendedores as $vendedor) {
+                    $data_admissao = $vendedor['data_admissao'];
+                    $class = '';
+                    if (empty($vendedor['data_admissao'])) {
+                        $data_admissao = '00/00/0000';
+                        $class = "style='color:#A0A1A7'";
+                    }
+                    $data_admissao = $vendedor['data_admissao'] ? date('d/m/Y', strtotime($vendedor['data_admissao'])) : '00/00/0000';
                     echo "<tr data-id='" . $vendedor['id'] . "' class='vendedor-row'>";
                     echo "<td>" . $vendedor['id'] . "</td>";
                     echo "<td>" . $vendedor['nome'] . "</td>";
@@ -45,10 +52,10 @@ $vendedores = $vendedor->getAll();
                     echo "<td>" . $vendedor['celular'] . "</td>";
                     echo "<td>" . $vendedor['email'] . "</td>";
                     echo "<td>" . $vendedor['perc_comissao'] . "</td>";
-                    echo "<td>" . $vendedor['data_admissao'] . "</td>";
+                    echo "<td " . $class . ">" . $data_admissao . "</td>";
                     echo "<td>" . $vendedor['senha'] . "</td>";
-                    echo "<td onclick='abrirModalEdicao(this)'><img width='15px' src='../assets/icons/pen-to-square-solid.svg' data-id='" . $vendedor['id'] . "' alt='Editar'></td>";
-                    echo "<td onclick='excluirVendedor(this)'><img width='15px' src='../assets/icons/trash-solid.svg' data-id='" . $vendedor['id'] . "' alt='Excluir'></td>";
+                    echo "<td onclick='abrirModalEdicao(this)'><img width='15px' src='../assets/icons/pen-to-square-solid.svg' alt='Editar'></td>";
+                    echo "<td onclick='excluirVendedor(this)'><img width='15px' src='../assets/icons/trash-solid.svg' alt='Excluir'></td>";
                     echo "</tr>";
                 }
             } else {
@@ -63,7 +70,12 @@ $vendedores = $vendedor->getAll();
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Cadastrar Novo Vendedor</h2>
-                <span class="close" id="btnFecharModal">&times;</span>
+
+                    <svg class='modal-header-close-button' id="btnFecharModal" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14 1.41L12.59 0L7 5.59L1.41 0L0 1.41L5.59 7L0 12.59L1.41 14L7 8.41L12.59 14L14 12.59L8.41 7L14 1.41Z" fill="black" fill-opacity="0.54"/>
+</svg>
+
+
             </div>
             <div class="modal-body">
                 <form id="formCadastrarVendedor">

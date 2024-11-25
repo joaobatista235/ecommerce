@@ -243,6 +243,10 @@ class Vendedor implements GenericInterface
         return null;
     }
 
+    /**
+     * @param int|null $vendedorId
+     * @return bool
+     */
     public function deleteById(?int $vendedorId): bool
     {
         if(!empty($vendedorId)){

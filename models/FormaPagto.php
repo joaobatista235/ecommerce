@@ -98,4 +98,18 @@ class FormaPagto implements GenericInterface
         }
         return false;
     }
+
+    /**
+     * @param int|null $pagamentoId
+     * @return bool
+     */
+    public function deleteById(?int $pagamentoId): bool
+    {
+        if (!empty($pagamentoId)) {
+            $stmt = mysqli_prepare($this->conn, "DELETE FROM forma_pagto WHERE id = ?");
+            mysqli_stmt_bind_param($stmt, "i", $pagamentoId);
+            return mysqli_stmt_execute($stmt);
+        }
+        return false;
+    }
 }
