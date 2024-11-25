@@ -28,13 +28,15 @@ $formasPagamento = $pagamento->getAll();
             <?php
             if (!empty($formasPagamento)) {
                 foreach ($formasPagamento as $pagamento) {
-                    echo "<tr data-id='" . $pagamento['id'] . "' class='product-row'>";
-                    echo "<td>" . $pagamento['id'] . "</td>";
-                    echo "<td>" . $pagamento['nome'] . "</td>";
+                    echo "<tr data-id='" . $pagamento->getId() . "' class='product-row'>";
+                    echo "<td>" . $pagamento->getId() . "</td>";
+                    echo "<td>" . $pagamento->getNome() . "</td>";
                     echo "<td onclick='abrirModalEdicao(this)'><img width='15px' src='../assets/icons/pen-to-square-solid.svg' alt='Editar'></td>";
                     echo "<td onclick='excluirPagamento(this)'><img width='15px' src='../assets/icons/trash-solid.svg' alt='Excluir'></td>";
                     echo "</tr>";
                 }
+
+
             } else {
                 echo "<tr><td colspan='4'>Nenhuma forma de pagamento encontrado</td></tr>";
             }
