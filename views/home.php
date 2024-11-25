@@ -64,13 +64,13 @@
                     $('#responseMessage').css('display', 'none').removeClass('success error');
 
                     if (response.success) {
-                        let redirectUrl = /* '/ecommerce' + */ response.redirectUrl;
+                        let redirectUrl = '/ecommerce' + response.redirectUrl;
 
                         $('#responseMessage').addClass('success')
                             .html('<p>Login successful! Redirecting...</p>')
                             .css('display', 'block');
                         setTimeout(() => {
-                            window.location.href = 'ecommerce/' + redirectUrl;
+                            window.location.href = redirectUrl;
                         }, 2000);
                     } else {
                         // Display error message
@@ -79,7 +79,8 @@
                             .css('display', 'block');
                     }
                 },
-                error: function () {
+                error: function (err) {
+                    console.log(err)
                     $('#responseMessage').css('display', 'none').removeClass('success error').addClass('error')
                         .html('<p>An error occurred. Please try again later.</p>')
                         .css('display', 'block');
