@@ -56,7 +56,7 @@ session_start();
         </span>
         <div class="siderbar__logo_title">
             <span class="name ubuntu-bold"> Bem Vindo! </span>
-            <span class="subheader ubuntu-medium"> Vendedor.name </span>
+            <span class="subheader ubuntu-medium"> <?php echo $_SESSION['usuario']['nome'] ?? 'Usuário'; ?> </span>
         </div>
     </div>
     <nav class="sidebar-navigation">
@@ -81,6 +81,11 @@ session_start();
                 <a href="#">
                     <i class="bx bx-package nav-icon"></i>
                     <span class="text nav-text ubuntu-medium">Menu de Pedidos</span>
+                </a>
+            </li><li id="menuFornecedor" class="nav-link">
+                <a href="#">
+                    <i class="bx bxs-truck nav-icon"></i>
+                    <span class="text nav-text ubuntu-medium">Menu de Fornecedores</span>
                 </a>
             </li>
             <li class="nav-link">
@@ -128,6 +133,10 @@ session_start();
         $("#menuPedidos").click(function (e) {
             e.preventDefault();
             loadContentIntoMain("./orders_form.php", "main");
+        });
+        $("#menuFornecedor").click(function (e) {
+            e.preventDefault();
+            loadContentIntoMain("./fornecedor.php", "main");
         });
     });
 </script>

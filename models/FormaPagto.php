@@ -78,13 +78,14 @@ class FormaPagto implements GenericInterface
         $formas = [];
 
         while ($data = mysqli_fetch_assoc($result)) {
-            $formas[] = [
-                'id' => $data['id'],
-                'nome' => $data['nome']
-            ];
+            $formaPagto = new FormaPagto();
+            $formaPagto->setId($data['id']);
+            $formaPagto->setNome($data['nome']);
+            $formas[] = $formaPagto;
         }
         return $formas;
     }
+
 
     /**
      * @return bool

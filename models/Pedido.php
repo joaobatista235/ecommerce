@@ -11,7 +11,29 @@ class Pedido implements GenericInterface
     private $observacao;
     private $forma_pagto;
     private $prazo_entrega;
+    private $nome_cliente; // New property
+    private $nome_vendedor; // New propert
     private $conn;
+
+    public function getNomeCliente()
+    {
+        return $this->nome_cliente;
+    }
+
+    public function setNomeCliente($nome_cliente): void
+    {
+        $this->nome_cliente = $nome_cliente;
+    }
+
+    public function getNomeVendedor()
+    {
+        return $this->nome_vendedor;
+    }
+
+    public function setNomeVendedor($nome_vendedor): void
+    {
+        $this->nome_vendedor = $nome_vendedor;
+    }
 
     public function __construct()
     {
@@ -128,27 +150,35 @@ class Pedido implements GenericInterface
     }
 
     // Get All Pedidos
-    public function getAll()
+    public function getAll(): array
     {
-        $conn = (new Database())->getConnection();
-        $stmt = mysqli_prepare($conn, "SELECT * FROM pedidos");
+        $stmt = mysqli_prepare($this->conn, "
+        SELECT p.id, p.id_cliente, p.id_vendedor, p.data, p.forma_pagto, p.prazo_entrega, 
+               c.nome AS nome_cliente, v.nome AS nome_vendedor
+        FROM pedidos p
+        LEFT JOIN clientes c ON p.id_cliente = c.id
+        LEFT JOIN vendedor v ON p.id_vendedor = v.id
+    ");
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
-        $pedidos = [];
 
+        $pedidos = [];
         while ($data = mysqli_fetch_assoc($result)) {
             $pedido = new Pedido();
             $pedido->setId($data['id']);
             $pedido->setIdCliente($data['id_cliente']);
             $pedido->setIdVendedor($data['id_vendedor']);
             $pedido->setData($data['data']);
-            $pedido->setObservacao($data['observacao']);
             $pedido->setFormaPagto($data['forma_pagto']);
             $pedido->setPrazoEntrega($data['prazo_entrega']);
+            $pedido->setNomeCliente($data['nome_cliente']);
+            $pedido->setNomeVendedor($data['nome_vendedor']);
             $pedidos[] = $pedido;
         }
+
         return $pedidos;
     }
+
 
     // Delete Pedido
     public function delete()
@@ -160,4 +190,24 @@ class Pedido implements GenericInterface
         }
         return false;
     }
+
+    public function deleteByID($id)
+    {
+        if ($id) {
+            // First, delete dependent records in the 'itens_pedido' table
+            $stmt = mysqli_prepare($this->conn, "DELETE FROM itens_pedido WHERE id_pedido = ?");
+            mysqli_stmt_bind_param($stmt, "i", $id);
+            $result = mysqli_stmt_execute($stmt);
+
+            if ($result) {
+                // Now, delete the record in 'pedidos'
+                $stmt = mysqli_prepare($this->conn, "DELETE FROM pedidos WHERE id = ?");
+                mysqli_stmt_bind_param($stmt, "i", $id);
+                return mysqli_stmt_execute($stmt);
+            }
+        }
+        return false;
+    }
+
+
 }
