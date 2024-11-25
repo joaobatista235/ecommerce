@@ -16,6 +16,7 @@ class FormaPagto implements GenericInterface
     {
         return $this->id;
     }
+
     public function getNome()
     {
         return $this->nome;
@@ -25,28 +26,34 @@ class FormaPagto implements GenericInterface
     {
         $this->id = $id;
     }
+
     public function setNome($nome)
     {
         $this->nome = $nome;
     }
 
-    public function save()
+    /**
+     * @return bool
+     */
+    public function save(): bool
     {
-        $conn = (new Database())->getConnection();
         if ($this->id) {
-            $stmt = mysqli_prepare($conn , "UPDATE forma_pagto SET nome=? WHERE id=?");
+            $stmt = mysqli_prepare($this->conn, "UPDATE forma_pagto SET nome=? WHERE id=?");
             mysqli_stmt_bind_param($stmt, "si", $this->nome, $this->id);
         } else {
-            $stmt = mysqli_prepare($conn, "INSERT INTO forma_pagto (nome) VALUES (?)");
+            $stmt = mysqli_prepare($this->conn, "INSERT INTO forma_pagto (nome) VALUES (?)");
             mysqli_stmt_bind_param($stmt, "s", $this->nome);
         }
         return mysqli_stmt_execute($stmt);
     }
 
-    public function getById($id)
+    /**
+     * @param int $id
+     * @return FormaPagto|null
+     */
+    public function getById(int $id): ?FormaPagto
     {
-        $conn = (new Database())->getConnection();
-        $stmt = mysqli_prepare($conn, "SELECT * FROM forma_pagto WHERE id = ?");
+        $stmt = mysqli_prepare($this->conn, "SELECT * FROM forma_pagto WHERE id = ?");
         mysqli_stmt_bind_param($stmt, "i", $id);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
@@ -60,29 +67,47 @@ class FormaPagto implements GenericInterface
         return null;
     }
 
-    public function getAll()
+    /**
+     * @return array
+     */
+    public function getAll(): array
     {
-        $conn = (new Database())->getConnection();
-        $stmt = mysqli_prepare($conn, "SELECT * FROM forma_pagto");
+        $stmt = mysqli_prepare($this->conn, "SELECT * FROM forma_pagto");
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         $formas = [];
 
         while ($data = mysqli_fetch_assoc($result)) {
-            $formaPagto = new FormaPagto();
-            $formaPagto->setId($data['id']);
-            $formaPagto->setNome($data['nome']);
-            $formas[] = $formaPagto;
+            $formas[] = [
+                'id' => $data['id'],
+                'nome' => $data['nome']
+            ];
         }
         return $formas;
     }
 
-    public function delete()
+    /**
+     * @return bool
+     */
+    public function delete(): bool
     {
-        $conn = (new Database())->getConnection();
         if ($this->id) {
-            $stmt = mysqli_prepare($conn, "DELETE FROM forma_pagto WHERE id = ?");
+            $stmt = mysqli_prepare($this->conn, "DELETE FROM forma_pagto WHERE id = ?");
             mysqli_stmt_bind_param($stmt, "i", $this->id);
+            return mysqli_stmt_execute($stmt);
+        }
+        return false;
+    }
+
+    /**
+     * @param int|null $pagamentoId
+     * @return bool
+     */
+    public function deleteById(?int $pagamentoId): bool
+    {
+        if (!empty($pagamentoId)) {
+            $stmt = mysqli_prepare($this->conn, "DELETE FROM forma_pagto WHERE id = ?");
+            mysqli_stmt_bind_param($stmt, "i", $pagamentoId);
             return mysqli_stmt_execute($stmt);
         }
         return false;
