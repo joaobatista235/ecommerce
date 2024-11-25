@@ -113,8 +113,8 @@ $vendedores = $vendedor->getAll();
                         </div>
 
                         <div class="form-item-modal">
-                            <label for="perc_comissao" class="form-item-label">Comissão:</label>
-                            <input type="text" id="perc_comissao" name="perc_comissao" class="input-field" required>
+                            <label for="comissao" class="form-item-label">Comissão:</label>
+                            <input type="text" id="comissao" name="comissao" class="input-field" required>
                         </div>
 
                         <div class="form-item-modal">
@@ -139,8 +139,11 @@ $vendedores = $vendedor->getAll();
     <div id="relatorio">
         <div class="relatorio-container">
             <div class="relatorio-header">
-                <h2>Gerar relatório</h2>
+                <h2 class="ubuntu-bold">Gerar relatório</h2>
             </div>
+            <br>
+            <hr>
+            <br>
             <div class="relatorio-body">
                 <form id="gerarRelatorio">
                     <div style="display: flex; gap: 20px">

@@ -49,7 +49,7 @@ $("#formCadastrarVendedor").submit(function (e) {
         data_admissao: data_admissao,
         senha: senha,
     };
-
+    console.log(formData)
     $.ajax({
         url: "../controllers/seller_controller.php",
         type: "POST",
@@ -102,7 +102,7 @@ function abrirModalEdicao(el) {
         estado: row.find("td").eq(4).text(),
         celular: row.find("td").eq(5).text(),
         email: row.find("td").eq(6).text(),
-        perc_comissao: row.find("td").eq(7).text(),
+        comissao: row.find("td").eq(7).text(),
         data_admissao: row.find("td").eq(8).text(),
         senha: row.find("td").eq(9).text(),
     };
@@ -115,7 +115,7 @@ function abrirModalEdicao(el) {
     $("#estado").val(vendedor.estado);
     $("#celular").val(vendedor.celular);
     $("#email").val(vendedor.email);
-    $("#perc_comissao").val(vendedor.perc_comissao);
+    $("#comissao").val(vendedor.comissao);
 
     if (vendedor.data_admissao) {
         const dataNasc = vendedor.data_admissao.split("/");
@@ -129,7 +129,8 @@ function abrirModalEdicao(el) {
 }
 
 function excluirVendedor(el) {
-    const vendedorId = $(el).closest("tr").attr("data-id");
+    const vendedorId = $(el).closest("tr").attr("data-id")
+    console.log(vendedorId)
     Swal.fire({
         title: "Tem certeza?",
         text: "Essa ação não pode ser desfeita!",
@@ -159,7 +160,12 @@ function excluirVendedor(el) {
                 },
                 error: function (err) {
                     console.log(err);
-                    Swal.fire("Error!", "Não foi possível excluir o vendedor.", "error");
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Não foi possível excluir o vendedor.",
+                        icon: "error",
+                        backdrop: false
+                    });
                 },
             });
         }
@@ -179,6 +185,7 @@ function atualizarTabela() {
                 tbody.innerHTML = "";
                 vendedores.forEach((vendedor) => {
                     const tr = document.createElement("tr");
+                    tr.setAttribute("data-id", vendedor.id);
                     let data_admissao = vendedor.data_admissao
                         ? formatarData(vendedor.data_admissao)
                         : "";
@@ -191,7 +198,7 @@ function atualizarTabela() {
                         <td>${vendedor.estado}</td>
                         <td>${vendedor.celular}</td>
                         <td>${vendedor.email}</td>
-                        <td>${vendedor.perc_comissao}</td>
+                        <td>${vendedor.comissao}</td>
                         <td>${data_admissao}</td>
                         <td>${vendedor.senha}</td>
                         <td onclick="abrirModalEdicao(this)"><img width='15px' class="btnEditar" src="../assets/icons/pen-to-square-solid.svg" data-id="${vendedor.id}" alt="Editar"></td>
@@ -212,16 +219,18 @@ function atualizarTabela() {
 function gerarRelatorio() {
     const inicio = $('#inicio').val();
     const fim = $('#fim').val();
-console.log(inicio)
+
     $.ajax({
         url: "../controllers/seller_controller.php",
         type: "POST",
-        data: { action: "gerarRelatorio", inicio: inicio, fim: fim },
+        data: {action: "gerarRelatorio", inicio: inicio, fim: fim},
         dataType: "json",
-        success: function(response) {
+        success: function (response) {
             if (response.success) {
                 let pdfData = atob(response.pdf);
-                let pdfBlob = new Blob([new Uint8Array(pdfData.split("").map(function(c) { return c.charCodeAt(0); }))], { type: 'application/pdf' });
+                let pdfBlob = new Blob([new Uint8Array(pdfData.split("").map(function (c) {
+                    return c.charCodeAt(0);
+                }))], {type: 'application/pdf'});
 
                 let link = document.createElement('a');
                 link.href = URL.createObjectURL(pdfBlob);
@@ -232,7 +241,7 @@ console.log(inicio)
                 alert('Erro: ' + response.message);
             }
         },
-        error: function() {
+        error: function () {
             alert('Erro ao gerar o relatório');
         }
     });
