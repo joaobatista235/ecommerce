@@ -12,7 +12,7 @@ $vendedores = $vendedor->getAll();
 
 <div class="listing-container">
     <div class="listing-header">
-        <h1 class="ubuntu-bold">Listagem de Vendedores</h1>
+        <h1 class="ubuntu-bold" style="color:#6a1b9a">Listagem de Vendedores</h1>
         <button onclick="abrirModalCadastro()" class="btn ubuntu-medium">Cadastrar vendedor</button>
     </div>
     <div class="table">
@@ -69,7 +69,7 @@ $vendedores = $vendedor->getAll();
     <div id="modalCadastro" class="modal" style="display:none;!important">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Cadastrar Novo Vendedor</h2>
+                <h2 style="color:#6a1b9a">Cadastrar Novo Vendedor</h2>
 
                 <svg class='modal-header-close-button' id="btnFecharModal" width="14" height="14" viewBox="0 0 14 14"
                      fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -139,7 +139,7 @@ $vendedores = $vendedor->getAll();
     <div id="relatorio">
         <div class="relatorio-container">
             <div class="relatorio-header">
-                <h2 class="ubuntu-bold">Gerar relatório</h2>
+                <h2 class="ubuntu-bold" style="color:#6a1b9a">Gerar relatório</h2>
             </div>
             <br>
             <hr>

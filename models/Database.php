@@ -14,7 +14,7 @@ class Database
 
     private function connect()	
     {	
-        $this->connection = mysqli_connect($this->host, $this->username, $this->password, $this->database, 55000);	
+        $this->connection = mysqli_connect($this->host, $this->username, $this->password, $this->database, 3306);
         if (mysqli_connect_errno()) {	
             echo "Failed to connect to MySQL: " . mysqli_connect_error();	
             exit();	
