@@ -1,5 +1,8 @@
 <?php
 require_once "../models/Vendedor.php";
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Dompdf\Dompdf;
 
 class SellerController
 {
@@ -17,6 +20,7 @@ class SellerController
                 'editar' => $this->editarVendedor(),
                 'excluir' => $this->excluirVendedor(),
                 'listar' => $this->listarVendedor(),
+                'gerarRelatorio' => $this->gerarRelatorio(),
                 default => ['success' => false, 'message' => 'Ação inválida'],
             };
 
@@ -98,6 +102,60 @@ class SellerController
             ['success' => false, 'message' => 'Nenhum vendedor encontrado.'];
 
     }
+
+    /**
+     * @return array
+     */
+    private function gerarRelatorio(): array
+    {
+        $vendedores = (new Vendedor())->gerarRelatorioPeriodo($_POST['inicio'], $_POST['fim'],);
+
+        $linha = "";
+        foreach ($vendedores as $vendedor) {
+            $linha .= "
+            <tr>
+                <td>{$vendedor['vendedor_nome']}</td>
+                <td>{$vendedor['total_vendido']}</td>
+                <td>{$vendedor['comissao']}</td>
+            </tr>";
+        }
+
+        if (empty($linha)) {
+            return ['success' => false, 'message' => 'Nenhum vendedor encontrado'];
+        }
+
+        $dompdf = new Dompdf();
+        $html = "
+        <h1 style='text-align: center;'>Relatório de Vendedores</h1>
+        <hr>
+        <table width='100%' border='1' style='border-collapse: collapse; text-align: left;'>
+            <thead>
+                <tr>
+                    <th>Nome do vendedor</th>
+                    <th>Total vendido</th>
+                    <th>Comissão</th>
+                </tr>
+            </thead>
+            <tbody>
+                {$linha}
+            </tbody>
+        </table>";
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4');
+        $dompdf->render();
+
+        $pdfOutput = $dompdf->output();
+
+        if (!$pdfOutput) {
+            return ['success' => false, 'message' => 'Erro ao gerar o PDF'];
+        }
+
+        $base64Pdf = base64_encode($pdfOutput);
+
+        return ['success' => true, 'pdf' => $base64Pdf];
+    }
+
 }
 
 $controller = new SellerController();

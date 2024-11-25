@@ -1,18 +1,3 @@
-function loadContentIntoMain(url, mainSelector) {
-    $.ajax({
-        url: url,
-        method: "GET",
-        success: function (response) {
-            $(mainSelector).html(response);
-        },
-        error: function () {
-            $(mainSelector).html(
-                "<p>Failed to load content. Please try again later.</p>"
-            );
-        },
-    });
-}
-
 $(document).ready(function () {
     const body = $("body");
     const sidebar = body.find(".sidebar");
@@ -31,9 +16,7 @@ $(document).ready(function () {
             closeIcon.hide();
         }
     });
-});
 
-$(document).ready(function () {
     $("#btnCadastrarProduto").click(function () {
         $("#modalCadastro").css("display", "flex");
     });
@@ -100,10 +83,10 @@ $(document).ready(function () {
         $.ajax({
             url: "../controllers/cliente_controller.php",
             type: "POST",
-            data: {action: "listar"},
+            data: { action: "listar" },
             dataType: "json",
             success: function (response) {
-                console.log(response);  // Log the response for debugging
+                console.log(response); // Log the response for debugging
 
                 if (response.success) {
                     const tbody = $("table tbody");
@@ -224,7 +207,7 @@ $(document).ready(function () {
                 $.ajax({
                     url: "../controllers/cliente_controller.php",
                     type: "POST",
-                    data: {action: "excluir", clienteId},
+                    data: { action: "excluir", clienteId },
                     success: function (response) {
                         const res = JSON.parse(response);
                         if (res.success) {

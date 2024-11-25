@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'success' => true,
             'message' => 'Vendedor login successful.',
             'role' => 'vendedor',
-            'redirectUrl' => '../views/vendor_dashboard.php',
+            'redirectUrl' => '/views/vendor_dashboard.php',
         ]);
         exit;
     }
