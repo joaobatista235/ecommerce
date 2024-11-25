@@ -58,10 +58,10 @@ $(document).ready(function () {
                 if (response.success) {
                     $("#formCadastrarCliente")[0].reset();
                     $("#modalCadastro").hide();
-                    Swal.fire("Success!", response.message, "success");
+                    Swal.fire({title: "Success!", message: response.message, icon: "success", backdrop: false});
                     atualizarTabela();
                 } else {
-                    Swal.fire("Error!", response.message, "error");
+                    Swal.fire({title: "Error!",  message: response.message, icon: "error", backdrop: false});
                 }
             },
             error: function () {

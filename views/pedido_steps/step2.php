@@ -14,11 +14,11 @@ $produto = new Produto();
 $produtos = $produto->getAll();
 ?>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="../../config/global.js"></script>'
+<script src="../config/global.js"></script>'
 <script>
     function updateCart() {
         $.ajax({
-            url: '../../controllers/item_pedido_controller.php',
+            url: '../controllers/item_pedido_controller.php',
             method: 'GET',
             success: function (response) {
                 if (response.success) {
@@ -52,7 +52,7 @@ $produtos = $produto->getAll();
 
     function addToCart(productId, quantity) {
         $.ajax({
-            url: '../../controllers/item_pedido_controller.php',
+            url: '../controllers/item_pedido_controller.php',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({productId: productId, quantity: quantity}),
@@ -72,7 +72,7 @@ $produtos = $produto->getAll();
 
     function removeItemFromCart(itemId) {
         $.ajax({
-            url: '../../controllers/item_pedido_controller.php',
+            url: '../controllers/item_pedido_controller.php',
             method: 'DELETE',
             contentType: 'application/json',
             data: JSON.stringify({itemId: itemId}),

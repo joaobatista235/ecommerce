@@ -65,7 +65,6 @@ $itemsVendidos = $itemPedido->getAllItems();
                     <th>Produto ID - Nome</th>
                     <th>Preço</th>
                     <th>Quantidade</th>
-                    <th>Operações</th>
                 </tr>
             </thead>
             <tbody>
@@ -80,7 +79,6 @@ $itemsVendidos = $itemPedido->getAllItems();
                         echo "<td>" . $item['id_produto'] . " - " . $item['nome_produto'] . "</td>";
                         echo "<td>" . number_format($item['preco'], 2, ',', '.') . "</td>";
                         echo "<td>" . $item['quantidade_comprada'] . "</td>";
-                        echo "<td onclick='excluirItem(this)'><img width='15px' src='../assets/icons/trash-solid.svg' alt='Excluir'></td>";
                         echo "</tr>";
                     }
                 } else {
@@ -173,7 +171,6 @@ $itemsVendidos = $itemPedido->getAllItems();
                         <td>${item.id_produto} - ${item.nome_produto}</td>
                         <td>${item.preco}</td>
                         <td>${item.quantidade_comprada}</td>
-                        <td><img width="15px" src="../assets/icons/trash-solid.svg" alt="Excluir" onclick="excluirItem(this)"></td>
                     </tr>`;
             tableBody.append(row);
         });

@@ -12,7 +12,7 @@ $frpagto = $fomras_pagamento->getAll();
 ?>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="../../config/global.js"></script>
+<script src="../config/global.js"></script>
 
 <div class="container-step1 ubuntu-medium ">
     <form id="pedidoForm" class="step1">
@@ -78,7 +78,7 @@ $frpagto = $fomras_pagamento->getAll();
             formData.append('action', 'cadastrar');
 
             $.ajax({
-                url: '../../controllers/pedido_controller.php',
+                url: '../controllers/pedido_controller.php',
                 type: 'POST',
                 data: formData,
                 contentType: false,

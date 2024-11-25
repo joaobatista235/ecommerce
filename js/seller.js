@@ -32,7 +32,7 @@ $("#formCadastrarVendedor").submit(function (e) {
     let estado = $("#estado").val();
     let celular = $("#celular").val();
     let email = $("#email").val();
-    let comissao = $("#perc_comissao").val();
+    let comissao = $("#comissao").val();
     let data_admissao = $("#data_admissao").val();
     let senha = $("#senha").val();
 

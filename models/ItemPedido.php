@@ -277,4 +277,36 @@ class ItemPedido implements GenericInterface
             return [];
         }
     }
+
+    public function getItemsWithProductDetails($idPedido): array
+    {
+        $sql = "
+        SELECT 
+            ip.id_item AS id_item,
+            ip.id_pedido,
+            ip.id_produto,
+            ip.qtde,
+            p.nome AS nome_produto,
+            p.preco
+        FROM 
+            itens_pedido ip
+        INNER JOIN 
+            produto p ON ip.id_produto = p.id
+        WHERE 
+            ip.id_pedido = ?
+    ";
+
+        $stmt = self::$conn->prepare($sql);
+        $stmt->bind_param("i", $idPedido);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $items = [];
+        while ($row = $result->fetch_assoc()) {
+            $items[] = $row;
+        }
+
+        return $items;
+    }
+
 }

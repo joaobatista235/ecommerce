@@ -11,7 +11,7 @@
 
 <script>
     document.getElementById('finalize-btn').addEventListener('click', function () {
-        fetch('../../controllers/finalize_oreder.php', {
+        fetch('../controllers/finalize_oreder.php', {
             method: 'POST',
             body: new URLSearchParams({
                 action: 'finalizar',
