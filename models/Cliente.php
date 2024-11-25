@@ -263,7 +263,7 @@ class Cliente implements GenericInterface
     }
 
     /**
-     * @return array
+     * @return Cliente[]
      */
     public function getAll(): array
     {
@@ -273,23 +273,24 @@ class Cliente implements GenericInterface
         $clientes = [];
 
         while ($data = mysqli_fetch_assoc($result)) {
-            $clientes[] = [
-                'id' => $data['id'],
-                'nome' => $data['nome'],
-                'endereco' => $data['endereco'],
-                'numero' => $data['numero'],
-                'bairro' => $data['bairro'],
-                'cidade' => $data['cidade'],
-                'estado' => $data['estado'],
-                'email' => $data['email'],
-                'cpf_cnpj' => $data['cpf_cnpj'],
-                'rg' => $data['rg'],
-                'telefone' => $data['telefone'],
-                'celular' => $data['celular'],
-                'data_nasc' => $data['data_nasc'],
-                'salario' => $data['salario']
-            ];
+            $cliente = new Cliente();
+            $cliente->setId($data['id']);
+            $cliente->setNome($data['nome']);
+            $cliente->setEndereco($data['endereco']);
+            $cliente->setNumero($data['numero']);
+            $cliente->setBairro($data['bairro']);
+            $cliente->setCidade($data['cidade']);
+            $cliente->setEstado($data['estado']);
+            $cliente->setEmail($data['email']);
+            $cliente->setCpfCnpj($data['cpf_cnpj']);
+            $cliente->setRg($data['rg']);
+            $cliente->setTelefone($data['telefone']);
+            $cliente->setCelular($data['celular']);
+            $cliente->setDataNasc($data['data_nasc']);
+            $cliente->setSalario($data['salario']);
+            $clientes[] = $cliente;
         }
+
         return $clientes;
     }
 
