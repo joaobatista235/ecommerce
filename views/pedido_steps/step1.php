@@ -34,8 +34,8 @@ $frpagto = $fomras_pagamento->getAll();
                 <option value="">Selecione um Cliente</option>
                 <?php
                 foreach ($clientes as $cliente) {
-                    echo '<option value="' . htmlspecialchars($cliente['id'], ENT_QUOTES, 'UTF-8') . '">'
-                        . htmlspecialchars($cliente['id'] . ' - ' . $cliente['nome'], ENT_QUOTES, 'UTF-8')
+                    echo '<option value="' . htmlspecialchars($cliente->getId(), ENT_QUOTES, 'UTF-8') . '">'
+                        . htmlspecialchars($cliente->getId() . ' - ' . $cliente->getNome(), ENT_QUOTES, 'UTF-8')
                         . '</option>';
                 }
                 ?>
