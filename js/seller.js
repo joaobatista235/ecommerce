@@ -208,3 +208,33 @@ function atualizarTabela() {
         },
     });
 }
+
+function gerarRelatorio() {
+    const inicio = $('#inicio').val();
+    const fim = $('#fim').val();
+console.log(inicio)
+    $.ajax({
+        url: "../controllers/seller_controller.php",
+        type: "POST",
+        data: { action: "gerarRelatorio", inicio: inicio, fim: fim },
+        dataType: "json",
+        success: function(response) {
+            if (response.success) {
+                let pdfData = atob(response.pdf);
+                let pdfBlob = new Blob([new Uint8Array(pdfData.split("").map(function(c) { return c.charCodeAt(0); }))], { type: 'application/pdf' });
+
+                let link = document.createElement('a');
+                link.href = URL.createObjectURL(pdfBlob);
+                link.download = 'relatorio_vendedores.pdf';
+
+                link.click();
+            } else {
+                alert('Erro: ' + response.message);
+            }
+        },
+        error: function() {
+            alert('Erro ao gerar o relatório');
+        }
+    });
+}
+

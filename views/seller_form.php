@@ -135,4 +135,29 @@ $vendedores = $vendedor->getAll();
             </div>
         </div>
     </div>
+
+    <div id="relatorio">
+        <div class="relatorio-container">
+            <div class="relatorio-header">
+                <h2>Gerar relatório</h2>
+            </div>
+            <div class="relatorio-body">
+                <form id="gerarRelatorio">
+                    <div style="display: flex; gap: 20px">
+                        <div class="form-item-modal">
+                            <label for="inicio" class="form-item-label">De:</label>
+                            <input type="date" id="inicio" name="inicio" class="input-field">
+                        </div>
+                        <div class="form-item-modal">
+                            <label for="fim" class="form-item-label">Até:</label>
+                            <input type="date" id="fim" name="fim" class="input-field">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="gerarRelatorio(event)" class="btn">Gerar relatório</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

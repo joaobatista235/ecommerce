@@ -249,11 +249,53 @@ class Vendedor implements GenericInterface
      */
     public function deleteById(?int $vendedorId): bool
     {
-        if(!empty($vendedorId)){
+        if (!empty($vendedorId)) {
             $stmt = mysqli_prepare($this->conn, "DELETE FROM vendedor WHERE id = ?");
             mysqli_stmt_bind_param($stmt, "i", $vendedorId);
             return mysqli_stmt_execute($stmt);
         }
         return false;
     }
+
+    /**
+     * @param string $inicio
+     * @param string $fim
+     * @return array
+     */
+    public function gerarRelatorioPeriodo(string $inicio, string $fim): array
+    {
+        $query = "
+        SELECT 
+            v.nome AS vendedor_nome,
+            SUM(ip.qtde * p.preco) AS total_vendido,
+            (SUM(ip.qtde * p.preco) * v.perc_comissao / 100) AS comissao
+        FROM vendedor v 
+        INNER JOIN pedidos ped ON v.id = ped.id_vendedor
+        INNER JOIN itens_pedido ip ON ped.id = ip.id_pedido
+        INNER JOIN produto p ON ip.id_produto = p.id
+        WHERE ped.data BETWEEN ? AND ?
+        GROUP BY v.id
+        ORDER BY total_vendido DESC
+        ";
+
+        $stmt = mysqli_prepare($this->conn, $query);
+        mysqli_stmt_bind_param($stmt, "ss", $inicio, $fim);
+        mysqli_stmt_execute($stmt);
+
+        $result = mysqli_stmt_get_result($stmt);
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
 }
+/*
+SELECT
+            v.nome AS vendedor_nome,
+            SUM(ip.qtde * p.preco) AS total_vendido,
+            (SUM(ip.qtde * p.preco) * v.perc_comissao / 100) AS comissao
+        FROM vendedor v
+        INNER JOIN pedidos ped ON v.id = ped.id_vendedor
+        INNER JOIN itens_pedido ip ON ped.id = ip.id_pedido
+        INNER JOIN produto p ON ip.id_produto = p.id
+        WHERE ped.data BETWEEN '2024-11-01' AND '2024-11-30'
+        GROUP BY v.id
+        ORDER BY total_vendido DESC
+*/
