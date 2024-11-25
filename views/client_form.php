@@ -34,7 +34,6 @@ $clientes = $cli_model->getAll();
                 </tr>
             </thead>
             <tbody>
-            <tbody>
                 <?php
                 if (!empty($clientes)) {
                     foreach ($clientes as $cliente) {
@@ -46,7 +45,7 @@ $clientes = $cli_model->getAll();
                         echo "<td>" . $cliente->getCidade() . "</td>";
                         echo "<td>" . $cliente->getEstado() . "</td>";
                         echo "<td>" . $cliente->getEmail() . "</td>";
-                        echo "<td>" . $cliente->getCpfCnpj() . "</td>";
+                        echo "<td>" . $cliente->getCpf_Cnpj() . "</td>";
                         echo "<td>" . $cliente->getRg() . "</td>";
                         echo "<td>" . $cliente->getTelefone() . "</td>";
                         echo "<td>" . $cliente->getCelular() . "</td>";
@@ -60,8 +59,6 @@ $clientes = $cli_model->getAll();
                     echo "<tr><td colspan='14'>Nenhum cliente encontrado</td></tr>";
                 }
                 ?>
-            </tbody>
-
             </tbody>
         </table>
 

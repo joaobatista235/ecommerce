@@ -5,6 +5,7 @@ require_once "../models/Cliente.php";
 class ClienteController
 {
     /**
+     * Handles incoming HTTP requests and directs to appropriate actions.
      * @return void
      */
     public function handleRequest(): void
@@ -25,96 +26,80 @@ class ClienteController
     }
 
     /**
+     * Creates a new cliente.
      * @return array
      */
     private function cadastrarCliente(): array
     {
-        if (isset($_POST['nome'], $_POST['email'], $_POST['cpf_cnpj'])) {
-            $cliente = new Cliente();
+        $cliente = new Cliente();
+        $cliente->setNome($_POST['nome'] ?? '');
+        $cliente->setEndereco($_POST['endereco'] ?? '');
+        $cliente->setNumero($_POST['numero'] ?? '');
+        $cliente->setBairro($_POST['bairro'] ?? '');
+        $cliente->setCidade($_POST['cidade'] ?? '');
+        $cliente->setEstado($_POST['estado'] ?? '');
+        $cliente->setEmail($_POST['email'] ?? '');
+        $cliente->setCpf_Cnpj($_POST['cpf_cnpj'] ?? '');
+        $cliente->setRg($_POST['rg'] ?? '');
+        $cliente->setTelefone($_POST['telefone'] ?? '');
+        $cliente->setCelular($_POST['celular'] ?? '');
+        $cliente->setDataNasc($_POST['data_nasc'] ?? null);
+        $cliente->setSalario($_POST['salario'] ?? 0.0);
 
-            $cliente->setNome($_POST['nome']);
-            $cliente->setEndereco($_POST['endereco'] ?? '');
-            $cliente->setNumero($_POST['numero'] ?? '');
-            $cliente->setBairro($_POST['bairro'] ?? '');
-            $cliente->setCidade($_POST['cidade'] ?? '');
-            $cliente->setEstado($_POST['estado'] ?? '');
-            $cliente->setEmail($_POST['email']);
-            $cliente->setCpfCnpj($_POST['cpf_cnpj']);
-            $cliente->setRg($_POST['rg'] ?? '');
-            $cliente->setTelefone($_POST['telefone'] ?? '');
-            $cliente->setCelular($_POST['celular'] ?? '');
-            $cliente->setDataNasc($_POST['data_nasc'] ?? null);
-            $cliente->setSalario($_POST['salario'] ?? 0.0);
-
-            return $cliente->save()
-                ? ['success' => true, 'message' => 'Cliente cadastrado com sucesso']
-                : ['success' => false, 'message' => 'Erro ao cadastrar cliente'];
-        }
-
-        return ['success' => false, 'message' => 'Dados obrigatórios estão faltando'];
+        return $cliente->save()
+            ? ['success' => true, 'message' => 'Cliente cadastrado com sucesso']
+            : ['success' => false, 'message' => 'Erro ao cadastrar cliente'];
     }
 
     /**
+     * Updates an existing cliente.
      * @return array
      */
     private function editarCliente(): array
     {
-        if (isset($_POST['id'], $_POST['nome'], $_POST['email'], $_POST['cpf_cnpj'])) {
-            $cliente = new Cliente();
+        $cliente = new Cliente();
+        $cliente->setId($_POST['id'] ?? null);
 
-            $cliente->setId($_POST['id']);
-            $existingCliente = $cliente->getById($_POST['id']);
+        $existingCliente = $cliente->getById($_POST['id']);
+        if ($existingCliente) {
+            $cliente->setNome($_POST['nome'] ?? $existingCliente->getNome());
+            $cliente->setEndereco($_POST['endereco'] ?? $existingCliente->getEndereco());
+            $cliente->setNumero($_POST['numero'] ?? $existingCliente->getNumero());
+            $cliente->setBairro($_POST['bairro'] ?? $existingCliente->getBairro());
+            $cliente->setCidade($_POST['cidade'] ?? $existingCliente->getCidade());
+            $cliente->setEstado($_POST['estado'] ?? $existingCliente->getEstado());
+            $cliente->setEmail($_POST['email'] ?? $existingCliente->getEmail());
+            $cliente->setCpf_Cnpj($_POST['cpf_cnpj'] ?? $existingCliente->getCpf_Cnpj());
+            $cliente->setRg($_POST['rg'] ?? $existingCliente->getRg());
+            $cliente->setTelefone($_POST['telefone'] ?? $existingCliente->getTelefone());
+            $cliente->setCelular($_POST['celular'] ?? $existingCliente->getCelular());
+            $cliente->setDataNasc($_POST['data_nasc'] ?? $existingCliente->getDataNasc());
+            $cliente->setSalario($_POST['salario'] ?? $existingCliente->getSalario());
 
-            if ($existingCliente) {
-                $cliente->setNome($_POST['nome']);
-                $cliente->setEndereco($_POST['endereco'] ?? '');
-                $cliente->setNumero($_POST['numero'] ?? '');
-                $cliente->setBairro($_POST['bairro'] ?? '');
-                $cliente->setCidade($_POST['cidade'] ?? '');
-                $cliente->setEstado($_POST['estado'] ?? '');
-                $cliente->setEmail($_POST['email']);
-                $cliente->setCpfCnpj($_POST['cpf_cnpj']);
-                $cliente->setRg($_POST['rg'] ?? '');
-                $cliente->setTelefone($_POST['telefone'] ?? '');
-                $cliente->setCelular($_POST['celular'] ?? '');
-                $cliente->setDataNasc($_POST['data_nasc'] ?? null);
-                $cliente->setSalario($_POST['salario'] ?? 0.0);
-
-                return $cliente->save()
-                    ? ['success' => true, 'message' => 'Cliente atualizado com sucesso']
-                    : ['success' => false, 'message' => 'Erro ao atualizar cliente'];
-            }
-
-            return ['success' => false, 'message' => 'Cliente não encontrado'];
+            return $cliente->save()
+                ? ['success' => true, 'message' => 'Cliente atualizado com sucesso']
+                : ['success' => false, 'message' => 'Erro ao atualizar cliente'];
         }
 
-        return ['success' => false, 'message' => 'Dados obrigatórios estão faltando'];
+        return ['success' => false, 'message' => 'Cliente não encontrado'];
     }
 
     /**
+     * Deletes a cliente by ID.
      * @return array
      */
     private function excluirCliente(): array
     {
-        if (isset($_POST['clienteId'])) {
-            $cliente = new Cliente();
+        $cliente = new Cliente();
+        /*$cliente->setId($_POST['id'] ?? null);*/
 
-            $cliente->setId($_POST['clienteId']);
-            $existingCliente = $cliente->getById($_POST['clienteId']);
-
-            if ($existingCliente) {
-                return $cliente->deleteById($cliente->getId())
-                    ? ['success' => true, 'message' => 'Cliente excluído com sucesso']
-                    : ['success' => false, 'message' => 'Erro ao excluir cliente'];
-            }
-
-            return ['success' => false, 'message' => 'Cliente não encontrado'];
-        }
-
-        return ['success' => false, 'message' => 'ID do cliente não fornecido'];
+        return $cliente->deleteById($_POST['clienteId'])
+            ? ['success' => true, 'message' => 'Cliente excluído com sucesso']
+            : ['success' => false, 'message' => 'Erro ao excluir cliente'];
     }
 
     /**
+     * Retrieves all clientes.
      * @return array
      */
     private function listarClientes(): array
@@ -122,11 +107,16 @@ class ClienteController
         $cliente = new Cliente();
         $clientes = $cliente->getAll();
 
-        return $clientes
-            ? ['success' => true, 'clientes' => $clientes]
-            : ['success' => false, 'message' => 'Nenhum cliente encontrado'];
+        if ($clientes) {
+            $clientesArray = array_map(fn($cliente) => $cliente->toArray(), $clientes);
+            return ['success' => true, 'clientes' => $clientesArray];
+        }
+
+        return ['success' => false, 'message' => 'Nenhum cliente encontrado'];
     }
 }
+
+session_start();
 
 $controller = new ClienteController();
 $controller->handleRequest();

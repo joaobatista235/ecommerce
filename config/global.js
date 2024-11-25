@@ -103,6 +103,8 @@ $(document).ready(function () {
             data: {action: "listar"},
             dataType: "json",
             success: function (response) {
+                console.log(response);  // Log the response for debugging
+
                 if (response.success) {
                     const tbody = $("table tbody");
                     tbody.empty();
@@ -112,29 +114,26 @@ $(document).ready(function () {
                         const tr = $("<tr>")
                             .data("id", client.id)
                             .attr("data-id", client.id)
-                            .addClass("client-row").html(`
-                                <td>${client.nome}</td>
-                                <td>${client.endereco}</td>
-                                <td>${client.numero}</td>
-                                <td>${client.bairro}</td>
-                                <td>${client.cidade}</td>
-                                <td>${client.estado}</td>
-                                <td>${client.email}</td>
-                                <td>${client.cpf_cnpj}</td>
-                                <td>${client.rg}</td>
-                                <td>${client.telefone}</td>
-                                <td>${client.celular}</td>
-                                <td>${formatarData(client.data_nasc)}</td>
-                                <td>R$ ${parseFloat(client.salario)
+                            .addClass("client-row")
+                            .html(`
+                    <td>${client.nome}</td>
+                    <td>${client.endereco}</td>
+                    <td>${client.numero}</td>
+                    <td>${client.bairro}</td>
+                    <td>${client.cidade}</td>
+                    <td>${client.estado}</td>
+                    <td>${client.email}</td>
+                    <td>${client.cpf_cnpj}</td>
+                    <td>${client.rg}</td>
+                    <td>${client.telefone}</td>
+                    <td>${client.celular}</td>
+                    <td>${formatarData(client.data_nasc)}</td>
+                    <td>R$ ${parseFloat(client.salario)
                                 .toFixed(2)
                                 .replace(".", ",")}</td>
-                                <td><img width='15px' class='btnEditar' src='../assets/icons/pen-to-square-solid.svg' data-id=${
-                                client.id
-                            } alt='Editar'></td>
-                                <td><img width='15px' class='btnExcluir' src='../assets/icons/trash-solid.svg' data-id=${
-                                client.id
-                            } alt='Editar'></td>
-                            `);
+                    <td><img width='15px' class='btnEditar' src='../assets/icons/pen-to-square-solid.svg' data-id=${client.id} alt='Editar'></td>
+                    <td><img width='15px' class='btnExcluir' src='../assets/icons/trash-solid.svg' data-id=${client.id} alt='Excluir'></td>
+                `);
                         tbody.append(tr);
                     });
 
@@ -143,6 +142,7 @@ $(document).ready(function () {
                     alert("Error fetching clients");
                 }
             },
+
             error: function () {
                 alert("Error loading clients.");
             },
