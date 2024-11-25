@@ -82,10 +82,17 @@ session_start();
                     <i class="bx bx-package nav-icon"></i>
                     <span class="text nav-text ubuntu-medium">Menu de Pedidos</span>
                 </a>
-            </li><li id="menuFornecedor" class="nav-link">
+            </li>
+            <li id="menuFornecedor" class="nav-link">
                 <a href="#">
                     <i class="bx bxs-truck nav-icon"></i>
                     <span class="text nav-text ubuntu-medium">Menu de Fornecedores</span>
+                </a>
+            </li>
+            <li id="menuItemsVendidos" class="nav-link">
+                <a href="#">
+                <i class='bx bx-receipt nav-icon'></i>
+                    <span class="text nav-text ubuntu-medium">Menu de Items Vendidos</span>
                 </a>
             </li>
             <li class="nav-link">
@@ -137,6 +144,10 @@ session_start();
         $("#menuFornecedor").click(function (e) {
             e.preventDefault();
             loadContentIntoMain("./fornecedor.php", "main");
+        });
+        $("#menuItemsVendidos").click(function (e) {
+            e.preventDefault();
+            loadContentIntoMain("./items_vendidos.php", "main");
         });
     });
 </script>
