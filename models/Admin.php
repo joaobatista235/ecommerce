@@ -1,19 +1,9 @@
 <?php
-/**
- * This model was created on: 16/11/2024
- * for the Admin table
- */
 require_once "Database.php";
 require_once "GenericInterface.php";
 
 class Admin implements GenericInterface
 {
-    /* 
-        Database structure:
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        username VARCHAR(255) NOT NULL UNIQUE,
-        password VARCHAR(255) NOT NULL 
-    */
     private $id;
     private $username;
     private $password;
@@ -24,7 +14,6 @@ class Admin implements GenericInterface
         $this->conn = (new Database())->getConnection();
     }
 
-    // Getters and setters
     public function getId()
     {
         return $this->id;
@@ -145,7 +134,6 @@ class Admin implements GenericInterface
         return null;
     }
 
-    // Delete
     public function delete(): bool
     {
         if ($this->id) {

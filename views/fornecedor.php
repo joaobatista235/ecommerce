@@ -30,7 +30,7 @@ $fornecedores = $fornecedor->getAll();
             <?php
             if (!empty($fornecedores)) {
                 foreach ($fornecedores as $fornecedor) {
-                    echo "<tr data-id='" . $fornecedor->getId() . "' class='fornecedor-row'>"; // Use methods to get object properties
+                    echo "<tr data-id='" . $fornecedor->getId() . "' class='fornecedor-row'>";
                     echo "<td>" . $fornecedor->getId() . "</td>";
                     echo "<td>" . $fornecedor->getNome() . "</td>";
                     echo "<td>" . $fornecedor->getContato() . "</td>";
@@ -90,13 +90,13 @@ $fornecedores = $fornecedor->getAll();
     function abrirModalCadastro() {
         const form = $("#formCadastrarFornecedor");
         form.trigger("reset");
-        form.removeData('id'); // Clear the ID to ensure it's a new entry
+        form.removeData('id');
         $("#modalCadastro").css("display", "flex");
     }
 
     $('#formCadastrarFornecedor').submit(function (e) {
         e.preventDefault();
-        const fornecedorId = $(this).data('id'); // Retrieve data-id if it's an edit operation
+        const fornecedorId = $(this).data('id');
         const nome = $('#nome').val();
         const contato = $('#contato').val();
 
@@ -157,7 +157,7 @@ $fornecedores = $fornecedor->getAll();
             contato: row.find('td').eq(2).text()
         };
 
-        $('#formCadastrarFornecedor').data('id', fornecedor.id); // Set data-id for edit
+        $('#formCadastrarFornecedor').data('id', fornecedor.id);
         $('#nome').val(fornecedor.nome);
         $('#contato').val(fornecedor.contato);
         $("#modalCadastro").css("display", "flex");
@@ -179,7 +179,7 @@ $fornecedores = $fornecedor->getAll();
                 $.ajax({
                     url: '../controllers/fornecedor_controller.php',
                     type: 'POST',
-                    data: { action: 'excluir', id: fornecedorId },
+                    data: {action: 'excluir', id: fornecedorId},
                     dataType: 'json',
                     success: function (response) {
                         if (response.success) {
@@ -205,7 +205,7 @@ $fornecedores = $fornecedor->getAll();
         $.ajax({
             url: '../controllers/fornecedor_controller.php',
             type: 'POST',
-            data: { action: 'listar' },
+            data: {action: 'listar'},
             dataType: 'json',
             success: function (response) {
                 if (response.success) {

@@ -512,7 +512,7 @@ th, td {
 }
 
 .btn {
-    background-color: var(--sidebar-color);
+    background-color: var(--sidebar-color);!important
     color: white;
     padding: 10px 20px;
     border: none;

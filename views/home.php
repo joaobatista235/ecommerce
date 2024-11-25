@@ -73,7 +73,6 @@
                             window.location.href = redirectUrl;
                         }, 2000);
                     } else {
-                        // Display error message
                         $('#responseMessage').addClass('error')
                             .html(`<p>${response.message}</p>`)
                             .css('display', 'block');

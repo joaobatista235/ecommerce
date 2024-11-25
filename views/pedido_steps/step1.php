@@ -75,7 +75,7 @@ $frpagto = $fomras_pagamento->getAll();
             e.preventDefault();
 
             const formData = new FormData(this);
-            formData.append('action', 'cadastrar'); // Add action parameter
+            formData.append('action', 'cadastrar');
 
             $.ajax({
                 url: '../../controllers/pedido_controller.php',
@@ -87,22 +87,19 @@ $frpagto = $fomras_pagamento->getAll();
                 success: function (response) {
                     if (response.success) {
                         alert(response.message || 'Pedido cadastrado com sucesso!');
-                        $('#pedidoForm')[0].reset(); // Clear the form
+                        $('#pedidoForm')[0].reset();
 
-                        // Get the id_pedido from the response
                         var id_pedido = response.id_pedido;
 
-                        // Hide Step 1 and show Step 2
-                        $('#step-1').addClass('hidden'); // Hide current step
-                        $('#step-2').removeClass('hidden'); // Show next step
+                        $('#step-1').addClass('hidden');
+                        $('#step-2').removeClass('hidden');
 
-                        // Load content for Step 2 and pass the id_pedido
                         loadContentIntoMain('../views/pedido_steps/step2.php?id_pedido=' + id_pedido, '#step-2');
 
                         // Update the progress bar
                         $('.step[data-step="1"]').removeClass('active');
                         $('.step[data-step="2"]').addClass('active');
-                        $('#progress').css('width', '33%'); // Example, update to match step progression
+                        $('#progress').css('width', '33%');
                     } else {
                         alert(response.message || 'Erro ao cadastrar o pedido.');
                     }
@@ -114,7 +111,6 @@ $frpagto = $fomras_pagamento->getAll();
             });
         });
 
-        // Handle the "Limpar" button
         $('#limpar').click(function () {
             $('#pedidoForm')[0].reset();
         });

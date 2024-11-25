@@ -135,7 +135,6 @@ $pedidos = $pedido->getAll();
         $("#modalCadastro").css("display", "flex");
     }
 
-    // Confirmar exclusão do pedido
     function confirmarExclusao() {
         const pedidoId = $('#modalCadastro').data('id');
         $.ajax({
@@ -149,6 +148,7 @@ $pedidos = $pedido->getAll();
                         title: 'Excluído!',
                         text: response.message,
                         icon: 'success',
+                        backdrop: false
                     });
                     $('tr[data-id="' + pedidoId + '"]').remove();
                     fecharModal();
@@ -157,6 +157,7 @@ $pedidos = $pedido->getAll();
                         title: 'Erro!',
                         text: response.message,
                         icon: 'error',
+                        backdrop: false
                     });
                 }
             },
@@ -166,11 +167,10 @@ $pedidos = $pedido->getAll();
         });
     }
 
-    // Function to filter pedidos based on date range
     function gerarRelatorio(event) {
-        event.preventDefault(); // Prevent the default form submission
-        const dt1 = $('#inicio').val();  // Start date
-        const dt2 = $('#fim').val();     // End date
+        event.preventDefault();
+        const dt1 = $('#inicio').val();
+        const dt2 = $('#fim').val();
 
         if (!dt1 || !dt2) {
             Swal.fire({
@@ -181,7 +181,6 @@ $pedidos = $pedido->getAll();
             return;
         }
 
-        // Send an AJAX request to filter pedidos by the date range
         $.ajax({
             url: '../controllers/pedido_controller.php',
             type: 'POST',
@@ -192,7 +191,7 @@ $pedidos = $pedido->getAll();
             },
             dataType: 'json',
             success: function (response) {
-                console.log("Filtered Response:", response);  // Debugging
+                console.log("Filtered Response:", response);
 
                 if (response.success) {
                     if (response.pedidos.length === 0) {
@@ -218,10 +217,9 @@ $pedidos = $pedido->getAll();
         });
     }
 
-    // Function to update the table with the filtered pedidos
     function updateTable(pedidos) {
         const tableBody = $('table tbody');
-        tableBody.empty();  // Clear the current table rows
+        tableBody.empty();
 
         if (pedidos.length > 0) {
             pedidos.forEach(pedido => {
@@ -242,17 +240,14 @@ $pedidos = $pedido->getAll();
         }
     }
 
-    // Fechar o modal
     function fecharModal() {
         $('#modalCadastro').css("display", "none");
     }
 
-    // Fechar o modal ao clicar no X
     $('#btnFecharModal').click(function () {
         fecharModal();
     });
 
-    // Fechar o modal ao clicar fora dele
     $(window).click(function (event) {
         if (event.target === document.getElementById('modalCadastro')) {
             fecharModal();

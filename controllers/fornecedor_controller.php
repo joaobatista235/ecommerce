@@ -84,7 +84,6 @@ class FornecedorController
         $fornecedores = (new Fornecedor())->getAll();
 
         if ($fornecedores) {
-            // Convert objects to associative arrays using toArray method
             $fornecedoresArray = array_map(fn($fornecedor) => $fornecedor->toArray(), $fornecedores);
             return ['success' => true, 'fornecedores' => $fornecedoresArray];
         }

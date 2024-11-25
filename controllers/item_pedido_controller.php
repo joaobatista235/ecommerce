@@ -4,29 +4,24 @@ session_start();
 
 header('Content-Type: application/json');
 
-// Get the session's pedido id
 $id_pedido = $_SESSION['id_pedido'] ?? null;
 if (!$id_pedido) {
     echo json_encode(['success' => false, 'message' => 'Pedido not found.']);
     exit();
 }
 
-// Handle POST request to add item to the cart
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get the data from the POST request
     $inputData = json_decode(file_get_contents('php://input'), true);
 
     if (isset($inputData['productId']) && isset($inputData['quantity'])) {
         $productId = $inputData['productId'];
         $quantity = $inputData['quantity'];
 
-        // Create an instance of ItemPedido and insert into the database
         $itemPedido = new ItemPedido();
         $itemPedido->setIdPedido($id_pedido);
         $itemPedido->setIdProduto($productId);
         $itemPedido->setQuantidade($quantity);
 
-        // Save the item to the database
         if ($itemPedido->save()) {
             echo json_encode(['success' => true, 'message' => 'Item added to cart.']);
         } else {
@@ -37,7 +32,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Handle GET request to fetch items in the cart
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!$id_pedido) {
         echo json_encode(['success' => false, 'message' => 'Pedido not found.']);
@@ -54,7 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 }
 
-// Handle DELETE request to remove item from the cart
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     $inputData = json_decode(file_get_contents('php://input'), true);
 

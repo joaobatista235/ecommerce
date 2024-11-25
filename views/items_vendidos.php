@@ -1,11 +1,11 @@
 <?php
-require_once "../models/ItemPedido.php"; // Include the ItemPedido model
-require_once "../models/Produto.php"; // Include the Produto model
-require_once "../models/Cliente.php"; // Include the Cliente model
-require_once "../models/Vendedor.php"; // Include the Vendedor model
+require_once "../models/ItemPedido.php";
+require_once "../models/Produto.php";
+require_once "../models/Cliente.php";
+require_once "../models/Vendedor.php";
 
 $itemPedido = new ItemPedido();
-$itemsVendidos = $itemPedido->getAll(); // Assuming this method fetches all sold items
+$itemsVendidos = $itemPedido->getAll();
 ?>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -13,10 +13,10 @@ $itemsVendidos = $itemPedido->getAll(); // Assuming this method fetches all sold
 <link rel="stylesheet" href="../config/global.css">
 
 <?php
-require_once "../models/ItemPedido.php"; // Include the ItemPedido model
-require_once "../models/Produto.php"; // Include the Produto model
-require_once "../models/Cliente.php"; // Include the Cliente model
-require_once "../models/Vendedor.php"; // Include the Vendedor model
+require_once "../models/ItemPedido.php";
+require_once "../models/Produto.php";
+require_once "../models/Cliente.php";
+require_once "../models/Vendedor.php";
 session_start();
 
 $itemPedido = new ItemPedido();
@@ -72,15 +72,14 @@ $itemsVendidos = $itemPedido->getAllItems();
                 <?php
                 if (!empty($itemsVendidos)) {
                     foreach ($itemsVendidos as $item) {
-                        // Now we expect 'id_item', 'id_cliente', 'id_vendedor', 'quantidade_comprada' from the query
                         echo "<tr data-id='" . $item['id_item'] . "' class='item-row'>";
                         echo "<td>" . $item['id_pedido'] . "</td>";
                         echo "<td>" . $item['data'] . "</td>";
                         echo "<td>" . $item['id_cliente'] . " - " . $item['nome_cliente'] . "</td>";
                         echo "<td>" . $item['id_vendedor'] . " - " . $item['nome_vendedor'] . "</td>";
                         echo "<td>" . $item['id_produto'] . " - " . $item['nome_produto'] . "</td>";
-                        echo "<td>" . number_format($item['preco'], 2, ',', '.') . "</td>"; // Format price to currency
-                        echo "<td>" . $item['quantidade_comprada'] . "</td>"; // Correct key: quantidade_comprada
+                        echo "<td>" . number_format($item['preco'], 2, ',', '.') . "</td>";
+                        echo "<td>" . $item['quantidade_comprada'] . "</td>";
                         echo "<td onclick='excluirItem(this)'><img width='15px' src='../assets/icons/trash-solid.svg' alt='Excluir'></td>";
                         echo "</tr>";
                     }
@@ -88,14 +87,12 @@ $itemsVendidos = $itemPedido->getAllItems();
                     echo "<tr><td colspan='8'>Nenhum item vendido encontrado</td></tr>";
                 }
                 ?>
-
             </tbody>
         </table>
     </div>
 </div>
 
 
-<!-- Modal for confirmation -->
 <div id="modalCadastro" class="modal" style="display:none;">
     <div class="modal-content">
         <div class="modal-header">
@@ -115,7 +112,7 @@ $itemsVendidos = $itemPedido->getAllItems();
 
 <script>
     function gerarRelatorio(event) {
-        event.preventDefault(); // Prevent the default form submission
+        event.preventDefault();
 
         const tipoFiltro = $('#tipo_filtro').val();
         const valorFiltro = $('#valor_filtro').val();
@@ -129,7 +126,6 @@ $itemsVendidos = $itemPedido->getAllItems();
             return;
         }
 
-        // Send an AJAX request to filter pedidos
         $.ajax({
             url: '../controllers/item_vendido_controller.php',
             type: 'POST',
@@ -166,7 +162,7 @@ $itemsVendidos = $itemPedido->getAllItems();
 
     function updateTable(items) {
         let tableBody = $('table tbody');
-        tableBody.empty(); // Clear the table before inserting new rows
+        tableBody.empty();
 
         items.forEach(function (item) {
             const row = `<tr data-id="${item.id_item}">
@@ -183,7 +179,6 @@ $itemsVendidos = $itemPedido->getAllItems();
         });
     }
 
-    // Excluir item function (opens modal)
     function excluirItem(el) {
         const row = $(el).closest('tr');
         const itemId = row.data('id');
@@ -191,9 +186,9 @@ $itemsVendidos = $itemPedido->getAllItems();
         $("#modalCadastro").css("display", "flex");
     }
 
-    // Confirmar exclusão do item
     function confirmarExclusao() {
         const itemId = $('#modalCadastro').data('id');
+        console.log(itemId)
         $.ajax({
             url: '../controllers/item_vendido_controller.php',
             type: 'POST',
@@ -205,6 +200,7 @@ $itemsVendidos = $itemPedido->getAllItems();
                         title: 'Excluído!',
                         text: response.message,
                         icon: 'success',
+                        backdrop: false
                     });
                     $('tr[data-id="' + itemId + '"]').remove();
                     fecharModal();
@@ -213,26 +209,25 @@ $itemsVendidos = $itemPedido->getAllItems();
                         title: 'Erro!',
                         text: response.message,
                         icon: 'error',
+                        backdrop: false
                     });
                 }
             },
-            error: function () {
+            error: function (err) {
+                console.log(err)
                 Swal.fire('Erro!', 'Não foi possível excluir o item vendido.', 'error');
             }
         });
     }
 
-    // Fechar o modal
     function fecharModal() {
         $('#modalCadastro').css("display", "none");
     }
 
-    // Fechar o modal ao clicar no X
     $('#btnFecharModal').click(function () {
         fecharModal();
     });
 
-    // Fechar o modal ao clicar fora dele
     $(window).click(function (event) {
         if (event.target === document.getElementById('modalCadastro')) {
             fecharModal();

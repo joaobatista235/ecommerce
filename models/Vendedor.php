@@ -315,16 +315,3 @@ class Vendedor implements GenericInterface
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 }
-/*
-SELECT
-            v.nome AS vendedor_nome,
-            SUM(ip.qtde * p.preco) AS total_vendido,
-            (SUM(ip.qtde * p.preco) * v.perc_comissao / 100) AS comissao
-        FROM vendedor v
-        INNER JOIN pedidos ped ON v.id = ped.id_vendedor
-        INNER JOIN itens_pedido ip ON ped.id = ip.id_pedido
-        INNER JOIN produto p ON ip.id_produto = p.id
-        WHERE ped.data BETWEEN '2024-11-01' AND '2024-11-30'
-        GROUP BY v.id
-        ORDER BY total_vendido DESC
-*/

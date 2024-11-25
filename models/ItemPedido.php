@@ -83,27 +83,22 @@ class ItemPedido implements GenericInterface
     {
         $sql = "
     SELECT 
-        ip.id_item AS id_item,             -- Add this for the item ID (primary key of the item in the order)
-        ped.id AS id_pedido,          -- Order ID
-        ped.data,                     -- Order date
-        cli.id AS id_cliente,         -- Client ID
-        cli.nome AS nome_cliente,     -- Client name
-        vend.id AS id_vendedor,       -- Vendor ID
-        vend.nome AS nome_vendedor,   -- Vendor name
-        ip.id_produto,                -- Product ID
-        p.nome AS nome_produto,       -- Product name
-        p.preco,                      -- Product price
-        ip.qtde AS quantidade_comprada -- Quantity purchased
-    FROM 
-        pedidos ped
-    JOIN 
-        clientes cli ON ped.id_cliente = cli.id 
-    JOIN 
-        vendedor vend ON ped.id_vendedor = vend.id
-    JOIN 
-        itens_pedido ip ON ped.id = ip.id_pedido
-    JOIN 
-        produto p ON ip.id_produto = p.id;";
+        ip.id_item AS id_item,     
+        ped.id AS id_pedido,       
+        ped.data,                  
+        cli.id AS id_cliente,      
+        cli.nome AS nome_cliente,  
+        vend.id AS id_vendedor,    
+        vend.nome AS nome_vendedor,
+        ip.id_produto,
+        p.nome AS nome_produto,
+        p.preco,
+        ip.qtde AS quantidade_comprada
+    FROM pedidos ped
+    JOIN clientes cli ON ped.id_cliente = cli.id 
+    JOIN vendedor vend ON ped.id_vendedor = vend.id
+    JOIN itens_pedido ip ON ped.id = ip.id_pedido
+    JOIN produto p ON ip.id_produto = p.id;";
 
         $result = self::$conn->query($sql);
         $items = [];
@@ -205,7 +200,6 @@ class ItemPedido implements GenericInterface
     }
 
     public function getItemsByPedido($idPedido) {
-        // SQL query to fetch all items for a given order (id_pedido)
         $sql = "
         SELECT 
             ip.id_item,
@@ -219,50 +213,30 @@ class ItemPedido implements GenericInterface
             p.nome AS nome_produto,
             p.preco,
             ip.qtde AS quantidade_comprada
-        FROM 
-            pedidos ped
-        JOIN 
-            clientes cli ON ped.id_cliente = cli.id
-        JOIN 
-            vendedor vend ON ped.id_vendedor = vend.id
-        JOIN 
-            itens_pedido ip ON ped.id = ip.id_pedido
-        JOIN 
-            produto p ON ip.id_produto = p.id
-        WHERE 
-            ped.id = ?;
+        FROM pedidos ped
+        JOIN clientes cli ON ped.id_cliente = cli.id
+        JOIN vendedor vend ON ped.id_vendedor = vend.id
+        JOIN itens_pedido ip ON ped.id = ip.id_pedido
+        JOIN produto p ON ip.id_produto = p.id
+        WHERE ped.id = ?;
         ";
-    
-        // Prepare the SQL statement
+
         $stmt = mysqli_prepare(self::$conn, $sql);
-    
-        // Bind the parameter
         mysqli_stmt_bind_param($stmt, "i", $idPedido);
-    
-        // Execute the statement
         mysqli_stmt_execute($stmt);
-    
-        // Get the result of the query
         $result = mysqli_stmt_get_result($stmt);
-    
-        // Array to store the fetched items
+
         $items = [];
-    
-        // Fetch the results and store them in the $items array
         while ($row = mysqli_fetch_assoc($result)) {
-            $items[] = $row; // Store each row as an associative array
+            $items[] = $row;
         }
-    
-        // Close the statement
         mysqli_stmt_close($stmt);
-    
-        // Return the result array containing all items
+
         return $items;
     }
     
     
     function getItemsByCliente( $nomeCliente) {
-        // SQL query to fetch items by client's name
         $sql = "
         SELECT 
             ip.id_item,
@@ -276,52 +250,31 @@ class ItemPedido implements GenericInterface
             p.nome AS nome_produto,
             p.preco,
             ip.qtde AS quantidade_comprada
-        FROM 
-            pedidos ped
-        JOIN 
-            clientes cli ON ped.id_cliente = cli.id
-        JOIN 
-            vendedor vend ON ped.id_vendedor = vend.id
-        JOIN 
-            itens_pedido ip ON ped.id = ip.id_pedido
-        JOIN 
-            produto p ON ip.id_produto = p.id
-        WHERE 
-            cli.nome LIKE ?;
+        FROM pedidos ped
+        JOIN clientes cli ON ped.id_cliente = cli.id
+        JOIN vendedor vend ON ped.id_vendedor = vend.id
+        JOIN itens_pedido ip ON ped.id = ip.id_pedido
+        JOIN produto p ON ip.id_produto = p.id
+        WHERE cli.nome LIKE ?;
         ";
-    
-        // Prepare the SQL statement
+
         if ($stmt = mysqli_prepare(self::$conn, $sql)) {
-            // Add wildcards to the cliente's name for partial matching
             $nomeCliente = "%" . $nomeCliente . "%";
-    
-            // Bind the parameter
+
             mysqli_stmt_bind_param($stmt, "s", $nomeCliente);
-    
-            // Execute the statement
             mysqli_stmt_execute($stmt);
-    
-            // Get the result
+
             $result = mysqli_stmt_get_result($stmt);
-    
-            // Initialize an empty array to store the items
+
             $items = [];
-    
-            // Fetch the results and store them in the $items array
             while ($row = mysqli_fetch_assoc($result)) {
-                $items[] = $row; // Add each row as an associative array
+                $items[] = $row;
             }
-    
-            // Close the statement
+
             mysqli_stmt_close($stmt);
-    
-            // Return the result array containing all items
             return $items;
         } else {
-            // If there was an error preparing the query, return an empty array
             return [];
         }
     }
-    
-    
 }

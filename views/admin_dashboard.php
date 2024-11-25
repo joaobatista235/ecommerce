@@ -92,7 +92,7 @@ session_start();
             <li id="menuItemsVendidos" class="nav-link">
                 <a href="#">
                 <i class='bx bx-receipt nav-icon'></i>
-                    <span class="text nav-text ubuntu-medium">Menu de Items Vendidos</span>
+                    <span class="text nav-text ubuntu-medium">Menu de Itens Vendidos</span>
                 </a>
             </li>
             <li class="nav-link">
