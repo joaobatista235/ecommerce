@@ -126,24 +126,32 @@ class Vendedor implements GenericInterface
      */
     public function save(): bool
     {
+        $passwdHandle =  md5($this->senha);
         if (!$this->conn) {
             throw new Exception("Erro ao conectar ao banco de dados.");
         }
 
         try {
             if ($this->id) {
+                // UPDATE query for existing vendedor
                 $stmt = mysqli_prepare($this->conn, "UPDATE vendedor SET nome=?, endereco=?, cidade=?, estado=?, celular=?, email=?, perc_comissao=?, data_admissao=?, senha=? WHERE id=?");
-                mysqli_stmt_bind_param($stmt, "ssssssssss", $this->nome, $this->endereco, $this->cidade, $this->estado, $this->celular, $this->email, $this->perc_comissao, $this->data_admissao, $this->senha, $this->id);
+                // Bind the parameters, perc_comissao is a decimal, so use 'd'
+                mysqli_stmt_bind_param($stmt, "ssssssdssi", $this->nome, $this->endereco, $this->cidade, $this->estado, $this->celular, $this->email, $this->perc_comissao, $this->data_admissao, $this->senha, $this->id);
             } else {
+                // INSERT query for new vendedor
                 $stmt = mysqli_prepare($this->conn, "INSERT INTO vendedor (nome, endereco, cidade, estado, celular, email, perc_comissao, data_admissao, senha) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                mysqli_stmt_bind_param($stmt, "sssssssss", $this->nome, $this->endereco, $this->cidade, $this->estado, $this->celular, $this->email, $this->perc_comissao, $this->data_admissao, $this->senha);
+                // Bind the parameters, perc_comissao is a decimal, so use 'd'
+                mysqli_stmt_bind_param($stmt, "ssssssdss", $this->nome, $this->endereco, $this->cidade, $this->estado, $this->celular, $this->email, $this->perc_comissao, $this->data_admissao, $passwdHandle);
             }
-
+        
+            // Execute the query
             return mysqli_stmt_execute($stmt);
         } catch (mysqli_sql_exception $e) {
+            // Error handling
             echo "Erro: " . $e->getMessage();
             return false;
         }
+        
     }
 
     /**

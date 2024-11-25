@@ -41,7 +41,7 @@ class SellerController
         $vendedor->setEstado($_POST['estado']);
         $vendedor->setCelular($_POST['celular']);
         $vendedor->setEmail($_POST['email']);
-        $vendedor->setPercComissao($_POST['comissao']);
+        $vendedor->setPercComissao($_POST['perc_comissao']);
         $vendedor->setDataAdmissao($_POST['data_admissao']);
         $vendedor->setSenha($_POST['senha']);
 

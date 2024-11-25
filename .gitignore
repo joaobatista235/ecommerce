@@ -1,2 +1,10 @@
-# idea
-/.idea
+# Ignore IDE-related files and directories
+.idea/
+
+# Ignore vendor directory (composer's dependencies)
+vendor/
+
+# Ignore composer files (lock files are typically not ignored, but if needed)
+composer.lock
+composer.json
+
