@@ -53,7 +53,7 @@ $pedidos = $pedido->getAll();
     <div id="relatorio">
         <div class="relatorio-container">
             <div class="relatorio-header">
-                <h2 class="ubuntu-bold">Gerar relatório</h2>
+                <h2 class="ubuntu-bold" style="color:#6a1b9a">Gerar relatório</h2>
             </div>
             <br>
             <hr>
