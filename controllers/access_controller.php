@@ -46,17 +46,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Check if the user is a Vendedor (Vendor)
     $vendedor = new Vendedor();
-    $vendedorCredentials = $vendedor->getByCredentials($email, $password); // Fetch vendedor by email and password
+    $vendedorCredentials = $vendedor->getByCredentials($email, $password);
 
     if ($vendedorCredentials) {
-        // Start session if not already started
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
 
-        // Store essential vendedor data in session
         $_SESSION['usuario'] = [
             'id' => $vendedorCredentials->getId(),
             'nome' => $vendedorCredentials->getNome(),

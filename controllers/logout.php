@@ -1,5 +1,5 @@
 <?php
 session_start();
-session_destroy(); // Destroy all sessions
-header("Location: /"); // Redirect to home.php
+session_destroy();
+header("Location: /ecommerce");
 exit();

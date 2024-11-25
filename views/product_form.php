@@ -148,7 +148,8 @@ $produtos = $productModel->getAll();
                                     title: 'Sucesso!',
                                     text: response.message,
                                     icon: 'success',
-                                    confirmButtonText: 'OK'
+                                    confirmButtonText: 'OK',
+                                    backdrop: false,
                                 });
                                 document.getElementById('modalCadastro').style.display = 'none';
                                 atualizarTabela();
@@ -158,7 +159,8 @@ $produtos = $productModel->getAll();
                                     title: 'Erro!',
                                     text: 'Não foi possível cadastrar o produto.',
                                     icon: 'error',
-                                    confirmButtonText: 'OK'
+                                    confirmButtonText: 'OK',
+                                    backdrop: false,
                                 });
                             }
                         },
@@ -167,7 +169,8 @@ $produtos = $productModel->getAll();
                                 title: 'Erro!',
                                 text: 'Ocorreu um erro ao tentar cadastrar o produto.',
                                 icon: 'error',
-                                confirmButtonText: 'OK'
+                                confirmButtonText: 'OK',
+                                backdrop: false,
                             });
                         }
                     });
@@ -183,7 +186,8 @@ $produtos = $productModel->getAll();
                     showCancelButton: true,
                     confirmButtonText: 'Sim, excluir!',
                     cancelButtonText: 'Cancelar',
-                    reverseButtons: true
+                    reverseButtons: true,
+                    backdrop: false,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({

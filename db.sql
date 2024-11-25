@@ -59,8 +59,6 @@ CREATE TABLE forma_pagto (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(255) NOT NULL
 );
- 
-
 
 -- Criar tabela 'pedidos'
 CREATE TABLE pedidos (
@@ -108,12 +106,6 @@ VALUES
   ('Calça Jeans', 200, 139.90, 'un', 'N'),
   ('Relógio Digital', 30, 129.90, 'un', 'Y'),
   ('Mochila Escolar', 150, 79.90, 'un', 'N');
-
-
-INSERT INTO forma_pagto (nome) VALUES ('Cartão de Crédito');
-INSERT INTO forma_pagto (nome) VALUES ('Boleto Bancário');
-INSERT INTO forma_pagto (nome) VALUES ('PIX');
-
 
 INSERT INTO clientes (nome, endereco, numero, bairro, cidade, estado, email, cpf_cnpj, rg, telefone, celular, data_nasc, salario) 
 VALUES 

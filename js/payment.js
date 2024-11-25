@@ -11,9 +11,9 @@ $(document).ready(function () {
 })
 
 function abrirModalCadastro() {
-    const form = $('#formCadastrarPagamento');
-    form.trigger('reset');
-    $('#modalCadastro').show();
+    const form = $("#formCadastrarVendedor");
+    form.trigger("reset");
+    $("#modalCadastro").css("display", "flex");
 }
 
 $('#formCadastrarPagamento').submit(function (e) {
@@ -41,7 +41,8 @@ $('#formCadastrarPagamento').submit(function (e) {
                     title: 'Sucesso!',
                     text: response.message,
                     icon: 'success',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    backdrop: false,
                 });
                 document.getElementById('modalCadastro').style.display = 'none';
                 atualizarTabelaPagamentos();
@@ -50,7 +51,8 @@ $('#formCadastrarPagamento').submit(function (e) {
                     title: 'Erro!',
                     text: 'Não foi possível cadastrar a forma de pagamento.',
                     icon: 'error',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    backdrop: false,
                 });
             }
         },
@@ -60,7 +62,8 @@ $('#formCadastrarPagamento').submit(function (e) {
                 title: 'Erro!',
                 text: 'Ocorreu um erro ao tentar cadastrar a forma de pagamento.',
                 icon: 'error',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                backdrop: false,
             });
         }
     });
@@ -75,7 +78,7 @@ function abrirModalEdicao(el) {
 
     $('#formCadastrarPagamento').data('id', pagamento.id);
     $('#nome').val(pagamento.nome);
-    $('#modalCadastro').show();
+    $("#modalCadastro").css("display", "flex");
 }
 
 function excluirPagamento(el) {
@@ -101,7 +104,8 @@ function excluirPagamento(el) {
                         Swal.fire({
                             title: 'Excluído!',
                             text: response.message,
-                            icon: 'success'
+                            icon: 'success',
+                            backdrop: false,
                         });
                         document.querySelector(`tr[data-id="${pagamentoId}"]`).remove();
                     }

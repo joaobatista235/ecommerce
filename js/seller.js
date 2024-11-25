@@ -65,6 +65,7 @@ $("#formCadastrarVendedor").submit(function (e) {
                     text: response.message,
                     icon: "success",
                     confirmButtonText: "OK",
+                    backdrop: false,
                 });
                 document.getElementById("modalCadastro").style.display = "none";
                 atualizarTabela();
@@ -74,6 +75,7 @@ $("#formCadastrarVendedor").submit(function (e) {
                     text: "Não foi possível cadastrar o produto.",
                     icon: "error",
                     confirmButtonText: "OK",
+                    backdrop: false,
                 });
             }
         },
@@ -84,6 +86,7 @@ $("#formCadastrarVendedor").submit(function (e) {
                 text: "Ocorreu um erro ao tentar cadastrar o produto.",
                 icon: "error",
                 confirmButtonText: "OK",
+                backdrop: false,
             });
         },
     });
@@ -122,7 +125,7 @@ function abrirModalEdicao(el) {
 
     $("#senha").val(vendedor.senha);
 
-    $("#modalCadastro").show();
+    $("#modalCadastro").css("display", "flex");
 }
 
 function excluirVendedor(el) {
@@ -149,6 +152,7 @@ function excluirVendedor(el) {
                             title: "Excluído!",
                             text: response.message,
                             icon: "success",
+                            backdrop: false,
                         });
                         document.querySelector(`tr[data-id="${vendedorId}"]`).remove();
                     }
@@ -179,7 +183,7 @@ function atualizarTabela() {
                         ? formatarData(vendedor.data_admissao)
                         : "";
 
-          tr.innerHTML = `
+                    tr.innerHTML = `
                         <td>${vendedor.id}</td>
                         <td>${vendedor.nome}</td>
                         <td>${vendedor.endereco}</td>

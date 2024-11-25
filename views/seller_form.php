@@ -71,9 +71,11 @@ $vendedores = $vendedor->getAll();
             <div class="modal-header">
                 <h2>Cadastrar Novo Vendedor</h2>
 
-                    <svg class='modal-header-close-button' id="btnFecharModal" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M14 1.41L12.59 0L7 5.59L1.41 0L0 1.41L5.59 7L0 12.59L1.41 14L7 8.41L12.59 14L14 12.59L8.41 7L14 1.41Z" fill="black" fill-opacity="0.54"/>
-</svg>
+                <svg class='modal-header-close-button' id="btnFecharModal" width="14" height="14" viewBox="0 0 14 14"
+                     fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 1.41L12.59 0L7 5.59L1.41 0L0 1.41L5.59 7L0 12.59L1.41 14L7 8.41L12.59 14L14 12.59L8.41 7L14 1.41Z"
+                          fill="black" fill-opacity="0.54"/>
+                </svg>
 
 
             </div>
@@ -111,8 +113,8 @@ $vendedores = $vendedor->getAll();
                         </div>
 
                         <div class="form-item-modal">
-                            <label for="comissao" class="form-item-label">Comissão:</label>
-                            <input type="text" id="comissao" name="comissao" class="input-field" required>
+                            <label for="perc_comissao" class="form-item-label">Comissão:</label>
+                            <input type="text" id="perc_comissao" name="perc_comissao" class="input-field" required>
                         </div>
 
                         <div class="form-item-modal">
