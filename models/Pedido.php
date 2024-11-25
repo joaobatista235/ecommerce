@@ -149,6 +149,49 @@ class Pedido implements GenericInterface
         return null;
     }
 
+// Inside Pedido Model (getByPeriodo)
+public function getByPeriodo($dt1, $dt2)
+{
+    $conn = (new Database())->getConnection();
+
+    $stmt = mysqli_prepare($conn, "
+        SELECT p.id, p.id_cliente, p.id_vendedor, p.data, p.forma_pagto, p.prazo_entrega, 
+               c.nome AS nome_cliente, v.nome AS nome_vendedor
+        FROM pedidos p
+        LEFT JOIN clientes c ON p.id_cliente = c.id
+        LEFT JOIN vendedor v ON p.id_vendedor = v.id
+        WHERE DATE(p.data) BETWEEN ? AND ?
+    ");
+
+    mysqli_stmt_bind_param($stmt, "ss", $dt1, $dt2);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    // Prepare the result array
+    $pedidos = [];
+    while ($data = mysqli_fetch_assoc($result)) {
+        $pedido = new Pedido();
+        $pedido->setId($data['id']);
+        $pedido->setIdCliente($data['id_cliente']);
+        $pedido->setIdVendedor($data['id_vendedor']);
+        $pedido->setData($data['data']);
+        $pedido->setFormaPagto($data['forma_pagto']);
+        $pedido->setPrazoEntrega($data['prazo_entrega']);
+        $pedido->setNomeCliente($data['nome_cliente']);
+        $pedido->setNomeVendedor($data['nome_vendedor']);
+        $pedidos[] = $pedido; // Add each pedido object to the array
+    }
+
+    return count($pedidos) > 0 ? $pedidos : null; // Return null if no pedidos found
+}
+
+
+
+
+
+
+
+
     // Get All Pedidos
     public function getAll(): array
     {

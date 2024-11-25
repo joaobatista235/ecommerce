@@ -56,4 +56,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             ]);
         }
     }
+
+    // Handle "Filtrar" (Filter) action for date range
+    if ($_POST['action'] === 'filtrar' && isset($_POST['dt1'], $_POST['dt2'])) {
+        $dt1 = $_POST['dt1'];
+        $dt2 = $_POST['dt2'];
+    
+        // Call the Pedido model to fetch filtered pedidos based on the date range
+        $pedidos = $pedidoModel->getByPeriodo($dt1, $dt2); // getByPeriodo returns an array or null
+    
+        // Check if there are any pedidos
+        if ($pedidos && is_array($pedidos)) {
+            // Convert Pedido objects to arrays
+            $pedidosArray = [];
+            foreach ($pedidos as $pedido) {
+                $pedidosArray[] = [
+                    'id' => $pedido->getId(),
+                    'id_cliente' => $pedido->getIdCliente(),
+                    'id_vendedor' => $pedido->getIdVendedor(),
+                    'data' => $pedido->getData(),
+                    'forma_pagto' => $pedido->getFormaPagto(),
+                    'prazo_entrega' => $pedido->getPrazoEntrega(),
+                    'nome_cliente' => $pedido->getNomeCliente(),
+                    'nome_vendedor' => $pedido->getNomeVendedor()
+                ];
+            }
+        
+            echo json_encode([
+                'success' => true,
+                'pedidos' => $pedidosArray
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Nenhum pedido encontrado para o intervalo de datas fornecido.'
+            ]);
+        }
+        
+    }
+    
 }
