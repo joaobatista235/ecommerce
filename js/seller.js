@@ -179,7 +179,7 @@ function atualizarTabela() {
                         ? formatarData(vendedor.data_admissao)
                         : "";
 
-                    tr.innerHTML = `
+          tr.innerHTML = `
                         <td>${vendedor.id}</td>
                         <td>${vendedor.nome}</td>
                         <td>${vendedor.endereco}</td>
