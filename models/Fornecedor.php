@@ -94,10 +94,7 @@ class Fornecedor implements GenericInterface
         return null;
     }
 
-    /**
-     * Get all fornecedores
-     * @return array
-     */
+
     /**
      * Get all fornecedores as an array of associative arrays.
      * @return array

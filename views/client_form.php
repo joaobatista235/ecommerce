@@ -5,60 +5,60 @@ $cli_model = new Cliente();
 $clientes = $cli_model->getAll();
 ?>
 
-<script src="../js/client.js"></script>
+<script src="../config/global.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <div class="listing-container">
     <div class="listing-header">
         <h1 class="ubuntu-bold">Listagem de Clientes</h1>
-        <button onclick='abrirModalCadastro()' class="btn ubuntu-medium">Cadastrar cliente</button>
+        <button id="btnCadastrarProduto" class="btn ubuntu-medium">Cadastrar cliente</button>
     </div>
     <div class="table">
         <table>
             <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Endereço</th>
-                <th>Numero</th>
-                <th>Bairro</th>
-                <th>Cidade</th>
-                <th>Estado</th>
-                <th>Email</th>
-                <th>CPF/CNPJ</th>
-                <th>RG</th>
-                <th>Telefone</th>
-                <th>Celular</th>
-                <th>Data de nascimento</th>
-                <th>Salário</th>
-                <th colspan="2">Operações</th>
-            </tr>
+                <tr>
+                    <th>Nome</th>
+                    <th>Endereço</th>
+                    <th>Numero</th>
+                    <th>Bairro</th>
+                    <th>Cidade</th>
+                    <th>Estado</th>
+                    <th>Email</th>
+                    <th>CPF/CNPJ</th>
+                    <th>RG</th>
+                    <th>Telefone</th>
+                    <th>Celular</th>
+                    <th>Data de nascimento</th>
+                    <th>Salário</th>
+                    <th colspan="2">Operações</th>
+                </tr>
             </thead>
             <tbody>
-            <?php
-            if (!empty($clientes)) {
-                foreach ($clientes as $cliente) {
-                    echo "<tr data-id='" . $cliente['id'] . "' class='client-row'>";
-                    echo "<td>" . $cliente['nome'] . "</td>";
-                    echo "<td>" . $cliente['endereco'] . "</td>";
-                    echo "<td>" . $cliente['numero'] . "</td>";
-                    echo "<td>" . $cliente['bairro'] . "</td>";
-                    echo "<td>" . $cliente['cidade'] . "</td>";
-                    echo "<td>" . $cliente['estado'] . "</td>";
-                    echo "<td>" . $cliente['email'] . "</td>";
-                    echo "<td>" . $cliente['cpf_cnpj'] . "</td>";
-                    echo "<td>" . $cliente['rg'] . "</td>";
-                    echo "<td>" . $cliente['telefone'] . "</td>";
-                    echo "<td>" . $cliente['celular'] . "</td>";
-                    echo "<td>" . date('d/m/Y', strtotime($cliente['data_nasc'])) . "</td>";
-                    echo "<td>R$ " . number_format($cliente['salario'], 2, ',', '.') . "</td>";
-                    echo "<td onclick='abrirModalEdicao(this)'><img width='15px' src='../assets/icons/pen-to-square-solid.svg' alt='Editar'></td>";
-                    echo "<td onclick='excluirCliente(this)'><img width='15px' src='../assets/icons/trash-solid.svg' alt='Excluir'></td>";
-                    echo "</tr>";
+                <?php
+                if (!empty($clientes)) {
+                    foreach ($clientes as $cliente) {
+                        echo "<tr data-id='" . $cliente->getId() . "' class='client-row'>";
+                        echo "<td>" . $cliente->getNome() . "</td>";
+                        echo "<td>" . $cliente->getEndereco() . "</td>";
+                        echo "<td>" . $cliente->getNumero() . "</td>";
+                        echo "<td>" . $cliente->getBairro() . "</td>";
+                        echo "<td>" . $cliente->getCidade() . "</td>";
+                        echo "<td>" . $cliente->getEstado() . "</td>";
+                        echo "<td>" . $cliente->getEmail() . "</td>";
+                        echo "<td>" . $cliente->getCpf_Cnpj() . "</td>";
+                        echo "<td>" . $cliente->getRg() . "</td>";
+                        echo "<td>" . $cliente->getTelefone() . "</td>";
+                        echo "<td>" . $cliente->getCelular() . "</td>";
+                        echo "<td>" . date('d/m/Y', strtotime($cliente->getDataNasc())) . "</td>";
+                        echo "<td>R$ " . number_format($cliente->getSalario(), 2, ',', '.') . "</td>";
+                        echo "<td><img width='15px' class='btnEditar' src='../assets/icons/pen-to-square-solid.svg' data-id='" . $cliente->getId() . "' alt='Editar'></td>";
+                        echo "<td><img width='15px' class='btnExcluir' src='../assets/icons/trash-solid.svg' data-id='" . $cliente->getId() . "' alt='Excluir'></td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='14'>Nenhum cliente encontrado</td></tr>";
                 }
-            } else {
-                echo "<tr><td colspan='14'>Nenhum cliente encontrado</td></tr>";
-            }
-            ?>
+                ?>
             </tbody>
         </table>
 
@@ -66,7 +66,7 @@ $clientes = $cli_model->getAll();
             <div class="modal-content">
                 <div class="modal-header">
                     <h2>Cadastrar/Editar Cliente</h2>
-                    <span class="close" onclick="fecharModal()">&times;</span>
+                    <span class="close" id="btnFecharModal">&times;</span>
                 </div>
                 <div class="modal-body">
                     <form id="formCadastrarCliente">
@@ -126,7 +126,7 @@ $clientes = $cli_model->getAll();
                         </div>
 
                         <div class="modal-footer">
-                            <button onclick="cadastrarCliente(this)" class="btn">Salvar Cliente</button>
+                            <button type="submit" class="btn">Salvar Cliente</button>
                         </div>
                     </form>
                 </div>
