@@ -13,4 +13,4 @@ error_reporting(E_ALL);
 /*   */
 
 
-include "views\home.php";
+include "views/home.php";
