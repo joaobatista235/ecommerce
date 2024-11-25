@@ -102,7 +102,7 @@ $frpagto = $fomras_pagamento->getAll();
                         // Update the progress bar
                         $('.step[data-step="1"]').removeClass('active');
                         $('.step[data-step="2"]').addClass('active');
-                        $('#progress').css('width', '50%'); // Example, update to match step progression
+                        $('#progress').css('width', '33%'); // Example, update to match step progression
                     } else {
                         alert(response.message || 'Erro ao cadastrar o pedido.');
                     }

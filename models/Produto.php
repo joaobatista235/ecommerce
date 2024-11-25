@@ -100,7 +100,7 @@ class Produto implements GenericInterface
      * @param int $id
      * @return Produto|null
      */
-    public function getById(int $id): ?Produto
+    public function getById($id): ?Produto
     {
         $stmt = mysqli_prepare(self::$conn, "SELECT * FROM produto WHERE id = ?");
         mysqli_stmt_bind_param($stmt, "i", $id);
