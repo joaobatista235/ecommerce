@@ -177,10 +177,33 @@ class Cliente implements GenericInterface
     public function save(): bool
     {
         if ($this->id) {
-            $stmt = mysqli_prepare(self::$conn, "UPDATE clientes SET nome=?, endereco=?, numero=?, bairro=?, cidade=?, estado=?, email=?, cpf_cnpj=?, rg=?, telefone=?, celular=?, data_nasc=?, salario=? WHERE id=?");
-            mysqli_stmt_bind_param($stmt, "ssssssssssssdi", $this->nome, $this->endereco, $this->numero, $this->bairro, $this->cidade, $this->estado, $this->email, $this->cpf_cnpj, $this->rg, $this->telefone, $this->celular, $this->data_nasc, $this->salario, $this->id);
+            $stmt = mysqli_prepare(
+                self::$conn,
+                "UPDATE clientes SET nome=?, endereco=?, numero=?, bairro=?, cidade=?, estado=?, email=?, cpf_cnpj=?, rg=?, telefone=?, celular=?, data_nasc=?, salario=? WHERE id=?"
+            );
+            mysqli_stmt_bind_param(
+                $stmt,
+                "ssssssssssssdi",
+                $this->nome,
+                $this->endereco,
+                $this->numero,
+                $this->bairro,
+                $this->cidade,
+                $this->estado,
+                $this->email,
+                $this->cpf_cnpj,
+                $this->rg,
+                $this->telefone,
+                $this->celular,
+                $this->data_nasc,
+                $this->salario,
+                $this->id
+            );
         } else {
-            $stmt = mysqli_prepare(self::$conn, "INSERT INTO clientes (nome, endereco, numero, bairro, cidade, estado, email, cpf_cnpj, rg, telefone, celular, data_nasc, salario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt = mysqli_prepare(
+                self::$conn,
+                "INSERT INTO clientes (nome, endereco, numero, bairro, cidade, estado, email, cpf_cnpj, rg, telefone, celular, data_nasc, salario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            );
             mysqli_stmt_bind_param(
                 $stmt,
                 "ssssssssssssd",
@@ -199,7 +222,15 @@ class Cliente implements GenericInterface
                 $this->salario
             );
         }
-        return mysqli_stmt_execute($stmt);
+
+        if (!mysqli_stmt_execute($stmt)) {
+            error_log("Erro no save(): " . mysqli_error(self::$conn));
+            mysqli_stmt_close($stmt);
+            return false;
+        }
+
+        mysqli_stmt_close($stmt);
+        return true;
     }
 
     /**
@@ -273,21 +304,21 @@ class Cliente implements GenericInterface
         $clientes = [];
 
         while ($data = mysqli_fetch_assoc($result)) {
-            $cliente = new Cliente();
-            $cliente->setId($data['id']);
-            $cliente->setNome($data['nome']);
-            $cliente->setEndereco($data['endereco']);
-            $cliente->setNumero($data['numero']);
-            $cliente->setBairro($data['bairro']);
-            $cliente->setCidade($data['cidade']);
-            $cliente->setEstado($data['estado']);
-            $cliente->setEmail($data['email']);
-            $cliente->setCpfCnpj($data['cpf_cnpj']);
-            $cliente->setRg($data['rg']);
-            $cliente->setTelefone($data['telefone']);
-            $cliente->setCelular($data['celular']);
-            $cliente->setDataNasc($data['data_nasc']);
-            $cliente->setSalario($data['salario']);
+            $cliente['id'] = $data['id'];
+            $cliente['nome'] = $data['nome'];
+            $cliente['endereco'] = $data['endereco'];
+            $cliente['numero'] = $data['numero'];
+            $cliente['bairro'] = $data['bairro'];
+            $cliente['cidade'] = $data['cidade'];
+            $cliente['estado'] = $data['estado'];
+            $cliente['email'] = $data['email'];
+            $cliente['cpf_cnpj'] = $data['cpf_cnpj'];
+            $cliente['rg'] = $data['rg'];
+            $cliente['telefone'] = $data['telefone'];
+            $cliente['celular'] = $data['celular'];
+            $cliente['data_nasc'] = $data['data_nasc'];
+            $cliente['salario'] = $data['salario'];
+
             $clientes[] = $cliente;
         }
 

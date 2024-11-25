@@ -100,7 +100,7 @@ $produtos = $productModel->getAll();
         <script>
             $(document).ready(function () {
                 $('#btnCadastrarProduto').click(function () {
-                    $('#modalCadastro').show();
+                    $('#modalCadastro').css("display", "flex");
                 });
 
                 $('#btnFecharModal').click(function () {
@@ -197,21 +197,26 @@ $produtos = $productModel->getAll();
                             dataType: 'json',
                             success: function (response) {
                                 if (response.success) {
-                                    Swal.fire(
-                                        'Excluído!',
-                                        'O produto foi excluído com sucesso.',
-                                        'success'
-                                    );
+                                    Swal.fire({
+                                        title: 'Excluído!',
+                                        text: 'O produto foi excluído com sucesso.',
+                                        icon: 'success',
+                                        backdrop: false
+                                    });
                                     atualizarTabela();
                                 }
+                            },
+                            error: function (err) {
+                                console.log(err)
                             }
                         });
                     } else if (result.isDismissed) {
-                        Swal.fire(
-                            'Cancelado!',
-                            'Ação cancelada.',
-                            'info'
-                        );
+                        Swal.fire({
+                            title: 'Cancelado!',
+                            text: 'Ação cancelada.',
+                            icon: 'info',
+                            backdrop: false
+                        });
                     }
                 });
             }
@@ -226,9 +231,11 @@ $produtos = $productModel->getAll();
                         if (response.success) {
                             const produtos = response.produtos;
                             const tbody = document.querySelector('table tbody');
+
                             tbody.innerHTML = '';
                             produtos.forEach(produto => {
                                 const tr = document.createElement('tr');
+                                tr.setAttribute('data-id', produto.id);
                                 tr.innerHTML = `
                                     <td>${produto.id}</td>
                                     <td>${produto.nome}</td>
@@ -241,12 +248,7 @@ $produtos = $productModel->getAll();
                                 `;
                                 tbody.appendChild(tr);
                             });
-                        } else {
-                            alert('Erro ao listar os produtos');
                         }
-                    },
-                    error: function () {
-                        alert("Erro ao carregar os produtos.");
                     }
                 });
             }
@@ -270,7 +272,7 @@ $produtos = $productModel->getAll();
                 $('#formCadastrarProduto #unidade_medida').val(produto.unidade_medida);
                 $('#formCadastrarProduto #promocao').val(produto.promocao);
 
-                $('#modalCadastro').show();
+                $('#modalCadastro').css("display", "flex");
             }
 
         </script>

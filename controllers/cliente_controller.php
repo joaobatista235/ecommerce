@@ -29,6 +29,7 @@ class ClienteController
      */
     private function cadastrarCliente(): array
     {
+        return ['success' => true, 'msg' => 'asf'];
         if (isset($_POST['nome'], $_POST['email'], $_POST['cpf_cnpj'])) {
             $cliente = new Cliente();
 
@@ -46,6 +47,7 @@ class ClienteController
             $cliente->setDataNasc($_POST['data_nasc'] ?? null);
             $cliente->setSalario($_POST['salario'] ?? 0.0);
 
+            return ['success' => true, 'msg' => $cliente->save()];
             return $cliente->save()
                 ? ['success' => true, 'message' => 'Cliente cadastrado com sucesso']
                 : ['success' => false, 'message' => 'Erro ao cadastrar cliente'];
@@ -59,37 +61,39 @@ class ClienteController
      */
     private function editarCliente(): array
     {
-        if (isset($_POST['id'], $_POST['nome'], $_POST['email'], $_POST['cpf_cnpj'])) {
-            $cliente = new Cliente();
+        if (!isset($_POST['id'], $_POST['nome'], $_POST['email'], $_POST['cpf_cnpj'])) {
+            return ['success' => false, 'message' => 'Dados obrigatórios estão faltando'];
+        }
 
-            $cliente->setId($_POST['id']);
-            $existingCliente = $cliente->getById($_POST['id']);
+        $cliente = new Cliente();
+        $cliente->setId($_POST['id']);
+        $existingCliente = $cliente->getById($_POST['id']);
 
-            if ($existingCliente) {
-                $cliente->setNome($_POST['nome']);
-                $cliente->setEndereco($_POST['endereco'] ?? '');
-                $cliente->setNumero($_POST['numero'] ?? '');
-                $cliente->setBairro($_POST['bairro'] ?? '');
-                $cliente->setCidade($_POST['cidade'] ?? '');
-                $cliente->setEstado($_POST['estado'] ?? '');
-                $cliente->setEmail($_POST['email']);
-                $cliente->setCpfCnpj($_POST['cpf_cnpj']);
-                $cliente->setRg($_POST['rg'] ?? '');
-                $cliente->setTelefone($_POST['telefone'] ?? '');
-                $cliente->setCelular($_POST['celular'] ?? '');
-                $cliente->setDataNasc($_POST['data_nasc'] ?? null);
-                $cliente->setSalario($_POST['salario'] ?? 0.0);
-
-                return $cliente->save()
-                    ? ['success' => true, 'message' => 'Cliente atualizado com sucesso']
-                    : ['success' => false, 'message' => 'Erro ao atualizar cliente'];
-            }
-
+        if (!$existingCliente) {
             return ['success' => false, 'message' => 'Cliente não encontrado'];
         }
 
-        return ['success' => false, 'message' => 'Dados obrigatórios estão faltando'];
+        $cliente->setNome($_POST['nome']);
+        $cliente->setEndereco($_POST['endereco'] ?? '');
+        $cliente->setNumero($_POST['numero'] ?? '');
+        $cliente->setBairro($_POST['bairro'] ?? '');
+        $cliente->setCidade($_POST['cidade'] ?? '');
+        $cliente->setEstado($_POST['estado'] ?? '');
+        $cliente->setEmail($_POST['email']);
+        $cliente->setCpfCnpj($_POST['cpf_cnpj']);
+        $cliente->setRg($_POST['rg'] ?? '');
+        $cliente->setTelefone($_POST['telefone'] ?? '');
+        $cliente->setCelular($_POST['celular'] ?? '');
+        $cliente->setDataNasc($_POST['data_nasc'] ?? null);
+        $cliente->setSalario($_POST['salario'] ?? 0.0);
+
+        if ($cliente->save()) {
+            return ['success' => true, 'message' => 'Cliente atualizado com sucesso'];
+        }
+
+        return ['success' => false, 'message' => 'Erro ao atualizar cliente'];
     }
+
 
     /**
      * @return array
