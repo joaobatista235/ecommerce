@@ -128,6 +128,7 @@ function atualizarTabelaPagamentos() {
         success: function (response) {
             if (response.success) {
                 const pagamentos = response.pagamentos;
+                console.log(pagamentos)
                 const tbody = document.querySelector('table tbody');
                 tbody.innerHTML = '';
                 pagamentos.forEach(pagamento => {
@@ -143,6 +144,9 @@ function atualizarTabelaPagamentos() {
                     tbody.appendChild(tr);
                 });
             }
+        },
+        error: function(err){
+            console.log(err)
         }
     });
 }

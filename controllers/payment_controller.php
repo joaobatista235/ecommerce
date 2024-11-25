@@ -77,8 +77,12 @@ class PaymentController
     {
         $pagamentos = (new FormaPagto())->getAll();
 
+        $arrResult = array();
+        foreach($pagamentos as $pagamento){
+            $arrResult[] = ['id' => $pagamento->getId(), 'nome' => $pagamento->getNome()];
+        }
         return $pagamentos ?
-            ['success' => true, 'pagamentos' => $pagamentos] :
+            ['success' => true, 'pagamentos' => $arrResult] :
             ['success' => false, 'message' => 'Nenhum forma de pagamento encontrada.'];
 
     }

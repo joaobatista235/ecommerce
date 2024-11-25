@@ -16,52 +16,54 @@ $clientes = $cli_model->getAll();
     <div class="table">
         <table>
             <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Endereço</th>
-                    <th>Numero</th>
-                    <th>Bairro</th>
-                    <th>Cidade</th>
-                    <th>Estado</th>
-                    <th>Email</th>
-                    <th>CPF/CNPJ</th>
-                    <th>RG</th>
-                    <th>Telefone</th>
-                    <th>Celular</th>
-                    <th>Data de nascimento</th>
-                    <th>Salário</th>
-                    <th colspan="2">Operações</th>
-                </tr>
+            <tr>
+                <th>Nome</th>
+                <th>Endereço</th>
+                <th>Numero</th>
+                <th>Bairro</th>
+                <th>Cidade</th>
+                <th>Estado</th>
+                <th>Email</th>
+                <th>CPF/CNPJ</th>
+                <th>RG</th>
+                <th>Telefone</th>
+                <th>Celular</th>
+                <th>Data de nascimento</th>
+                <th>Salário</th>
+                <th colspan="2">Operações</th>
+            </tr>
             </thead>
             <tbody>
-                <?php
-                if (!empty($clientes)) {
-                    foreach ($clientes as $cliente) {
-                        echo "<tr data-id='" . $cliente->getId() . "' class='client-row'>";
-                        echo "<td>" . $cliente->getNome() . "</td>";
-                        echo "<td>" . $cliente->getEndereco() . "</td>";
-                        echo "<td>" . $cliente->getNumero() . "</td>";
-                        echo "<td>" . $cliente->getBairro() . "</td>";
-                        echo "<td>" . $cliente->getCidade() . "</td>";
-                        echo "<td>" . $cliente->getEstado() . "</td>";
-                        echo "<td>" . $cliente->getEmail() . "</td>";
-                        echo "<td>" . $cliente->getCpf_Cnpj() . "</td>";
-                        echo "<td>" . $cliente->getRg() . "</td>";
-                        echo "<td>" . $cliente->getTelefone() . "</td>";
-                        echo "<td>" . $cliente->getCelular() . "</td>";
-                        echo "<td>" . date('d/m/Y', strtotime($cliente->getDataNasc())) . "</td>";
-                        echo "<td>R$ " . number_format($cliente->getSalario(), 2, ',', '.') . "</td>";
-                        echo "<td><img width='15px' class='btnEditar' src='../assets/icons/pen-to-square-solid.svg' data-id='" . $cliente->getId() . "' alt='Editar'></td>";
-                        echo "<td><img width='15px' class='btnExcluir' src='../assets/icons/trash-solid.svg' data-id='" . $cliente->getId() . "' alt='Excluir'></td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='14'>Nenhum cliente encontrado</td></tr>";
+            <?php
+            if (!empty($clientes)) {
+                foreach ($clientes as $cliente) {
+                    echo "<tr data-id='" . $cliente->getId() . "' class='client-row'>";
+                    echo "<td>" . $cliente->getNome() . "</td>";
+                    echo "<td>" . $cliente->getEndereco() . "</td>";
+                    echo "<td>" . $cliente->getNumero() . "</td>";
+                    echo "<td>" . $cliente->getBairro() . "</td>";
+                    echo "<td>" . $cliente->getCidade() . "</td>";
+                    echo "<td>" . $cliente->getEstado() . "</td>";
+                    echo "<td>" . $cliente->getEmail() . "</td>";
+                    echo "<td>" . $cliente->getCpf_Cnpj() . "</td>";
+                    echo "<td>" . $cliente->getRg() . "</td>";
+                    echo "<td>" . $cliente->getTelefone() . "</td>";
+                    echo "<td>" . $cliente->getCelular() . "</td>";
+                    echo "<td>" . date('d/m/Y', strtotime($cliente->getDataNasc())) . "</td>";
+                    echo "<td>R$ " . number_format($cliente->getSalario(), 2, ',', '.') . "</td>";
+                    echo "<td><img width='15px' class='btnEditar' src='../assets/icons/pen-to-square-solid.svg' data-id='" . $cliente->getId() . "' alt='Editar'></td>";
+                    echo "<td><img width='15px' class='btnExcluir' src='../assets/icons/trash-solid.svg' data-id='" . $cliente->getId() . "' alt='Excluir'></td>";
+                    echo "</tr>";
                 }
-                ?>
+            } else {
+                echo "<tr><td colspan='14'>Nenhum cliente encontrado</td></tr>";
+            }
+            ?>
             </tbody>
         </table>
-
+        <br>
+        <br>
+        <br>
         <div id="modalCadastro" class="modal" style="display:none;">
             <div class="modal-content">
                 <div class="modal-header">
@@ -130,6 +132,39 @@ $clientes = $cli_model->getAll();
                         </div>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div id="relatorio" style="margin-top:30px">
+        <div class="relatorio-container">
+            <div class="relatorio-header">
+                <h2 class="ubuntu-bold" style="color:#6a1b9a">Filtrar Dados</h2>
+            </div>
+            <br>
+            <hr>
+            <br>
+            <div class="relatorio-body">
+                <form id="gerarRelatorio">
+                    <div style="display: flex; gap: 20px">
+                        <div class="form-item-modal">
+                            <label for="nome-filtro" class="form-item-label">Nome:</label>
+                            <input type="text" id="nome-filtro" name="nome-filtro" class="input-field">
+                        </div>
+                        <div class="form-item-modal">
+                            <label for="endereco" class="form-item-label">Endereço:</label>
+                            <input type="text" id="endereco-filtro" name="endereco" class="input-field">
+                        </div>
+                        <div class="form-item-modal">
+                            <label for="cidade-filtro" class="form-item-label">Cidade:</label>
+                            <input type="text" id="cidade-filtro" name="cidade-filtro" class="input-field">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnFiltrar" type="button" class="btn"
+                                style="background-color:var(--sidebar-color);">Filtrar
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

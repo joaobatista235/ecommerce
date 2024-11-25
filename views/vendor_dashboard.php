@@ -1,16 +1,18 @@
 <?php
-    session_start();
+session_start();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>Dashboard de Vendas</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../config/global.css">
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="../config/global.css"/>
+    <link
+            href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+            rel="stylesheet"
+    />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../config/global.js"></script>
 </head>
@@ -18,23 +20,46 @@
 <body class="dashboard-body">
 <header class="sidebar toggle">
     <div class="sidebar__btn_close" id="btn-close-sidebar">
-        <svg id="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15.41 7.41L14 6L8 12L14 18L15.41 16.59L10.83 12L15.41 7.41Z" fill="white"/>
+        <svg
+                id="menu-icon"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                    d="M15.41 7.41L14 6L8 12L14 18L15.41 16.59L10.83 12L15.41 7.41Z"
+                    fill="white"
+            />
         </svg>
-        <svg style="display: none" id="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-             xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 6L8.59 7.41L13.17 12L8.59 16.59L10 18L16 12L10 6Z" fill="white"/>
+        <svg
+                style="display: none"
+                id="close-icon"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                    d="M10 6L8.59 7.41L13.17 12L8.59 16.59L10 18L16 12L10 6Z"
+                    fill="white"
+            />
         </svg>
     </div>
     <div class="siderbar__logo">
         <span class="image">
-            <img src="../assets/icons/logo-svgrepo-com.svg" alt="Logo placeholder">
+          <img
+                  src="../assets/icons/logo-svgrepo-com.svg"
+                  alt="Logo placeholder"
+          />
         </span>
         <div class="siderbar__logo_title">
-            <span class="name ubuntu-bold">Bem Vindo!</span>
+            <span class="name ubuntu-bold"> Bem Vindo! </span>
             <span class="subheader ubuntu-medium">
-                <?php echo $_SESSION['usuario']['nome'] ?? 'Usuário'; ?>
-            </span>
+            <?php echo $_SESSION['usuario']['nome'] ?? 'Usuário'; ?>
+          </span>
         </div>
     </div>
     <nav class="sidebar-navigation">
@@ -77,27 +102,26 @@
         function loadContentIntoMain(url, target) {
             $.ajax({
                 url: url,
-                type: 'GET',
+                type: "GET",
                 success: function (response) {
                     $(target).html(response);
                 },
                 error: function (xhr, status, error) {
-                    console.error('Error loading content:', error);
-                    $(target).html('<p>Erro ao carregar o conteúdo.</p>');
-                }
+                    console.error("Error loading content:", error);
+                    $(target).html("<p>Erro ao carregar o conteúdo.</p>");
+                },
             });
         }
 
-        loadContentIntoMain('../views/client_form.php', 'main');
+        loadContentIntoMain('./client_form.php', 'main');
         $('#menuClientes').click(function (e) {
             e.preventDefault();
-            loadContentIntoMain('../views/client_form.php', 'main');
+            loadContentIntoMain('./client_form.php', 'main');
         });
         $('#menuProdutos').click(function (e) {
             e.preventDefault();
-            loadContentIntoMain('../views/product_form.php', 'main');
+            loadContentIntoMain('./product_form.php', 'main');
         });
-    });
+    })
 </script>
-
 </html>

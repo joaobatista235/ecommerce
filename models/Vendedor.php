@@ -258,9 +258,30 @@ class Vendedor implements GenericInterface
     public function deleteById(?int $vendedorId): bool
     {
         if (!empty($vendedorId)) {
-            $stmt = mysqli_prepare($this->conn, "DELETE FROM vendedor WHERE id = ?");
-            mysqli_stmt_bind_param($stmt, "i", $vendedorId);
-            return mysqli_stmt_execute($stmt);
+            mysqli_begin_transaction($this->conn);
+            try {
+                // Excluir itens_pedido
+                $stmt1 = mysqli_prepare($this->conn, "DELETE ip FROM itens_pedido ip INNER JOIN pedidos p ON ip.id_pedido = p.id WHERE p.id_vendedor = ?");
+                mysqli_stmt_bind_param($stmt1, "i", $vendedorId);
+                mysqli_stmt_execute($stmt1);
+
+                // Excluir pedidos
+                $stmt2 = mysqli_prepare($this->conn, "DELETE FROM pedidos WHERE id_vendedor = ?");
+                mysqli_stmt_bind_param($stmt2, "i", $vendedorId);
+                mysqli_stmt_execute($stmt2);
+
+                // Excluir vendedor
+                $stmt3 = mysqli_prepare($this->conn, "DELETE FROM vendedor WHERE id = ?");
+                mysqli_stmt_bind_param($stmt3, "i", $vendedorId);
+                mysqli_stmt_execute($stmt3);
+
+                mysqli_commit($this->conn);
+                return true;
+            } catch (Exception $e) {
+                mysqli_rollback($this->conn);
+                echo "Erro ao excluir: " . $e->getMessage();
+                return false;
+            }
         }
         return false;
     }

@@ -17,64 +17,67 @@ $pedidos = $pedido->getAll();
         <h1 class="ubuntu-bold">Listagem de Pedidos</h1>
     </div>
     <div class="table">
-        <div id="relatorio">
-            <div class="relatorio-container">
-                <div class="relatorio-header">
-                    <h2>Gerar relatório</h2>
-                </div>
-                <div class="relatorio-body">
-                    <form id="Filtrar">
-                        <div style="display: flex; gap: 20px">
-                            <div class="form-item-modal">
-                                <label for="inicio" class="form-item-label">De:</label>
-                                <input type="date" id="inicio" name="inicio" class="input-field">
-                            </div>
-                            <div class="form-item-modal">
-                                <label for="fim" class="form-item-label">Até:</label>
-                                <input type="date" id="fim" name="fim" class="input-field">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" onclick="gerarRelatorio(event)" class="btn">Filtrar pedidos</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
         <table>
             <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Cliente ID - Nome</th>
-                    <th>Vendedor ID - Nome</th>
-                    <th>Data</th>
-                    <th>Forma de Pagamento</th>
-                    <th>Prazo de Entrega</th>
-                    <th>Operações</th>
-                </tr>
+            <tr>
+                <th>ID</th>
+                <th>Cliente ID - Nome</th>
+                <th>Vendedor ID - Nome</th>
+                <th>Data</th>
+                <th>Forma de Pagamento</th>
+                <th>Prazo de Entrega</th>
+                <th>Operações</th>
+            </tr>
             </thead>
             <tbody>
-                <?php
-                if (!empty($pedidos)) {
-                    foreach ($pedidos as $pedido) {
-                        echo "<tr data-id='" . $pedido->getId() . "' class='product-row'>";
-                        echo "<td>" . $pedido->getId() . "</td>";
-                        echo "<td>" . $pedido->getIdCliente() . " - " . $pedido->getNomeCliente() . "</td>";
-                        echo "<td>" . $pedido->getIdVendedor() . " - " . $pedido->getNomeVendedor() . "</td>";
-                        echo "<td>" . $pedido->getData() . "</td>";
-                        echo "<td>" . $pedido->getFormaPagto() . "</td>";
-                        echo "<td>" . $pedido->getPrazoEntrega() . "</td>";
-                        echo "<td onclick='excluirPedido(this)'><img width='15px' src='../assets/icons/trash-solid.svg' alt='Excluir'></td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='7'>Nenhum pedido encontrado</td></tr>";
+            <?php
+            if (!empty($pedidos)) {
+                foreach ($pedidos as $pedido) {
+                    echo "<tr data-id='" . $pedido->getId() . "' class='product-row'>";
+                    echo "<td>" . $pedido->getId() . "</td>";
+                    echo "<td>" . $pedido->getIdCliente() . " - " . $pedido->getNomeCliente() . "</td>";
+                    echo "<td>" . $pedido->getIdVendedor() . " - " . $pedido->getNomeVendedor() . "</td>";
+                    echo "<td>" . $pedido->getData() . "</td>";
+                    echo "<td>" . $pedido->getFormaPagto() . "</td>";
+                    echo "<td>" . $pedido->getPrazoEntrega() . "</td>";
+                    echo "<td onclick='excluirPedido(this)'><img width='15px' src='../assets/icons/trash-solid.svg' alt='Excluir'></td>";
+                    echo "</tr>";
                 }
-                ?>
+            } else {
+                echo "<tr><td colspan='7'>Nenhum pedido encontrado</td></tr>";
+            }
+            ?>
             </tbody>
         </table>
     </div>
-
+    <div id="relatorio">
+        <div class="relatorio-container">
+            <div class="relatorio-header">
+                <h2 class="ubuntu-bold">Gerar relatório</h2>
+            </div>
+            <br>
+            <hr>
+            <br>
+            <div class="relatorio-body">
+                <form id="gerarRelatorio">
+                    <div style="display: flex; gap: 20px">
+                        <div class="form-item-modal">
+                            <label for="inicio" class="form-item-label">De:</label>
+                            <input type="date" id="inicio" name="inicio" class="input-field">
+                        </div>
+                        <div class="form-item-modal">
+                            <label for="fim" class="form-item-label">Até:</label>
+                            <input type="date" id="fim" name="fim" class="input-field">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="gerarRelatorioPedidos(event)" class="btn">Gerar relatório
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- Modal for confirmation -->
     <div id="modalCadastro" class="modal" style="display:none;">
         <div class="modal-content">
@@ -94,7 +97,37 @@ $pedidos = $pedido->getAll();
 </div>
 
 <script>
-    // Excluir pedido function (opens modal)
+    function gerarRelatorioPedidos() {
+        const inicio = $('#inicio').val();
+        const fim = $('#fim').val();
+
+        $.ajax({
+            url: "../controllers/pedido_controller.php",
+            type: "POST",
+            data: {action: "gerarRelatorio", inicio: inicio, fim: fim},
+            dataType: "json",
+            success: function (response) {
+                if (response.success) {
+                    let pdfData = atob(response.pdf);
+                    let pdfBlob = new Blob([new Uint8Array(pdfData.split("").map(function (c) {
+                        return c.charCodeAt(0);
+                    }))], {type: 'application/pdf'});
+
+                    let link = document.createElement('a');
+                    link.href = URL.createObjectURL(pdfBlob);
+                    link.download = 'relatorio_pedidos.pdf';
+
+                    link.click();
+                } else {
+                    alert('Erro: ' + response.message);
+                }
+            },
+            error: function () {
+                alert('Erro ao gerar o relatório');
+            }
+        });
+    }
+
     function excluirPedido(el) {
         const row = $(el).closest('tr');
         const pedidoId = row.data('id');
@@ -108,7 +141,7 @@ $pedidos = $pedido->getAll();
         $.ajax({
             url: '../controllers/pedido_controller.php',
             type: 'POST',
-            data: { action: 'excluir', id: pedidoId },
+            data: {action: 'excluir', id: pedidoId},
             dataType: 'json',
             success: function (response) {
                 if (response.success) {

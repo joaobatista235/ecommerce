@@ -105,7 +105,18 @@ class ClienteController
     private function listarClientes(): array
     {
         $cliente = new Cliente();
-        $clientes = $cliente->getAll();
+
+        $filtro = isset($_POST['filtro']) && $_POST['filtro'] === 'true';
+        if ($filtro) {
+            $options = array();
+            $options['nome'] = $_POST['nome'] ?? '';
+            $options['cidade'] = $_POST['cidade'] ?? '';
+            $options['endereco'] = $_POST['endereco'] ?? '';
+
+            $clientes = $cliente->getClients($options);
+        } else {
+            $clientes = $cliente->getAll();
+        }
 
         if ($clientes) {
             $clientesArray = array_map(fn($cliente) => $cliente->toArray(), $clientes);

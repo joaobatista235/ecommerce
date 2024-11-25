@@ -5,15 +5,15 @@ $(document).ready(function () {
     const menuIcon = $("#menu-icon");
     const closeIcon = $("#close-icon");
 
-    toggleButton.on("click", function () {
-        sidebar.toggleClass("collapsed");
-
+    toggleButton.off("click").on("click", function () {
         if (sidebar.hasClass("collapsed")) {
-            menuIcon.hide();
-            closeIcon.show();
-        } else {
+            sidebar.removeClass("collapsed");
             menuIcon.show();
             closeIcon.hide();
+        } else {
+            sidebar.addClass("collapsed");
+            menuIcon.hide();
+            closeIcon.show();
         }
     });
 
@@ -79,14 +79,21 @@ $(document).ready(function () {
         return `${partes[2]}/${partes[1]}/${partes[0]}`;
     }
 
-    function atualizarTabela() {
+    function atualizarTabela(filtro = false) {
+        let data = {action: "listar", filtro: false};
+        if (filtro) {
+            data.filtro = true;
+            data.nome = $('#nome-filtro').val();
+            data.endereco = $('#endereco-filtro').val();
+            data.cidade = $('#cidade-filtro').val()
+        }
+
         $.ajax({
             url: "../controllers/cliente_controller.php",
             type: "POST",
-            data: { action: "listar" },
+            data: data,
             dataType: "json",
             success: function (response) {
-                console.log(response); // Log the response for debugging
 
                 if (response.success) {
                     const tbody = $("table tbody");
@@ -97,8 +104,7 @@ $(document).ready(function () {
                         const tr = $("<tr>")
                             .data("id", client.id)
                             .attr("data-id", client.id)
-                            .addClass("client-row")
-                            .html(`
+                            .addClass("client-row").html(`
                     <td>${client.nome}</td>
                     <td>${client.endereco}</td>
                     <td>${client.numero}</td>
@@ -114,8 +120,12 @@ $(document).ready(function () {
                     <td>R$ ${parseFloat(client.salario)
                                 .toFixed(2)
                                 .replace(".", ",")}</td>
-                    <td><img width='15px' class='btnEditar' src='../assets/icons/pen-to-square-solid.svg' data-id=${client.id} alt='Editar'></td>
-                    <td><img width='15px' class='btnExcluir' src='../assets/icons/trash-solid.svg' data-id=${client.id} alt='Excluir'></td>
+                    <td><img width='15px' class='btnEditar' src='../assets/icons/pen-to-square-solid.svg' data-id=${
+                                client.id
+                            } alt='Editar'></td>
+                    <td><img width='15px' class='btnExcluir' src='../assets/icons/trash-solid.svg' data-id=${
+                                client.id
+                            } alt='Excluir'></td>
                 `);
                         tbody.append(tr);
                     });
@@ -166,6 +176,10 @@ $(document).ready(function () {
             const clienteId = $(this).data("id");
             excluirCliente(clienteId);
         });
+
+        $("#btnFiltrar").click(function () {
+            atualizarTabela(true);
+        });
     }
 
     function abrirModalEdicao(client) {
@@ -207,7 +221,7 @@ $(document).ready(function () {
                 $.ajax({
                     url: "../controllers/cliente_controller.php",
                     type: "POST",
-                    data: { action: "excluir", clienteId },
+                    data: {action: "excluir", clienteId},
                     success: function (response) {
                         const res = JSON.parse(response);
                         if (res.success) {

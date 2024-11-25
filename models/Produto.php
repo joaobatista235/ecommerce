@@ -121,12 +121,41 @@ class Produto implements GenericInterface
     }
 
     /**
+     * @param array $filtro
      * @return array
      */
-    public function getAll(): array
+    public function getAll(array $filtro = []): array
     {
         $conn = (new Database())->getConnection();
-        $stmt = mysqli_prepare($conn, "SELECT * FROM produto");
+
+        $query = "SELECT * FROM produto";
+        $params = [];
+        $types = "";
+
+        if (!empty($filtro['nome']) || !empty($filtro['preco'])) {
+            $query .= " WHERE ";
+            $condicoes = [];
+
+            if (!empty($filtro['nome'])) {
+                $condicoes[] = "nome LIKE ?";
+                $params[] = "%" . $filtro['nome'] . "%";
+                $types .= "s";
+            }
+            if (!empty($filtro['preco'])) {
+                $condicoes[] = "preco <= ?";
+                $params[] = $filtro['preco'];
+                $types .= "d";
+            }
+
+            $query .= implode(" AND ", $condicoes);
+        }
+
+        $stmt = mysqli_prepare($conn, $query);
+
+        if (!empty($params)) {
+            mysqli_stmt_bind_param($stmt, $types, ...$params);
+        }
+
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         $produtos = [];
@@ -141,6 +170,7 @@ class Produto implements GenericInterface
                 'promocao' => $data['promocao']
             ];
         }
+
         return $produtos;
     }
 

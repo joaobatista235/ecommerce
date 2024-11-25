@@ -82,7 +82,12 @@ class ProductController
      */
     private function listarProduto(): array
     {
-        $produtos = (new Produto())->getAll();
+        $filtros = [];
+        if (!empty($_POST['filtro']) && $_POST['filtro'] === 'true') {
+            $filtros['nome'] = $_POST['nome'] ?? '';
+            $filtros['preco'] = $_POST['preco'] ?? '';
+        }
+        $produtos = (new Produto())->getAll($filtros);
 
         return $produtos ?
             ['success' => true, 'produtos' => $produtos] :
