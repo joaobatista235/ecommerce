@@ -108,7 +108,7 @@ class SellerController
      */
     private function gerarRelatorio(): array
     {
-        $vendedores = (new Vendedor())->gerarRelatorioPeriodo($_POST['inicio'], $_POST['fim'],);
+        $vendedores = (new Vendedor())->gerarRelatorioPeriodo($_POST['inicio'], $_POST['fim']);
 
         $linha = "";
         foreach ($vendedores as $vendedor) {
