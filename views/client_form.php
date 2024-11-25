@@ -135,7 +135,7 @@ $clientes = $cli_model->getAll();
             </div>
         </div>
     </div>
-    <div id="relatorio">
+    <div id="relatorio" style="margin-top:30px">
         <div class="relatorio-container">
             <div class="relatorio-header">
                 <h2 class="ubuntu-bold" style="color:#6a1b9a">Filtrar Dados</h2>
@@ -160,7 +160,9 @@ $clientes = $cli_model->getAll();
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button id="btnFiltrar" type="button" class="btn" style="background-color:var(--sidebar-color);">Filtrar</button>
+                        <button id="btnFiltrar" type="button" class="btn"
+                                style="background-color:var(--sidebar-color);">Filtrar
+                        </button>
                     </div>
                 </form>
             </div>

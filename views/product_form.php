@@ -96,147 +96,183 @@ $produtos = $productModel->getAll();
                 </div>
             </div>
         </div>
+    </div>
+    <div id="relatorio" style="margin-top:30px">
+        <div class="relatorio-container">
+            <div class="relatorio-header">
+                <h2 class="ubuntu-bold" style="color:#6a1b9a">Filtrar Dados</h2>
+            </div>
+            <br>
+            <hr>
+            <br>
+            <div class="relatorio-body">
+                <form id="gerarRelatorio">
+                    <div style="display: flex; gap: 20px">
+                        <div class="form-item-modal">
+                            <label for="nome-filtro" class="form-item-label">Nome:</label>
+                            <input type="text" id="nome-filtro" name="nome-filtro" class="input-field">
+                        </div>
+                        <div class="form-item-modal">
+                            <label for="preco-filtro" class="form-item-label">Preço:</label>
+                            <input type="text" id="preco-filtro" name="preco-filtro" class="input-field">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnFiltrar" onclick="atualizarTabela(true)" type="button" class="btn"
+                                style="background-color:var(--sidebar-color);">Filtrar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#btnCadastrarProduto').click(function () {
+                $('#modalCadastro').css("display", "flex");
+            });
 
-        <script>
-            $(document).ready(function () {
-                $('#btnCadastrarProduto').click(function () {
-                    $('#modalCadastro').css("display", "flex");
-                });
+            $('#btnFecharModal').click(function () {
+                $('#modalCadastro').hide();
+            });
 
-                $('#btnFecharModal').click(function () {
+            $(window).click(function (event) {
+                if (event.target === document.getElementById('modalCadastro')) {
                     $('#modalCadastro').hide();
-                });
+                }
+            });
 
-                $(window).click(function (event) {
-                    if (event.target === document.getElementById('modalCadastro')) {
-                        $('#modalCadastro').hide();
-                    }
-                });
+            $('#formCadastrarProduto').submit(function (e) {
+                e.preventDefault()
+                const form = document.getElementById('formCadastrarProduto');
+                const produtoId = $('#formCadastrarProduto').data('id');
 
-                $('#formCadastrarProduto').submit(function (e) {
-                    e.preventDefault()
-                    const form = document.getElementById('formCadastrarProduto');
-                    const produtoId = $('#formCadastrarProduto').data('id');
+                let nome = $('#nome').val();
+                let qtde_estoque = $('#qtde_estoque').val();
+                let preco = $('#preco').val();
+                let unidade_medida = $('#unidade_medida').val();
+                let promocao = $('#promocao').val();
 
-                    let nome = $('#nome').val();
-                    let qtde_estoque = $('#qtde_estoque').val();
-                    let preco = $('#preco').val();
-                    let unidade_medida = $('#unidade_medida').val();
-                    let promocao = $('#promocao').val();
+                const formData = {
+                    action: produtoId ? 'editar' : 'cadastrar',
+                    id: produtoId,
+                    nome: nome,
+                    preco: preco,
+                    qtde_estoque: qtde_estoque,
+                    unidade_medida: unidade_medida,
+                    promocao: promocao
+                };
 
-                    const formData = {
-                        action: produtoId ? 'editar' : 'cadastrar',
-                        id: produtoId,
-                        nome: nome,
-                        preco: preco,
-                        qtde_estoque: qtde_estoque,
-                        unidade_medida: unidade_medida,
-                        promocao: promocao
-                    };
+                $.ajax({
+                    url: '../controllers/product_controller.php',
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.success) {
+                            form.reset();
+                            $('#modalCadastro').hide();
 
-                    $.ajax({
-                        url: '../controllers/product_controller.php',
-                        type: 'POST',
-                        data: formData,
-                        dataType: 'json',
-                        success: function (response) {
-                            if (response.success) {
-                                form.reset();
-                                $('#modalCadastro').hide();
+                            Swal.fire({
+                                title: 'Sucesso!',
+                                text: response.message,
+                                icon: 'success',
+                                confirmButtonText: 'OK',
+                                backdrop: false,
+                            });
+                            document.getElementById('modalCadastro').style.display = 'none';
+                            atualizarTabela();
 
-                                Swal.fire({
-                                    title: 'Sucesso!',
-                                    text: response.message,
-                                    icon: 'success',
-                                    confirmButtonText: 'OK',
-                                    backdrop: false,
-                                });
-                                document.getElementById('modalCadastro').style.display = 'none';
-                                atualizarTabela();
-
-                            } else {
-                                Swal.fire({
-                                    title: 'Erro!',
-                                    text: 'Não foi possível cadastrar o produto.',
-                                    icon: 'error',
-                                    confirmButtonText: 'OK',
-                                    backdrop: false,
-                                });
-                            }
-                        },
-                        error: function () {
+                        } else {
                             Swal.fire({
                                 title: 'Erro!',
-                                text: 'Ocorreu um erro ao tentar cadastrar o produto.',
+                                text: 'Não foi possível cadastrar o produto.',
                                 icon: 'error',
                                 confirmButtonText: 'OK',
                                 backdrop: false,
                             });
                         }
-                    });
-                });
-            });
-
-            function excluirProduto(el) {
-                const produtoId = $(el).closest('tr').attr('data-id');
-                Swal.fire({
-                    title: 'Tem certeza?',
-                    text: 'Essa ação não pode ser desfeita!',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Sim, excluir!',
-                    cancelButtonText: 'Cancelar',
-                    reverseButtons: true,
-                    backdrop: false,
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: '../controllers/product_controller.php',
-                            type: 'POST',
-                            data: {action: 'excluir', productId: produtoId},
-                            dataType: 'json',
-                            success: function (response) {
-                                if (response.success) {
-                                    Swal.fire({
-                                        title: 'Excluído!',
-                                        text: 'O produto foi excluído com sucesso.',
-                                        icon: 'success',
-                                        backdrop: false
-                                    });
-                                    atualizarTabela();
-                                }
-                            },
-                            error: function (err) {
-                                console.log(err)
-                            }
-                        });
-                    } else if (result.isDismissed) {
+                    },
+                    error: function () {
                         Swal.fire({
-                            title: 'Cancelado!',
-                            text: 'Ação cancelada.',
-                            icon: 'info',
-                            backdrop: false
+                            title: 'Erro!',
+                            text: 'Ocorreu um erro ao tentar cadastrar o produto.',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            backdrop: false,
                         });
                     }
                 });
+            });
+        });
+
+        function excluirProduto(el) {
+            const produtoId = $(el).closest('tr').attr('data-id');
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: 'Essa ação não pode ser desfeita!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sim, excluir!',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true,
+                backdrop: false,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '../controllers/product_controller.php',
+                        type: 'POST',
+                        data: {action: 'excluir', productId: produtoId},
+                        dataType: 'json',
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    title: 'Excluído!',
+                                    text: 'O produto foi excluído com sucesso.',
+                                    icon: 'success',
+                                    backdrop: false
+                                });
+                                atualizarTabela();
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err)
+                        }
+                    });
+                } else if (result.isDismissed) {
+                    Swal.fire({
+                        title: 'Cancelado!',
+                        text: 'Ação cancelada.',
+                        icon: 'info',
+                        backdrop: false
+                    });
+                }
+            });
+        }
+
+        function atualizarTabela(filtro = false) {
+            let data = {action: "listar", filtro: false};
+            if (filtro) {
+                data.filtro = true;
+                data.nome = $('#nome-filtro').val();
+                data.preco = $('#preco-filtro').val()
             }
 
-            function atualizarTabela() {
-                $.ajax({
-                    url: '../controllers/product_controller.php',
-                    type: 'POST',
-                    data: {action: 'listar'},
-                    dataType: 'json',
-                    success: function (response) {
-                        if (response.success) {
-                            const produtos = response.produtos;
-                            const tbody = document.querySelector('table tbody');
+            $.ajax({
+                url: '../controllers/product_controller.php',
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        const produtos = response.produtos;
+                        const tbody = document.querySelector('table tbody');
 
-                            tbody.innerHTML = '';
-                            produtos.forEach(produto => {
-                                const tr = document.createElement('tr');
-                                tr.setAttribute('data-id', produto.id);
-                                tr.innerHTML = `
+                        tbody.innerHTML = '';
+                        produtos.forEach(produto => {
+                            const tr = document.createElement('tr');
+                            tr.setAttribute('data-id', produto.id);
+                            tr.innerHTML = `
                                     <td>${produto.id}</td>
                                     <td>${produto.nome}</td>
                                     <td>${produto.qtde_estoque}</td>
@@ -246,35 +282,34 @@ $produtos = $productModel->getAll();
                                     <td onclick="abrirModalEdicao(this)"><img width='15px' class="btnEditar" src="../assets/icons/pen-to-square-solid.svg" alt="Excluir"></td>
                                     <td onclick="excluirProduto(this)"><img width='15px' class='btnExcluir' src='../assets/icons/trash-solid.svg' alt='Excluir'></td>
                                 `;
-                                tbody.appendChild(tr);
-                            });
-                        }
+                            tbody.appendChild(tr);
+                        });
                     }
-                });
-            }
+                }
+            });
+        }
 
-            function abrirModalEdicao(el) {
-                const row = $(el).closest('tr');
-                const produto = {
-                    id: row.find('td').eq(0).text(),
-                    nome: row.find('td').eq(1).text(),
-                    qtde_estoque: row.find('td').eq(2).text(),
-                    preco: row.find('td').eq(3).text().replace('R$ ', '').replace(',', '.'),
-                    unidade_medida: row.find('td').eq(4).text(),
-                    promocao: row.find('td').eq(5).text() === 'Sim' ? 'Y' : 'N'
-                };
+        function abrirModalEdicao(el) {
+            const row = $(el).closest('tr');
+            const produto = {
+                id: row.find('td').eq(0).text(),
+                nome: row.find('td').eq(1).text(),
+                qtde_estoque: row.find('td').eq(2).text(),
+                preco: row.find('td').eq(3).text().replace('R$ ', '').replace(',', '.'),
+                unidade_medida: row.find('td').eq(4).text(),
+                promocao: row.find('td').eq(5).text() === 'Sim' ? 'Y' : 'N'
+            };
 
-                $('#formCadastrarProduto').data('id', produto.id);
+            $('#formCadastrarProduto').data('id', produto.id);
 
-                $('#formCadastrarProduto #nome').val(produto.nome);
-                $('#formCadastrarProduto #preco').val(produto.preco);
-                $('#formCadastrarProduto #qtde_estoque').val(produto.qtde_estoque);
-                $('#formCadastrarProduto #unidade_medida').val(produto.unidade_medida);
-                $('#formCadastrarProduto #promocao').val(produto.promocao);
+            $('#formCadastrarProduto #nome').val(produto.nome);
+            $('#formCadastrarProduto #preco').val(produto.preco);
+            $('#formCadastrarProduto #qtde_estoque').val(produto.qtde_estoque);
+            $('#formCadastrarProduto #unidade_medida').val(produto.unidade_medida);
+            $('#formCadastrarProduto #promocao').val(produto.promocao);
 
-                $('#modalCadastro').css("display", "flex");
-            }
+            $('#modalCadastro').css("display", "flex");
+        }
 
-        </script>
-    </div>
+    </script>
 </div>
