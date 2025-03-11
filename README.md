@@ -156,4 +156,4 @@ Este projeto está licenciado sob a **MIT License** - consulte o arquivo [LICENS
 
 ---
 
-Feito com ❤️ por [Seu Nome](https://github.com/joaobatista235).
+Feito com ❤️ por [João Batista](https://github.com/joaobatista235).
